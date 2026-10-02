@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O-Buba — Hey O-Buba</title>
+    <meta name="description" content="O-Buba is the premium dating experience. Swipe, match, and connect with people who share your spark.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{
+            --pink:#ff80df;--orange:#ff33bb;--yellow:#e60099;
+            --grad:linear-gradient(135deg,#ff80df 0%,#ff33bb 50%,#e60099 100%);
+            --bg:#ffe6f2;--bg2:#ffd9eb;--bg3:#ffcce4;
+            --surface:rgba(255,255,255,.6);--border:rgba(0,0,0,.08);--bh:rgba(0,0,0,.18);
+            --t:#800040;--ts:#99004d;--tm:#b30059;
+            --fh:'Outfit',system-ui,sans-serif;--fb:'Inter',system-ui,sans-serif;
+            --ease:cubic-bezier(.16,1,.3,1);--spring:cubic-bezier(.34,1.56,.64,1);
+        }
+        html{scroll-behavior:smooth;overflow-x:hidden}
+        body{background:var(--bg);color:var(--t);font-family:var(--fb);font-size:16px;line-height:1.6;overflow-x:hidden}
+        ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:#2a3347;border-radius:10px}
+        h1,h2,h3,h4{font-family:var(--fh);font-weight:800;color:var(--t);line-height:1.1}
+        .gt{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+        .container{max-width:1160px;margin:0 auto;padding:0 24px}
+        section{position:relative}
+
+        /* NAV */
+        nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:18px 0;transition:.4s;border-bottom:1px solid transparent}
+        nav.scrolled{background:rgba(255,230,242,.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-color:var(--border)}
+        .nav-in{display:flex;align-items:center;justify-content:space-between}
+        .nb{display:flex;align-items:center;gap:10px;text-decoration:none}
+        .nf{width:36px;height:36px;filter:drop-shadow(0 4px 12px rgba(255,51,187,.5));animation:fp 2.5s infinite ease-in-out}
+        @keyframes fp{0%,100%{transform:scale(1);filter:drop-shadow(0 4px 12px rgba(255,51,187,.4))}50%{transform:scale(1.06);filter:drop-shadow(0 6px 20px rgba(255,51,187,.7))}}
+        .nlt{font-family:var(--fh);font-size:26px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .nl{display:flex;align-items:center;gap:32px;list-style:none}
+        .nl a{color:var(--ts);text-decoration:none;font-size:14px;font-weight:500;transition:color .2s}
+        .nl a:hover{color:var(--t)}
+        .nc{display:flex;align-items:center;gap:12px}
+        .lang-option:hover{background:rgba(255,51,187,.12) !important}
+        .lang-option.active{background:var(--grad) !important;color:#fff !important}
+
+
+        /* BUTTONS */
+        .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:13px 28px;border-radius:50px;font-family:var(--fh);font-weight:700;font-size:15px;border:none;cursor:pointer;text-decoration:none;transition:all .25s var(--ease);white-space:nowrap}
+        .bp{background:var(--grad);color:white;box-shadow:0 4px 20px rgba(255,51,187,.4)}
+        .bp:hover{transform:translateY(-2px) scale(1.02);box-shadow:0 8px 30px rgba(255,51,187,.6)}
+        .bp:active{transform:scale(.99)}
+        .bg{background:transparent;color:var(--t);border:1.5px solid var(--bh)}
+        .bg:hover{background:var(--surface);border-color:rgba(255,255,255,.3)}
+        .bl{padding:17px 40px;font-size:17px}
+
+        /* HERO */
+        #hero{min-height:100vh;display:flex;align-items:center;padding:120px 0 80px;overflow:hidden}
+        .orbs{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+        .orb{position:absolute;border-radius:50%;filter:blur(120px);opacity:0}
+        .o1{width:700px;height:700px;top:-200px;left:-200px;background:radial-gradient(circle,rgba(255,51,187,.18) 0%,transparent 70%);animation:of1 20s infinite alternate ease-in-out,oi 2s .2s forwards}
+        .o2{width:600px;height:600px;bottom:-150px;right:-150px;background:radial-gradient(circle,rgba(0,162,255,.12) 0%,transparent 70%);animation:of2 25s infinite alternate-reverse ease-in-out,oi 2s .5s forwards}
+        .o3{width:400px;height:400px;top:30%;left:40%;background:radial-gradient(circle,rgba(230,0,153,.1) 0%,transparent 70%);animation:of3 18s infinite alternate ease-in-out,oi 2s .8s forwards}
+        @keyframes oi{to{opacity:1}}
+        @keyframes of1{0%{transform:translate(0,0) scale(1)}100%{transform:translate(80px,60px) scale(1.1)}}
+        @keyframes of2{0%{transform:translate(0,0) scale(1)}100%{transform:translate(-60px,-40px) scale(1.08)}}
+        @keyframes of3{0%{transform:translate(0,0) scale(1)}100%{transform:translate(40px,-50px) scale(1.05)}}
+        .hi{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:40px 0}
+        .hl{animation:fu .8s var(--ease) both;display:flex;flex-direction:column;align-items:center}
+        @keyframes fu{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:none}}
+        .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,51,187,.12);border:1px solid rgba(255,51,187,.3);border-radius:50px;padding:6px 16px;font-size:13px;font-weight:600;color:var(--pink);margin-bottom:28px}
+        .bdot{width:6px;height:6px;border-radius:50%;background:var(--pink);animation:dp 1.5s infinite}
+        @keyframes dp{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+        .ht{font-size:clamp(48px,6vw,78px);font-weight:900;letter-spacing:-2px;margin-bottom:24px}
+        .hs{font-size:18px;color:var(--ts);line-height:1.7;max-width:640px;margin:0 auto 40px}
+        .ha{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:48px;justify-content:center}
+        .hst{display:flex;gap:36px}
+        .si{display:flex;flex-direction:column}
+        .sn{font-family:var(--fh);font-size:28px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .sl{font-size:12px;color:var(--tm);text-transform:uppercase;letter-spacing:.5px;font-weight:500}
+
+        /* PHONE */
+        .hr{display:flex;justify-content:center;animation:fu .8s .15s var(--ease) both}
+        .ps{position:relative;width:320px}
+        .pg{position:absolute;width:360px;height:420px;top:50%;left:50%;transform:translate(-50%,-50%);background:radial-gradient(ellipse,rgba(255,51,187,.25) 0%,transparent 70%);filter:blur(40px);z-index:0;animation:gp 3s infinite ease-in-out alternate}
+        @keyframes gp{from{opacity:.6;transform:translate(-50%,-50%) scale(.95)}to{opacity:1;transform:translate(-50%,-50%) scale(1.05)}}
+        .pf{position:relative;z-index:1;width:300px;height:620px;background:linear-gradient(160deg,#1e2535 0%,#0f1320 100%);border-radius:44px;border:1.5px solid rgba(255,255,255,.12);box-shadow:0 0 0 1px rgba(0,0,0,.5),0 40px 80px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.1);overflow:hidden;animation:phf 6s infinite ease-in-out alternate}
+        @keyframes phf{from{transform:translateY(0) rotate(-1deg)}to{transform:translateY(-16px) rotate(1deg)}}
+        .pn{position:absolute;top:14px;left:50%;transform:translateX(-50%);width:90px;height:26px;background:#0a0c10;border-radius:20px;z-index:10}
+        .psc{position:absolute;inset:0;display:flex;flex-direction:column;padding:60px 14px 20px}
+        .ptb{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+        .pbr{font-family:var(--fh);font-size:20px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .pic{display:flex;gap:8px}
+        .pid{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.06);border:1px solid var(--border)}
+        .pc{flex:1;border-radius:22px;overflow:hidden;position:relative;box-shadow:0 20px 40px rgba(0,0,0,.5);animation:cb 8s infinite ease-in-out alternate}
+        @keyframes cb{0%{transform:rotate(-.5deg)}100%{transform:rotate(.5deg)}}
+        .pci{width:100%;height:100%;object-fit:cover;display:block}
+        .pco{position:absolute;bottom:0;left:0;right:0;height:55%;background:linear-gradient(to top,rgba(5,7,12,.95) 0%,transparent 100%)}
+        .pcd{position:absolute;bottom:0;left:0;right:0;padding:16px}
+        .pcn{font-family:var(--fh);font-size:22px;font-weight:800;color:#fff;line-height:1;margin-bottom:4px}
+        .pcm{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:10px}
+        .pct{display:flex;gap:6px;flex-wrap:wrap}
+        .ptg{background:rgba(255,255,255,.12);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:600;color:#fff}
+        .pa{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:14px}
+        .pbt{width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;border:none;cursor:pointer;transition:transform .2s}
+        .pbt:hover{transform:scale(1.1)}
+        .pbno{background:rgba(255,51,187,.12);border:1.5px solid rgba(255,51,187,.3)}
+        .pbli{background:rgba(16,211,131,.12);border:1.5px solid rgba(16,211,131,.3)}
+        .pbsu{background:rgba(180,0,90,.15);border:1.5px solid rgba(180,0,90,.5);width:40px;height:40px;font-size:16px;color:#b4005a}
+        .mb{position:absolute;top:90px;right:-20px;background:linear-gradient(135deg,#ff80df,#ff33bb);border-radius:16px;padding:10px 14px;box-shadow:0 10px 30px rgba(255,51,187,.5);animation:bpop .5s 1.5s var(--spring) both;z-index:10;white-space:nowrap}
+        @keyframes bpop{from{opacity:0;transform:scale(.5) translateY(10px)}to{opacity:1;transform:scale(1) translateY(0)}}
+        .mbt{font-family:var(--fh);font-size:12px;font-weight:700;color:#fff}
+        .mbs{font-size:10px;color:rgba(255,255,255,.75)}
+        .pcb{position:absolute;top:72px;right:-50px;width:140px;height:200px;border-radius:20px;overflow:hidden;border:1.5px solid rgba(255,255,255,.08);box-shadow:0 20px 40px rgba(0,0,0,.4);transform:rotate(8deg);z-index:0;animation:bf 7s infinite ease-in-out alternate}
+        @keyframes bf{from{transform:rotate(8deg) translateY(0)}to{transform:rotate(10deg) translateY(-8px)}}
+        .pcb img{width:100%;height:100%;object-fit:cover}
+
+        /* SECTIONS */
+        #features{padding:120px 0}
+        .stag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--orange);margin-bottom:16px}
+        .stit{font-size:clamp(34px,4.5vw,56px);letter-spacing:-1.5px;margin-bottom:16px}
+        .ssub{font-size:18px;color:var(--ts);max-width:500px}
+        .sh{margin-bottom:72px}
+        .fg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+        .fc{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:36px 32px;transition:all .35s var(--ease);position:relative;overflow:hidden}
+        .fc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--grad);opacity:0;transition:opacity .35s}
+        .fc:hover{background:rgba(255,255,255,.06);border-color:var(--bh);transform:translateY(-6px)}
+        .fc:hover::before{opacity:1}
+        .fi{width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:24px}
+        .ip{background:rgba(255,51,187,.12);border:1px solid rgba(255,51,187,.2)}
+        .io{background:rgba(255,51,187,.12);border:1px solid rgba(255,51,187,.2)}
+        .ib{background:rgba(0,162,255,.12);border:1px solid rgba(0,162,255,.2)}
+        .ig{background:rgba(16,211,131,.12);border:1px solid rgba(16,211,131,.2)}
+        .iu{background:rgba(168,85,247,.12);border:1px solid rgba(168,85,247,.2)}
+        .iy{background:rgba(251,192,45,.12);border:1px solid rgba(251,192,45,.2)}
+        .ftit{font-size:20px;font-weight:700;margin-bottom:10px}
+        .fd{font-size:14px;color:var(--ts);line-height:1.65}
+
+        #how-it-works{padding:120px 0;background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 50%,var(--bg) 100%)}
+        .sr{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;margin-top:72px;position:relative}
+        .sr::before{content:'';position:absolute;top:36px;left:calc(16.66% + 40px);right:calc(16.66% + 40px);height:1px;background:linear-gradient(90deg,rgba(255,51,187,.5) 0%,rgba(255,51,187,.5) 50%,rgba(230,0,153,.5) 100%)}
+        .sti{display:flex;flex-direction:column;align-items:center;text-align:center}
+        .snb{width:72px;height:72px;border-radius:50%;background:var(--bg3);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;margin-bottom:28px;position:relative;z-index:1}
+        .snt{font-family:var(--fh);font-size:28px;font-weight:800;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .stitle{font-size:20px;font-weight:700;margin-bottom:10px}
+        .sdesc{font-size:14px;color:var(--ts);line-height:1.7;max-width:260px}
+
+        #testimonials{padding:120px 0}
+        .tg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:72px}
+        .tc{background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:32px;transition:all .35s var(--ease)}
+        .tc:hover{border-color:var(--bh);transform:translateY(-4px)}
+        .tst{display:flex;gap:4px;margin-bottom:18px}
+        .star{color:var(--yellow);font-size:16px}
+        .tt{font-size:15px;color:var(--ts);line-height:1.75;margin-bottom:24px;font-style:italic}
+        .ta{display:flex;align-items:center;gap:12px}
+        .av{width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid var(--border)}
+        .an{font-family:var(--fh);font-size:15px;font-weight:700}
+        .am{font-size:12px;color:var(--tm)}
+
+        #showcase{padding:120px 0;background:linear-gradient(180deg,var(--bg) 0%,var(--bg2) 100%);overflow:hidden}
+        .sci{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+        .sp{margin-top:40px;display:flex;flex-direction:column;gap:16px}
+        .pi{display:flex;align-items:flex-start;gap:14px}
+        .pc2{width:28px;height:28px;border-radius:50%;background:rgba(16,211,131,.12);border:1px solid rgba(16,211,131,.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;margin-top:2px}
+        .pt{font-family:var(--fh);font-weight:700;font-size:15px;margin-bottom:2px}
+        .pd{font-size:13px;color:var(--ts)}
+        .sm{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:240px 240px;gap:12px}
+        .mp{border-radius:20px;overflow:hidden;position:relative;border:1px solid var(--border)}
+        .mp img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+        .mp:hover img{transform:scale(1.06)}
+        .mp.tall{grid-row:span 2}
+        .mo{position:absolute;bottom:0;left:0;right:0;padding:16px;background:linear-gradient(to top,rgba(0,0,0,.8) 0%,transparent 100%)}
+        .mn{font-family:var(--fh);font-size:14px;font-weight:700;color:#fff}
+        .ms{font-size:11px;color:rgba(255,255,255,.6)}
+
+        #cta{padding:120px 0;text-align:center}
+        .ci{position:relative;background:linear-gradient(135deg,rgba(255,51,187,.08) 0%,rgba(230,0,153,.05) 100%);border:1px solid rgba(255,51,187,.2);border-radius:40px;padding:100px 60px;overflow:hidden}
+        .co1{position:absolute;width:400px;height:400px;top:-150px;left:-100px;background:radial-gradient(circle,rgba(255,51,187,.15) 0%,transparent 70%);filter:blur(60px);pointer-events:none}
+        .co2{position:absolute;width:350px;height:350px;bottom:-120px;right:-80px;background:radial-gradient(circle,rgba(230,0,153,.12) 0%,transparent 70%);filter:blur(60px);pointer-events:none}
+        .ctit{font-size:clamp(38px,5vw,64px);letter-spacing:-2px;position:relative;z-index:1;margin-bottom:20px}
+        .csub{font-size:18px;color:var(--ts);max-width:520px;margin:0 auto 48px;position:relative;z-index:1}
+        .ca{display:flex;align-items:center;justify-content:center;gap:16px;position:relative;z-index:1}
+        .cn{font-size:13px;color:var(--tm);margin-top:20px;position:relative;z-index:1}
+
+        footer{border-top:1px solid var(--border);padding:48px 0}
+        .fi2{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px}
+        .fl{display:flex;gap:28px;list-style:none}
+        .fl a{color:var(--tm);text-decoration:none;font-size:13px;transition:color .2s}
+        .fl a:hover{color:var(--ts)}
+        .fc2{font-size:13px;color:var(--tm)}
+
+        /* REVEAL */
+        [data-r]{opacity:0;transform:translateY(30px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+        [data-r].on{opacity:1;transform:none}
+        [data-rs]>*{opacity:0;transform:translateY(24px);transition:opacity .6s var(--ease),transform .6s var(--ease)}
+        [data-rs].on>*:nth-child(1){opacity:1;transform:none;transition-delay:0s}
+        [data-rs].on>*:nth-child(2){opacity:1;transform:none;transition-delay:.1s}
+        [data-rs].on>*:nth-child(3){opacity:1;transform:none;transition-delay:.2s}
+        [data-rs].on>*:nth-child(4){opacity:1;transform:none;transition-delay:.3s}
+        [data-rs].on>*:nth-child(5){opacity:1;transform:none;transition-delay:.4s}
+        [data-rs].on>*:nth-child(6){opacity:1;transform:none;transition-delay:.5s}
+
+        @media(max-width:960px){
+            .hi{grid-template-columns:1fr}.hr{display:none}
+            .fg{grid-template-columns:1fr 1fr}
+            .sr{grid-template-columns:1fr}.sr::before{display:none}
+            .tg{grid-template-columns:1fr}
+            .sci{grid-template-columns:1fr}.sm{display:none}
+            .nl{display:none}
+        }
+        @media(max-width:600px){
+            .fg{grid-template-columns:1fr}
+            .ci{padding:60px 28px;border-radius:28px}
+            .ha{flex-direction:column}.hst{gap:24px}
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+    <div class="container nav-in">
+        <a href="#" class="nb">
+            <img src="logo.jpg" class="nf" alt="Buba Logo" style="border-radius: 50%; object-fit: cover;">
+            <span class="nlt">O-BUBA</span>
+        </a>
+        <ul class="nl">
+            <li><a href="#features" data-i18n="nav_features">Features</a></li>
+            <li><a href="#how-it-works" data-i18n="nav_how_it_works">How It Works</a></li>
+            <li><a href="#testimonials" data-i18n="nav_stories">Stories</a></li>
+        </ul>
+        <div class="nc">
+            <!-- Language Selector Button -->
+            <div class="lang-dropdown-wrapper" style="position: relative;">
+                <button type="button" class="btn bg lang-btn" id="lang-menu-btn" style="padding: 10px 16px; font-size: 14px; gap: 6px;" aria-label="Select Language">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                    <span id="current-lang-label">Language: 🇬🇧 EN</span>
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left: 2px;"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="lang-dropdown-menu" id="lang-dropdown-menu" style="display: none; position: absolute; top: calc(100% + 8px); right: 0; background: rgba(255, 230, 242, 0.96); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid var(--border); border-radius: 16px; padding: 8px; min-width: 180px; max-height: 360px; overflow-y: auto; box-shadow: 0 10px 30px rgba(0,0,0,0.15); z-index: 200;">
+                    <button class="lang-option active" data-lang="EN" data-flag="🇬🇧" data-name="English" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇬🇧</span> English
+                    </button>
+                    <button class="lang-option" data-lang="MK" data-flag="🇲🇰" data-name="Македонски" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇲🇰</span> Македонски
+                    </button>
+                    <button class="lang-option" data-lang="SR" data-flag="🇷🇸" data-name="Српски" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇷🇸</span> Српски
+                    </button>
+                    <button class="lang-option" data-lang="EL" data-flag="🇬🇷" data-name="Ελληνικά" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇬🇷</span> Ελληνικά
+                    </button>
+                    <button class="lang-option" data-lang="RU" data-flag="🇷🇺" data-name="Русский" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇷🇺</span> Русский
+                    </button>
+                    <button class="lang-option" data-lang="RO" data-flag="🇷🇴" data-name="Română" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇷🇴</span> Română
+                    </button>
+                    <button class="lang-option" data-lang="BG" data-flag="🇧🇬" data-name="Български" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇧🇬</span> Български
+                    </button>
+                    <button class="lang-option" data-lang="UA" data-flag="🇺🇦" data-name="Українська" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇺🇦</span> Українська
+                    </button>
+                    <button class="lang-option" data-lang="DE" data-flag="🇩🇪" data-name="Deutsch" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇩🇪</span> Deutsch
+                    </button>
+                    <button class="lang-option" data-lang="FR" data-flag="🇫🇷" data-name="Français" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇫🇷</span> Français
+                    </button>
+                    <button class="lang-option" data-lang="ES" data-flag="🇪🇸" data-name="Español" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇪🇸</span> Español
+                    </button>
+                    <button class="lang-option" data-lang="IT" data-flag="🇮🇹" data-name="Italiano" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇮🇹</span> Italiano
+                    </button>
+                    <button class="lang-option" data-lang="PL" data-flag="🇵🇱" data-name="Polski" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇵🇱</span> Polski
+                    </button>
+                    <button class="lang-option" data-lang="NL" data-flag="🇳🇱" data-name="Nederlands" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇳🇱</span> Nederlands
+                    </button>
+                    <button class="lang-option" data-lang="PT" data-flag="🇵🇹" data-name="Português" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇵🇹</span> Português
+                    </button>
+                    <button class="lang-option" data-lang="SV" data-flag="🇸🇪" data-name="Svenska" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇸🇪</span> Svenska
+                    </button>
+                    <button class="lang-option" data-lang="NO" data-flag="🇳🇴" data-name="Norsk" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇳🇴</span> Norsk
+                    </button>
+                    <button class="lang-option" data-lang="DA" data-flag="🇩🇰" data-name="Dansk" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇩🇰</span> Dansk
+                    </button>
+                    <button class="lang-option" data-lang="FI" data-flag="🇫🇮" data-name="Suomi" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇫🇮</span> Suomi
+                    </button>
+                    <button class="lang-option" data-lang="CS" data-flag="🇨🇿" data-name="Čeština" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇨🇿</span> Čeština
+                    </button>
+                    <button class="lang-option" data-lang="SK" data-flag="🇸🇰" data-name="Slovenčina" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇸🇰</span> Slovenčina
+                    </button>
+                    <button class="lang-option" data-lang="HU" data-flag="🇭🇺" data-name="Magyar" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇭🇺</span> Magyar
+                    </button>
+                    <button class="lang-option" data-lang="HR" data-flag="🇭🇷" data-name="Hrvatski" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇭🇷</span> Hrvatski
+                    </button>
+                    <button class="lang-option" data-lang="BS" data-flag="🇧🇦" data-name="Bosanski" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇧🇦</span> Bosanski
+                    </button>
+                    <button class="lang-option" data-lang="SQ" data-flag="🇦🇱" data-name="Shqip" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇦🇱</span> Shqip
+                    </button>
+                    <button class="lang-option" data-lang="SL" data-flag="🇸🇮" data-name="Slovenščina" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇸🇮</span> Slovenščina
+                    </button>
+                    <button class="lang-option" data-lang="BE" data-flag="🇧🇾" data-name="Беларуская" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇧🇾</span> Беларуская
+                    </button>
+                    <button class="lang-option" data-lang="LT" data-flag="🇱🇹" data-name="Lietuvių" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇱🇹</span> Lietuvių
+                    </button>
+                    <button class="lang-option" data-lang="LV" data-flag="🇱🇻" data-name="Latviešu" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇱🇻</span> Latviešu
+                    </button>
+                    <button class="lang-option" data-lang="ET" data-flag="🇪🇪" data-name="Eesti" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇪🇪</span> Eesti
+                    </button>
+                    <button class="lang-option" data-lang="GA" data-flag="🇮🇪" data-name="Gaeilge" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇮🇪</span> Gaeilge
+                    </button>
+                    <button class="lang-option" data-lang="MT" data-flag="🇲🇹" data-name="Malti" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇲🇹</span> Malti
+                    </button>
+                    <button class="lang-option" data-lang="IS" data-flag="🇮🇸" data-name="Íslenska" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇮🇸</span> Íslenska
+                    </button>
+                    <button class="lang-option" data-lang="AR" data-flag="🇸🇾" data-name="العربية" style="display: flex; align-items: center; gap: 8px; width: 100%; padding: 8px 12px; border: none; background: transparent; border-radius: 10px; color: var(--t); font-family: var(--fh); font-weight: 600; font-size: 13px; cursor: pointer; text-align: left; transition: background 0.2s;">
+                        <span>🇸🇾</span> العربية
+                    </button>
+                </div>
+            </div>
+
+            <a href="#" id="nav-logout-btn" class="btn bp" style="padding:10px 22px;font-size:14px" data-i18n="nav_get_started">Log Out</a>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+    <div class="orbs">
+        <div class="orb o1"></div>
+        <div class="orb o2"></div>
+        <div class="orb o3"></div>
+    </div>
+    <div class="container">
+        <div class="hi">
+            <div class="hl">
+                <div class="badge"><span class="bdot"></span> <span data-i18n="hero_badge">Who's around</span></div>
+                <h1 class="ht" data-i18n="hero_title">Hey<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span></h1>
+                <p class="hs" data-i18n="hero_sub">O-Buba is where Orthodox connections begin. Discover quality matches, real chemistry, and people who genuinely catch your interest.</p>
+                <div class="ha">
+                    <a href="index.html" id="hero-cta" class="btn bp bl">
+                        <img src="logo.jpg" width="22" height="22" style="border-radius:50%;object-fit:cover;vertical-align:middle;" alt="Buba Logo">
+                        <span data-i18n="hero_enter">Log In for free</span>
+                    </a>
+                    <a href="#how-it-works" id="hero-learn" class="btn bg bl" data-i18n="hero_show_me">Show me</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features">
+    <div class="container">
+        <div class="sh" data-r>
+            <span class="stag" data-i18n="feat_tag">Why O-Buba</span>
+            <h2 class="stit" data-i18n="feat_tit">Crafted with heart,<br><span class="gt">for real chemistry</span></h2>
+            <p class="ssub" data-i18n="feat_sub">Every tap brings you closer to your person.</p>
+        </div>
+        <div class="fg" data-rs>
+            <div class="fc"><div class="fi ip">🔥</div><div class="ftit" data-i18n="f1_tit">Smart Matching</div><p class="fd" data-i18n="f1_desc">Our algorithm goes beyond photos — it learns your preferences, personality, and lifestyle to surface people who truly align with you.</p></div>
+            <div class="fc"><div class="fi ib">✨</div><div class="ftit" data-i18n="f2_tit">Real-Time Chat</div><p class="fd" data-i18n="f2_desc">Message your matches instantly. Smooth, fast, and expressive — with reactions, voice notes, and GIFs.</p></div>
+            <div class="fc"><div class="fi ig">🎯</div><div class="ftit" data-i18n="f3_tit">Passion Tags</div><p class="fd" data-i18n="f3_desc">Share what drives you — from hiking to vinyl — and find people who light up over the same things you do.</p></div>
+            <div class="fc"><div class="fi io">🛡️</div><div class="ftit" data-i18n="f4_tit">Safe &amp; Private</div><p class="fd" data-i18n="f4_desc">Your data stays yours. End-to-end encrypted chats, photo verification, and robust profile screening keep every interaction safe.</p></div>
+            <div class="fc"><div class="fi iu">⚡</div><div class="ftit" data-i18n="f5_tit">Boost Mode</div><p class="fd" data-i18n="f5_desc">Supercharge your profile visibility for a limited window — get seen by more people at peak matching hours.</p></div>
+            <div class="fc"><div class="fi iy">🔄</div><div class="ftit" data-i18n="f6_tit">Rewind</div><p class="fd" data-i18n="f6_desc">Accidentally passed on someone? Hit rewind and get a second chance — because great connections deserve a do-over.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+    <div class="container">
+        <div class="sh" style="text-align:center" data-r>
+            <span class="stag" data-i18n="how_tag">Getting Started</span>
+            <h2 class="stit" data-i18n="how_tit">3 steps to <span class="gt">your person</span></h2>
+        </div>
+        <div class="sr" data-rs>
+            <div class="sti"><div class="snb"><span class="snt">01</span></div><h3 class="stitle" data-i18n="s1_tit">Share Who You Are</h3><p class="sdesc" data-i18n="s1_desc">Set up in minutes. Add photos, choose your roots, write a bio that sounds like you, and pick passions that define you.</p></div>
+            <div class="sti"><div class="snb"><span class="snt">02</span></div><h3 class="stitle" data-i18n="s2_tit">Discover Your Spark</h3><p class="sdesc" data-i18n="s2_desc">Browse curated profiles. Swipe right to like, left to pass, or Super Like when someone really stands out.</p></div>
+            <div class="sti"><div class="snb"><span class="snt">03</span></div><h3 class="stitle" data-i18n="s3_tit">Meet in Real Life</h3><p class="sdesc" data-i18n="s3_desc">When you both swipe right — it's a match. Start chatting and turn that spark into something real.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+    <div class="container">
+        <div class="sh" data-r>
+            <span class="stag" data-i18n="test_tag">Real Stories</span>
+            <h2 class="stit" data-i18n="test_tit">Love found <span class="gt">on O-Buba</span></h2>
+            <p class="ssub" data-i18n="test_sub">Don't take our word for it — here's what our community has to say.</p>
+        </div>
+        <div class="tg" data-rs>
+            <div class="tc">
+                <div class="tst"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+                <p class="tt" data-i18n="test1_text">"We bonded over shared roots, traditional values, and family traditions on day one. By week two, we knew this was meant to be. O-Buba brought us together."</p>
+                <div class="ta"><img class="av" src="https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?auto=format&fit=crop&q=80&w=100" alt="Stefan &amp; Milica"><div><div class="an">Stefan &amp; Milica</div><div class="am">Matched 4 months ago · Sydney</div></div></div>
+            </div>
+            <div class="tc">
+                <div class="tst"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+                <p class="tt" data-i18n="test2_text">"Finding someone who respects our faith, culture, and traditions felt impossible until O-Buba. Now we are planning our Orthodox wedding next summer!"</p>
+                <div class="ta"><img class="av" src="https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&q=80&w=100" alt="Marko &amp; Anastasija"><div><div class="an">Marko &amp; Anastasija</div><div class="am">Matched 8 months ago · Melbourne</div></div></div>
+            </div>
+            <div class="tc">
+                <div class="tst"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></div>
+                <p class="tt" data-i18n="test3_text">"A simple Super Like turned into deep conversations about life, faith, and family. O-Buba gave us the connection we prayed for."</p>
+                <div class="ta"><img class="av" src="https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&q=80&w=100" alt="Jovan &amp; Sofija"><div><div class="an">Jovan &amp; Sofija</div><div class="am">Matched 1 year ago · Toronto</div></div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SHOWCASE -->
+<section id="showcase">
+    <div class="container">
+        <div class="sci">
+            <div data-r>
+                <span class="stag" data-i18n="show_tag">The Experience</span>
+                <h2 class="stit" data-i18n="show_tit">Every profile<br>tells a <span class="gt">story</span></h2>
+                <p class="ssub" style="margin-top:16px" data-i18n="show_sub">Rich, expressive profiles that go beyond a selfie — photos, bios, anthems, and passions that help you truly see someone.</p>
+                <div class="sp">
+                    <div class="pi"><div class="pc2">✓</div><div><div class="pt" data-i18n="show_p1_t">Multi-photo carousels</div><div class="pd" data-i18n="show_p1_d">Tap through multiple photos to see every side of a person.</div></div></div>
+                    <div class="pi"><div class="pc2">✓</div><div><div class="pt" data-i18n="show_p2_t">Spotify Anthem</div><div class="pd" data-i18n="show_p2_d">One song that says more about you than any bio could.</div></div></div>
+                    <div class="pi"><div class="pc2">✓</div><div><div class="pt" data-i18n="show_p3_t">Online presence indicators</div><div class="pd" data-i18n="show_p3_d">See who's active now and strike while the spark is hot.</div></div></div>
+                    <div class="pi"><div class="pc2">✓</div><div><div class="pt" data-i18n="show_p4_t">Discovery filters</div><div class="pd" data-i18n="show_p4_d">Age range, distance, gender — you set the parameters.</div></div></div>
+                </div>
+            </div>
+            <div class="sm" data-r>
+                <div class="mp tall"><img src="https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&q=80&w=400&h=600" alt="Stars"><div class="mo"><div class="mn">Sophia, 24</div><div class="ms">Art curator · 5 km away</div></div></div>
+                <div class="mp"><img src="https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?auto=format&fit=crop&q=80&w=300&h=300" alt="Stars"><div class="mo"><div class="mn">Liam, 25</div><div class="ms">Architect · 13 km away</div></div></div>
+                <div class="mp"><img src="https://images.unsplash.com/photo-1502134249126-9f3755a50d78?auto=format&fit=crop&q=80&w=300&h=300" alt="Stars"><div class="mo"><div class="mn">Elena, 26</div><div class="ms">Travel blogger · 19 km away</div></div></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+    <div class="container">
+        <div class="ci" data-r>
+            <div class="co1"></div><div class="co2"></div>
+            <h2 class="ctit" data-i18n="cta_tit">Your person is<br><span class="gt">already on O-Buba</span></h2>
+            <p class="csub" data-i18n="cta_sub">Join over 2.4 million people who chose to find connection in the most human way possible. Your story starts with a single swipe.</p>
+            <div class="ca">
+                <a href="index.html" id="cta-btn" class="btn bp bl" data-i18n="cta_btn">🔥&nbsp;&nbsp;Find My Match</a>
+                <a href="#features" class="btn bg bl" data-i18n="cta_learn">Learn More</a>
+            </div>
+            <p class="cn" data-i18n="cta_note">Free to join · No credit card required · Cancel anytime</p>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="container">
+        <div class="fi2">
+            <a href="#" class="nb" style="text-decoration:none">
+                <img src="logo.jpg" style="width:28px;height:28px;filter:drop-shadow(0 2px 6px rgba(255,51,187,.4)); border-radius: 50%; object-fit: cover;" alt="Buba Logo">
+                <span style="font-family:var(--fh);font-weight:800;font-size:20px;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">O-BUBA</span>
+            </a>
+            <ul class="fl">
+                <li><a href="#" data-i18n="foot_privacy">Privacy</a></li>
+                <li><a href="#" data-i18n="foot_terms">Terms</a></li>
+                <li><a href="#" data-i18n="foot_safety">Safety</a></li>
+                <li><a href="#" data-i18n="foot_support">Support</a></li>
+            </ul>
+            <span class="fc2" data-i18n="foot_copy">© 2026 O-Buba. All rights reserved.</span>
+        </div>
+    </div>
+</footer>
+
+<script>
+    // Nav scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 30), {passive:true});
+
+    // Scroll reveal
+    const obs = new IntersectionObserver(entries => entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target)} }), {threshold:.12,rootMargin:'0px 0px -40px 0px'});
+    document.querySelectorAll('[data-r],[data-rs]').forEach(el => obs.observe(el));
+
+    // Full Translations Dictionary
+    const TRANSLATIONS = {
+        EN: {
+            nav_features: "Features",
+            nav_how_it_works: "How It Works",
+            nav_stories: "Stories",
+            nav_login: "Log In",
+            nav_get_started: "Log Out",
+            hero_badge: "Who's around",
+            hero_title: 'Hey<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>',
+            hero_sub: "O-Buba is where Orthodox connections begin. Discover quality matches, real chemistry, and people who genuinely catch your interest.",
+            hero_enter: "Log In for free",
+            hero_show_me: "Show me",
+            feat_tag: "Why O-Buba",
+            feat_tit: 'Crafted with heart,<br><span class="gt">for real chemistry</span>',
+            feat_sub: "Every tap brings you closer to your person.",
+            f1_tit: "Smart Matching",
+            f1_desc: "Our algorithm goes beyond photos — it learns your preferences, personality, and lifestyle to surface people who truly align with you.",
+            f2_tit: "Real-Time Chat",
+            f2_desc: "Message your matches instantly. Smooth, fast, and expressive — with reactions, voice notes, and GIFs.",
+            f3_tit: "Passion Tags",
+            f3_desc: "Share what drives you — from hiking to vinyl — and find people who light up over the same things you do.",
+            f4_tit: "Safe & Private",
+            f4_desc: "Your data stays yours. End-to-end encrypted chats, photo verification, and robust profile screening keep every interaction safe.",
+            f5_tit: "Boost Mode",
+            f5_desc: "Supercharge your profile visibility for a limited window — get seen by more people at peak matching hours.",
+            f6_tit: "Rewind",
+            f6_desc: "Accidentally passed on someone? Hit rewind and get a second chance — because great connections deserve a do-over.",
+            how_tag: "Getting Started",
+            how_tit: '3 steps to <span class="gt">your person</span>',
+            s1_tit: "Share Who You Are",
+            s1_desc: "Set up in minutes. Add photos, choose your roots, write a bio that sounds like you, and pick passions that define you.",
+            s2_tit: "Discover Your Spark",
+            s2_desc: "Browse curated profiles. Swipe right to like, left to pass, or Super Like when someone really stands out.",
+            s3_tit: "Meet in Real Life",
+            s3_desc: "When you both swipe right — it's a match. Start chatting and turn that spark into something real.",
+            test_tag: "Real Stories",
+            test_tit: 'Love found <span class="gt">on O-Buba</span>',
+            test_sub: "Don't take our word for it — here's what our community has to say.",
+            test1_text: '"We bonded over shared roots, traditional values, and family traditions on day one. By week two, we knew this was meant to be. O-Buba brought us together."',
+            test2_text: '"Finding someone who respects our faith, culture, and traditions felt impossible until O-Buba. Now we are planning our Orthodox wedding next summer!"',
+            test3_text: '"A simple Super Like turned into deep conversations about life, faith, and family. O-Buba gave us the connection we prayed for."',
+            show_tag: "The Experience",
+            show_tit: 'Every profile<br>tells a <span class="gt">story</span>',
+            show_sub: "Rich, expressive profiles that go beyond a selfie — photos, bios, anthems, and passions that help you truly see someone.",
+            show_p1_t: "Multi-photo carousels",
+            show_p1_d: "Tap through multiple photos to see every side of a person.",
+            show_p2_t: "Spotify Anthem",
+            show_p2_d: "One song that says more about you than any bio could.",
+            show_p3_t: "Online presence indicators",
+            show_p3_d: "See who's active now and strike while the spark is hot.",
+            show_p4_t: "Discovery filters",
+            show_p4_d: "Age range, distance, gender — you set the parameters.",
+            cta_tit: 'Your person is<br><span class="gt">already on O-Buba</span>',
+            cta_sub: "Join over 2.4 million people who chose to find connection in the most human way possible. Your story starts with a single swipe.",
+            cta_btn: "🔥&nbsp;&nbsp;Find My Match",
+            cta_learn: "Learn More",
+            cta_note: "Free to join · No credit card required · Cancel anytime",
+            foot_privacy: "Privacy",
+            foot_terms: "Terms",
+            foot_safety: "Safety",
+            foot_support: "Support",
+            foot_copy: "© 2026 O-Buba. All rights reserved."
+        },
+        MK: {
+            nav_features: "Карактеристики",
+            nav_how_it_works: "Како функционира",
+            nav_stories: "Приказни",
+            nav_login: "Најави се",
+            nav_get_started: "Одјави се",
+            hero_badge: "Кој е во близина",
+            hero_title: 'Хеј<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>',
+            hero_sub: "O-Buba е местото каде што започнуваат православните поврзувања. Откријте вистинска хемија и квалитетни луѓе кои искрено ве привлекуваат.",
+            hero_enter: "Влези",
+            hero_show_me: "Покажи ми",
+            feat_tag: "Зошто O-Buba",
+            feat_tit: 'Создадено поинаку,<br><span class="gt">за вистинска љубов</span>',
+            feat_sub: "Секој клик ви помага да ги остварите најдобрите поврзувања.",
+            f1_tit: "Паметно совпаѓање",
+            f1_desc: "Нашиот алгоритам ги учи вашите преференции и животен стил за да ви ги прикаже луѓето кои навистина ви одговараат.",
+            f2_tit: "Разговор во реално време",
+            f2_desc: "Испраќајте пораки моментално. Брзо, лесно и изразно — со гласовни пораки и реакции.",
+            f3_tit: "Ознаки за страсти",
+            f3_desc: "Споделете што ве движи — од планинарење до музика — и најдете луѓе со исти интереси.",
+            f4_tit: "Безбедно и приватно",
+            f4_desc: "Вашите податоци остануваат ваши. Шифрирани разговори и верификација за потполна безбедност.",
+            f5_tit: "Режим на засилување",
+            f5_desc: "Зголемете ја видливоста на профилот за да ве видат повеќе луѓе во најфреквентните часови.",
+            f6_tit: "Враќање назад",
+            f6_desc: "Случајно прескокнавте некого? Притиснете враќање и добијте втора шанса.",
+            how_tag: "Како да започнете",
+            how_tit: 'Започнете го <span class="gt">патувањето сега</span>',
+            s1_tit: "Креирајте профил",
+            s1_desc: "Поставете за неколку минути. Додајте слики, изберете ги вашите православни корени и опишете се.",
+            s2_tit: "Вртете и откривајте",
+            s2_desc: "Прегледувајте профили. Повлечете десно за допаѓање, лево за прескокнување или Супер Лајк.",
+            s3_tit: "Поврзете се и запознајте",
+            s3_desc: "Кога двајцата ќе повлечете десно — тоа е совпаѓање! Започнете разговор веднаш.",
+            test_tag: "Вистински приказни",
+            test_tit: 'Љубов пронајдена <span class="gt">на O-Buba</span>',
+            test_sub: "Не ни верувајте само на збор — еве што вели нашата заедница.",
+            test1_text: '"Се совпаднавме во вторник, а веќе во сабота бевме на кафе. Сега живееме заедно. O-Buba е навистина посебна."',
+            test2_text: '"Ознаките за страсти се фантастични. Најдов некој што ги сака истите работи како мене!"',
+            test3_text: '"Случајно за малку ќе прескокнев. Фала му на Бога за функцијата Враќање. Сега планираме свадба!"',
+            show_tag: "Искуството",
+            show_tit: 'Секој профил<br>раскажува <span class="gt">приказна</span>',
+            show_sub: "Богати профили кои одат подалеку од обична слика — слики, омилена музика и страсти.",
+            show_p1_t: "Галерија од повеќе слики",
+            show_p1_d: "Прегледајте повеќе фотографии за подобро запознавање.",
+            show_p2_t: "Омилена песна од Spotify",
+            show_p2_d: "Една песна што кажува повеќе за вас од секој опис.",
+            show_p3_t: "Индикатор за активност",
+            show_p3_d: "Видете кој е активен сега и започнете разговор.",
+            show_p4_t: "Филтри за пребарување",
+            show_p4_d: "Години, оддалеченост, пол — вие ги поставувате критериумите.",
+            cta_tit: 'Вашата личност веќе<br><span class="gt">е на O-Buba</span>',
+            cta_sub: "Придружете се на над 2,4 милиони луѓе кои избраа вистинска поврзаност. Вашата приказна започнува со еден клик.",
+            cta_btn: "🔥&nbsp;&nbsp;Најди го моето совпаѓање",
+            cta_learn: "Дознај повеќе",
+            cta_note: "Бесплатно за зачленување · Без кредитна картичка · Откажете било кога",
+            foot_privacy: "Приватност",
+            foot_terms: "Услови",
+            foot_safety: "Безбедност",
+            foot_support: "Поддршка",
+            foot_copy: "© 2026 O-Buba. Сите права се задржани."
+        },
+        SR: {
+            nav_features: "Карактеристике",
+            nav_how_it_works: "Како функционише",
+            nav_stories: "Приче",
+            nav_login: "Пријави се",
+            nav_get_started: "Одјави се",
+            hero_badge: "Ко је у близини",
+            hero_title: 'Хеј<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>',
+            hero_sub: "O-Buba је место где почињу православне везе. Откријте квалитетне спојеве, праву хемију и људе који вас искрено занимају.",
+            hero_enter: "Уђи",
+            hero_show_me: "Покажи ми",
+            feat_tag: "Зашто O-Buba",
+            feat_tit: 'Направљено другачије,<br><span class="gt">за праву љубав</span>',
+            feat_sub: "Сваки клик вам помаже да остварите најбоље везе.",
+            f1_tit: "Паметно упаривање",
+            f1_desc: "Наш алгоритам учи ваше преференције и животни стил да пронађе људе који вам заиста одговарају.",
+            f2_tit: "Ћаскање у реалном времену",
+            f2_desc: "Шаљите поруке тренутно. Брзо, лако и изражајно — са гласовним порукама и реакцијама.",
+            f3_tit: "Тагови интересовања",
+            f3_desc: "Поделите своје хобије и пронађите људе са истим интересовањима.",
+            f4_tit: "Безбедно и приватно",
+            f4_desc: "Ваши подаци остају ваши. Шифровани разговори и верификација профила.",
+            f5_tit: "Режим појачања",
+            f5_desc: "Повећајте видљивост профила у најфреквентнијим сатима.",
+            f6_tit: "Враћање уназад",
+            f6_desc: "Случајно сте прескочили некога? Притисните враћање и добијте другу шансу.",
+            how_tag: "Како започети",
+            how_tit: 'Започните своје <span class="gt">путовање сада</span>',
+            s1_tit: "Креирајте профил",
+            s1_desc: "Подесите за неколико минута. Додајте слике, православне корене и биографију.",
+            s2_tit: "Прелиставајте и откривајте",
+            s2_desc: "Прегледајте профиле. Превуците десно за свиђање, лево за прескакање.",
+            s3_tit: "Повежите се и упознајте",
+            s3_desc: "Када обоје превучете десно — то је спој! Започните разговор.",
+            test_tag: "Праве приче",
+            test_tit: 'Љубав пронађена <span class="gt">на O-Buba</span>',
+            test_sub: "Не верујте нам на реч — ево шта каже наша заједница.",
+            test1_text: '"Упознали смо се преко O-Buba апликације. Дељење истих вредности је учинило да све кликне одмах."',
+            test2_text: '"Ознаке интересовања су сјајне. Нашао сам некога ко воли исте ствари као и ја."',
+            test3_text: '"Случајно сам прескочио профил, али функција враћања ме је спасила! Сада планирамо будућност."',
+            show_tag: "Искуство",
+            show_tit: 'Сваки профил<br>прича <span class="gt">причу</span>',
+            show_sub: "Богати профили са сликама, биографијом и омиљеном музиком.",
+            show_p1_t: "Галерија фотографија",
+            show_p1_d: "Прегледајте више слика за бољи утисак.",
+            show_p2_t: "Spotify химна",
+            show_p2_d: "Песма која говори о вама више од речи.",
+            show_p3_t: "Онлајн статус",
+            show_p3_d: "Погледајте ко је активан сада.",
+            show_p4_t: "Филтери претраге",
+            show_p4_d: "Године, удаљеност, пол — ви бирате.",
+            cta_tit: 'Ваша особа је већ<br><span class="gt">на O-Buba</span>',
+            cta_sub: "Придружите се преко 2,4 милиона људи који су изабрали праву повезаност.",
+            cta_btn: "🔥&nbsp;&nbsp;Нађи мој спој",
+            cta_learn: "Сазнај више",
+            cta_note: "Бесплатно за учлањење · Без кредитне картичке · Откажите било када",
+            foot_privacy: "Приватност",
+            foot_terms: "Услови",
+            foot_safety: "Безбедност",
+            foot_support: "Подршка",
+            foot_copy: "© 2026 O-Buba. Сва права задржана."
+        },
+        EL: {
+            nav_features: "Χαρακτηριστικά",
+            nav_how_it_works: "Πώς λειτουργεί",
+            nav_stories: "Ιστορίες",
+            nav_login: "Σύνδεση",
+            nav_get_started: "Ξεκινήστε",
+            hero_badge: "Ποιος είναι κοντά",
+            hero_title: 'Γεια<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>',
+            hero_sub: "Το O-Buba είναι εκεί όπου ξεκινάνε οι ορθόδοξες συνδέσεις. Ανακαλύψτε ποιοτικά ταιριάσματα και πραγματική χημεία.",
+            hero_enter: "Είσοδος",
+            hero_show_me: "Δείξε μου",
+            feat_tag: "Γιατί O-Buba",
+            feat_tit: 'Φτιαγμένο διαφορετικά,<br><span class="gt">για πραγματική αγάπη</span>',
+            feat_sub: "Κάθε κλικ σας βοηθά να κάνετε τις καλύτερες συνδέσεις.",
+            f1_tit: "Έξυπνο Ταίριασμα",
+            f1_desc: "Ο αλγόριθμός μας μαθαίνει τις προτιμήσεις σας για να εμφανίσει ανθρώπους που ταιριάζουν μαζί σας.",
+            f2_tit: "Συνομιλία σε πραγματικό χρόνο",
+            f2_desc: "Στείλτε μήνυμα αμέσως. Γρήγορα και εκφραστικά — με φωνητικά μηνύματα.",
+            f3_tit: "Ετικέτες Ενδιαφερόντων",
+            f3_desc: "Μοιραστείτε τα ενδιαφέροντά σας και βρείτε ανθρώπους με τα ίδια ενδιαφέροντα.",
+            f4_tit: "Ασφαλές & Ιδιωτικό",
+            f4_desc: "Τα δεδομένα σας παραμένουν δικά σας με κρυπτογραφημένες συνομιλίες.",
+            f5_tit: "Λειτουργία Boost",
+            f5_desc: "Ενισχύστε τη ορατότητα του προφίλ σας τις ώρες αιχμής.",
+            f6_tit: "Επαναφορά",
+            f6_desc: "Προσπεράσατε κατά λάθος κάποιον; Πατήστε επαναφορά για μια δεύτερη ευκαιρία.",
+            how_tag: "Ξεκινώντας",
+            how_tit: 'Ξεκινήστε το <span class="gt">ταξίδι σας τώρα</span>',
+            s1_tit: "Δημιουργήστε Προφίλ",
+            s1_desc: "Ρυθμίστε το σε λίγα λεπτά. Προσθέστε φωτογραφίες και βιογραφικό.",
+            s2_tit: "Σύρετε & Ανακαλύψτε",
+            s2_desc: "Περιηγηθείτε στα προφίλ. Σύρετε δεξιά για 'μου αρέσει'.",
+            s3_tit: "Συνδεθείτε & Γνωριστείτε",
+            s3_desc: "Όταν σύρετε και οι δύο δεξιά — είναι ταίριασμα! Ξεκινήστε τη συνομιλία.",
+            test_tag: "Πραγματικές Ιστορίες",
+            test_tit: 'Αγάπη στο <span class="gt">O-Buba</span>',
+            test_sub: "Ακούστε τι λέει η κοινότητά μας.",
+            test1_text: '"Γνωριστήκαμε στο O-Buba. Οι κοινές ορθόδοξες ρίζες μας έκαναν τα πάντα πιο εύκολα."',
+            test2_text: '"Οι ετικέτες ενδιαφερόντων είναι φανταστικές! Βρήκα κάποιον με τα ίδια ενδιαφέροντα."',
+            test3_text: '"Η λειτουργία Επαναφοράς με έσωσε. Τώρα σχεδιάζουμε το μέλλον μας μαζί!"',
+            show_tag: "Η Εμπειρία",
+            show_tit: 'Κάθε προφίλ<br>λέει μια <span class="gt">ιστορία</span>',
+            show_sub: "Πλούσια προφίλ που ξεπερνούν τη selfie.",
+            show_p1_t: "Συλλογή φωτογραφιών",
+            show_p1_d: "Δείτε πολλές φωτογραφίες για καλύτερη εικόνα.",
+            show_p2_t: "Ύμνος Spotify",
+            show_p2_d: "Ένα τραγούδι που λέει πολλά για εσάς.",
+            show_p3_t: "Ένδειξη παρουσίας",
+            show_p3_d: "Δείτε ποιος είναι ενεργός τώρα.",
+            show_p4_t: "Φίλτρα αναζήτησης",
+            show_p4_d: "Ηλικία, απόσταση, φύλο — εσείς ορίζετε τις παραμέτρους.",
+            cta_tit: 'Το πρόσωπό σας είναι<br><span class="gt">ήδη στο O-Buba</span>',
+            cta_sub: "Γίνετε μέλος σε πάνω από 2,4 εκατομμύρια ανθρώπους.",
+            cta_btn: "🔥&nbsp;&nbsp;Βρες το ταίρι μου",
+            cta_learn: "Μάθετε περισσότερα",
+            cta_note: "Δωρεάν εγγραφή · Χωρίς πιστωτική κάρτα · Ακύρωση ανά πάσα στιγμή",
+            foot_privacy: "Ιδιωτικότητα",
+            foot_terms: "Όροι",
+            foot_safety: "Ασφάλεια",
+            foot_support: "Υποστήριξη",
+            foot_copy: "© 2026 O-Buba. Όλα τα δικαιώματα διατηρούνται."
+        },
+        RU: {
+            nav_features: "Возможности",
+            nav_how_it_works: "Как это работает",
+            nav_stories: "Истории",
+            nav_login: "Войти",
+            nav_get_started: "Начать",
+            hero_badge: "Кто рядом",
+            hero_title: 'Хей<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>',
+            hero_sub: "O-Buba — место, где начинаются православные знакомства. Найдите настоящую химию и людей с общими ценностями.",
+            hero_enter: "Войти",
+            hero_show_me: "Показать",
+            feat_tag: "Почему O-Buba",
+            feat_tit: 'Создано иначе,<br><span class="gt">для настоящей любви</span>',
+            feat_sub: "Каждый клик помогает вам находить лучшие связи.",
+            f1_tit: "Умный подбор",
+            f1_desc: "Наш алгоритм учитывает ваши предпочтения и образ жизни, чтобы предложить идеальных кандидатов.",
+            f2_tit: "Чат в реальном времени",
+            f2_desc: "Общайтесь с вашими совпадениями мгновенно. Быстро, удобно и выразительно.",
+            f3_tit: "Тэги интересов",
+            f3_desc: "Делитесь хобби и находите единомышленников со схожими увлечениями.",
+            f4_tit: "Безопасно и приватно",
+            f4_desc: "Ваши данные защищены сквозным шифрованием и проверкой профилей.",
+            f5_tit: "Режим Буст",
+            f5_desc: "Увеличьте видимость вашего профиля в пиковые часы знакомств.",
+            f6_tit: "Возврат",
+            f6_desc: "Случайно пропустили человека? Нажмите отмену и получите второй шанс.",
+            how_tag: "Как начать",
+            how_tit: 'Начните свой <span class="gt">путь сейчас</span>',
+            s1_tit: "Создайте профиль",
+            s1_desc: "Настройте за пару минут. Добавьте фото, укажите корни и интересы.",
+            s2_tit: "Свайпайте и находите",
+            s2_desc: "Просматривайте профили. Свайпайте вправо, если нравится, или Супер Лайк.",
+            s3_tit: "Общайтесь и знакомьтесь",
+            s3_desc: "Когда симпатия взаимна — это совпадение! Начните чат прямо сейчас.",
+            test_tag: "Реальные истории",
+            test_tit: 'Любовь на <span class="gt">O-Buba</span>',
+            test_sub: "Почитайте отзывы нашего сообщества.",
+            test1_text: '"Мы познакомились через O-Buba. Общие православные традиции сделали общение очень легким и искренним."',
+            test2_text: '"Тэги интересов — это просто супер! Нашел человека с точно такими же увлечениями."',
+            test3_text: '"Функция возврата спасла мои отношения. Случайно пропустил профиль, вернул — и теперь мы вместе!"',
+            show_tag: "Опыт",
+            show_tit: 'Каждый профиль<br>рассказывает <span class="gt">историю</span>',
+            show_sub: "Подробные профили: фото, биографии, треки и интересы.",
+            show_p1_t: "Галерея фотографий",
+            show_p1_d: "Листайте фото для лучшего ознакомления.",
+            show_p2_t: "Трек из Spotify",
+            show_p2_d: "Песня, которая расскажет о вас лучше любых слов.",
+            show_p3_t: "Индикатор онлайн",
+            show_p3_d: "Смотрите, кто сейчас в сети.",
+            show_p4_t: "Фильтры поиска",
+            show_p4_d: "Возраст, расстояние, пол — настраивайте под себя.",
+            cta_tit: 'Твой человек уже<br><span class="gt">на O-Buba</span>',
+            cta_sub: "Присоединяйтесь к более чем 2,4 млн человек, выбравших настоящие знакомства.",
+            cta_btn: "🔥&nbsp;&nbsp;Найти пару",
+            cta_learn: "Узнать больше",
+            cta_note: "Бесплатная регистрация · Без карты · Отмена в любое время",
+            foot_privacy: "Конфиденциальность",
+            foot_terms: "Условия",
+            foot_safety: "Безопасность",
+            foot_support: "Поддержка",
+            foot_copy: "© 2026 O-Buba. Все права защищены."
+        },
+        DE: {
+            nav_features: "Funktionen",
+            nav_how_it_works: "Wie es funktioniert",
+            nav_stories: "Geschichten",
+            nav_login: "Anmelden",
+            nav_get_started: "Loslegen",
+            hero_badge: "Wer ist in der Nähe",
+            hero_title: 'Hey<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>',
+            hero_sub: "O-Buba ist der Ort, an dem orthodoxe Verbindungen beginnen. Entdecken Sie echte Chemie und passende Partner.",
+            hero_enter: "Eintreten",
+            hero_show_me: "Zeig mir",
+            feat_tag: "Warum O-Buba",
+            feat_tit: 'Anders gebaut,<br><span class="gt">für die echte Liebe</span>',
+            feat_sub: "Jeder Klick hilft Ihnen, wertvolle Verbindungen zu knüpfen.",
+            f1_tit: "Smarter Abgleich",
+            f1_desc: "Unser Algorithmus lernt Ihre Vorlieben und Ihren Lebensstil kennen, um passende Menschen zu finden.",
+            f2_tit: "Echtzeit-Chat",
+            f2_desc: "Schreiben Sie Ihren Matches sofort. Schnell, einfach und ausdrucksstark.",
+            f3_tit: "Leidenschafts-Tags",
+            f3_desc: "Teilen Sie Ihre Hobbys und finden Sie Gleichgesinnte mit denselben Interessen.",
+            f4_tit: "Sicher & Privat",
+            f4_desc: "Ihre Daten bleiben geschützt mit verschlüsselten Chats und Profilprüfung.",
+            f5_tit: "Boost-Modus",
+            f5_desc: "Erhöhen Sie die Sichtbarkeit Ihres Profils in den Spitzenzeiten.",
+            f6_tit: "Zurückspulen",
+            f6_desc: "Versehentlich jemanden übersprungen? Nutzen Sie die zweite Chance.",
+            how_tag: "Erste Schritte",
+            how_tit: 'Starten Sie <span class="gt">jetzt Ihre Reise</span>',
+            s1_tit: "Profil erstellen",
+            s1_desc: "In wenigen Minuten eingerichtet. Fotos, Herkunft und Biografie hinzufügen.",
+            s2_tit: "Wischen & Entdecken",
+            s2_desc: "Durchsuchen Sie Profile. Wischen Sie nach rechts bei Gefallen.",
+            s3_tit: "Verbinden & Treffen",
+            s3_desc: "Wenn beide nach rechts wischen — ein Match! Starten Sie den Chat.",
+            test_tag: "Echte Geschichten",
+            test_tit: 'Echte Liebe <span class="gt">auf O-Buba</span>',
+            test_sub: "Das sagt unsere Community über ihre Erfahrungen.",
+            test1_text: '"Wir haben uns auf O-Buba kennengelernt. Gemeinsame Werte haben alles von Anfang an perfekt gemacht."',
+            test2_text: '"Die Leidenschafts-Tags sind genial! Ich habe jemanden mit genau den gleichen Hobbys gefunden."',
+            test3_text: '"Die Zurückspulen-Funktion hat mir meine große Liebe gerettet. Jetzt planen wir unsere Zukunft."',
+            show_tag: "Das Erlebnis",
+            show_tit: 'Jedes Profil<br>erzählt eine <span class="gt">Geschichte</span>',
+            show_sub: "Aussagekräftige Profile mit Fotos, Musik und Interessen.",
+            show_p1_t: "Foto-Galerie",
+            show_p1_d: "Tippen Sie durch mehrere Fotos für einen besseren Eindruck.",
+            show_p2_t: "Spotify-Hymne",
+            show_p2_d: "Ein Song, der mehr über Sie sagt als Worte.",
+            show_p3_t: "Online-Anzeige",
+            show_p3_d: "Sehen Sie, wer jetzt aktiv ist.",
+            show_p4_t: "Suchfilter",
+            show_p4_d: "Alter, Entfernung, Geschlecht — Sie entscheiden.",
+            cta_tit: 'Dein Lieblingsmensch ist schon<br><span class="gt">auf O-Buba</span>',
+            cta_sub: "Schließen Sie sich über 2,4 Millionen Menschen an, die echte Verbindungen suchen.",
+            cta_btn: "🔥&nbsp;&nbsp;Mein Match finden",
+            cta_learn: "Mehr erfahren",
+            cta_note: "Kostenlos beitreten · Keine Kreditkarte nötig · Jederzeit kündbar",
+            foot_privacy: "Datenschutz",
+            foot_terms: "Nutzungsbedingungen",
+            foot_safety: "Sicherheit",
+            foot_support: "Support",
+            foot_copy: "© 2026 O-Buba. Alle Rechte vorbehalten."
+        },
+        RO: {
+            nav_features: "Funcționalități", nav_how_it_works: "Cum funcționează", nav_stories: "Povești", nav_login: "Autentificare", nav_get_started: "Începe",
+            hero_badge: "Cine este în apropiere", hero_title: 'Hey<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba este locul unde încep conexiunile ortodoxe. Descoperă potriviri de calitate și chimie reală.", hero_enter: "Intră", hero_show_me: "Arată-mi",
+            feat_tag: "De ce O-Buba", feat_tit: 'Construit diferit,<br><span class="gt">pentru dragoste adevărată</span>', feat_sub: "Fiecare clic te ajută să creezi conexiuni.",
+            f1_tit: "Potrivire inteligentă", f1_desc: "Algoritmul nostru învață preferințele tale pentru a-ți arăta oameni potriviți.",
+            f2_tit: "Chat în timp real", f2_desc: "Trimite mesaje instantaneu. Rapid, simplu și expresiv.",
+            f3_tit: "Etichete de pasiune", f3_desc: "Partajează pasiunile tale și găsește oameni cu aceleași interese.",
+            f4_tit: "Sigur și privat", f4_desc: "Datele tale rămân ale tale cu chat-uri criptate și verificare de profil.",
+            f5_tit: "Mod Boost", f5_desc: "Crește vizibilitatea profilului tău în orele de vârf.",
+            f6_tit: "Derulare înapoi", f6_desc: "Ai trecut din greșeală peste cineva? Apasă derulare și primești o a doua șansă.",
+            how_tag: "Cum să începi", how_tit: 'Începe <span class="gt">călătoria acum</span>',
+            s1_tit: "Creează-ți profilul", s1_desc: "Configurează în câteva minute. Adaugă poze, rădăcini ortodoxe și biografie.",
+            s2_tit: "Glisează și descoperă", s2_desc: "Răsfoiește profiluri. Glisează spre dreapta pentru apreciere.",
+            s3_tit: "Conectează-te și cunoaște", s3_desc: "Când amândoi glisați dreapta — este o potrivire! Începeți discuția.",
+            test_tag: "Povești reale", test_tit: 'Dragoste găsită <span class="gt">pe O-Buba</span>', test_sub: "Iată ce spune comunitatea noastră.",
+            test1_text: '"Ne-am cunoscut pe O-Buba. Valorile comune au făcut ca totul să fie perfect de la început."',
+            test2_text: '"Etichetele de pasiune sunt fantastice! Am găsit pe cineva cu exact aceleași hobiuri."',
+            test3_text: '"Funcția de derulare înapoi mi-a salvat relația. Acum ne planificăm viitorul împreună."',
+            show_tag: "Experiența", show_tit: 'Fiecare profil<br>spune o <span class="gt">poveste</span>', show_sub: "Profiluri bogate cu poze, muzică și pasiuni.",
+            show_p1_t: "Galerie foto", show_p1_d: "Vezi mai multe poze pentru o impresie mai bună.",
+            show_p2_t: "Imn Spotify", show_p2_d: "Cântecul care spune mai multe despre tine decât cuvintele.",
+            show_p3_t: "Indicator online", show_p3_d: "Vezi cine este activ acum.",
+            show_p4_t: "Filtre de căutare", show_p4_d: "Vârstă, distanță, gen — tu decizi.",
+            cta_tit: 'Persoana ta este deja<br><span class="gt">pe O-Buba</span>', cta_sub: "Alătură-te celor peste 2,4 milioane de oameni care au ales conexiuni reale.",
+            cta_btn: "🔥&nbsp;&nbsp;Găsește-ți potrivirea", cta_learn: "Află mai multe", cta_note: "Înregistrare gratuită · Fără card · Anulează oricând",
+            foot_privacy: "Confidențialitate", foot_terms: "Termeni", foot_safety: "Siguranță", foot_support: "Suport", foot_copy: "© 2026 O-Buba. Toate drepturile rezervate."
+        },
+        BG: {
+            nav_features: "Функции", nav_how_it_works: "Как работи", nav_stories: "Истории", nav_login: "Вход", nav_get_started: "Започни",
+            hero_badge: "Кой е наблизо", hero_title: 'Хей<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba е мястото, където започват православните връзки. Открийте истинска химия и качествени съвпадения.", hero_enter: "Влез", hero_show_me: "Покажи ми",
+            feat_tag: "Защо O-Buba", feat_tit: 'Създадено различно,<br><span class="gt">за истинска любов</span>', feat_sub: "Всеки клик ви помага да създавате връзки.",
+            f1_tit: "Умно съвпадение", f1_desc: "Нашият алгоритъм научава вашите предпочитания, за да ви покаже подходящи хора.",
+            f2_tit: "Чат в реално време", f2_desc: "Изпращайте съобщения моментално. Бързо, лесно и изразително.",
+            f3_tit: "Тагове за страсти", f3_desc: "Споделете вашите хобита и намерете хора със същите интереси.",
+            f4_tit: "Безопасно и лично", f4_desc: "Вашите данни остават ваши с криптирани чатове и проверка на профили.",
+            f5_tit: "Режим Boost", f5_desc: "Увеличете видимостта на профила си в най-активните часове.",
+            f6_tit: "Връщане назад", f6_desc: "Случайно подминахте някого? Натиснете връщане и получете втори шанс.",
+            how_tag: "Как да започнете", how_tit: 'Започнете <span class="gt">пътуването си сега</span>',
+            s1_tit: "Създайте профил", s1_desc: "Настройте за минути. Добавете снимки, православни корени и описание.",
+            s2_tit: "Плъзнете и открийте", s2_desc: "Разглеждайте профили. Плъзнете надясно за харесване.",
+            s3_tit: "Свържете се и се запознайте", s3_desc: "Когато и двамата плъзнете надясно — това е съвпадение! Започнете чат.",
+            test_tag: "Реални истории", test_tit: 'Любов намерена <span class="gt">в O-Buba</span>', test_sub: "Ето какво казва нашата общност.",
+            test1_text: '"Запознахме се в O-Buba. Общите ценности направиха всичко лесно и естествено."',
+            test2_text: '"Таговете за страсти са страхотни! Намерих човек със същите интереси."',
+            test3_text: '"Функцията за връщане спаси връзката ми. Сега планираме съвместно бъдеще."',
+            show_tag: "Опитът", show_tit: 'Всеки профил<br>разказва <span class="gt">история</span>', show_sub: "Богати профили със снимки, музика и интереси.",
+            show_p1_t: "Фото галерия", show_p1_d: "Разгледайте няколко снимки за по-добра представа.",
+            show_p2_t: "Spotify химн", show_p2_d: "Песен, която казва повече за вас от думите.",
+            show_p3_t: "Индикатор за онлайн", show_p3_d: "Вижте кой е активен в момента.",
+            show_p4_t: "Филтри за търсене", show_p4_d: "Възраст, разстояние, пол — вие избирате.",
+            cta_tit: 'Вашият човек е вече<br><span class="gt">в O-Buba</span>', cta_sub: "Присъединете се към над 2,4 милиона души, избрали истински връзки.",
+            cta_btn: "🔥&nbsp;&nbsp;Намери моето съвпадение", cta_learn: "Научете повече", cta_note: "Безплатна регистрация · Без карта · Отказ по всяко време",
+            foot_privacy: "Поверителност", foot_terms: "Условия", foot_safety: "Безопасност", foot_support: "Поддръжка", foot_copy: "© 2026 O-Buba. Всички права запазени."
+        },
+        UA: {
+            nav_features: "Можливості", nav_how_it_works: "Як це працює", nav_stories: "Історії", nav_login: "Увійти", nav_get_started: "Почати",
+            hero_badge: "Хто поруч", hero_title: 'Хей<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba — місце, де починаються православні знайомства. Знайдіть справжню хімію та людей зі спільними цінностями.", hero_enter: "Увійти", hero_show_me: "Показати",
+            feat_tag: "Чому O-Buba", feat_tit: 'Створено інакше,<br><span class="gt">для справжнього кохання</span>', feat_sub: "Кожен клік допомагає вам знаходити найкращі зв'язки.",
+            f1_tit: "Розумний підбір", f1_desc: "Наш алгоритм враховує ваші вподобання та спосіб життя, щоб запропонувати ідеальних кандидатів.",
+            f2_tit: "Чат у реальному часі", f2_desc: "Спілкуйтеся з вашими збігами миттєво. Швидко, зручно та виразно.",
+            f3_tit: "Теги інтересів", f3_desc: "Діліться хобі та знаходьте однодумців зі схожими захопленнями.",
+            f4_tit: "Безпечно та приватно", f4_desc: "Ваші дані захищені наскрізним шифруванням та перевіркою профілів.",
+            f5_tit: "Режим Буст", f5_desc: "Збільште видимість вашого профілю у пікові години знайомств.",
+            f6_tit: "Повернення", f6_desc: "Випадково пропустили людину? Натисніть скасування і отримайте другий шанс.",
+            how_tag: "Як почати", how_tit: 'Почніть свій <span class="gt">шлях зараз</span>',
+            s1_tit: "Створіть профіль", s1_desc: "Налаштуйте за кілька хвилин. Додайте фото, вкажіть коріння та інтереси.",
+            s2_tit: "Свайпайте та знаходьте", s2_desc: "Переглядайте профілі. Свайпайте вправо, якщо подобається.",
+            s3_tit: "Спілкуйтеся та знайомтеся", s3_desc: "Коли симпатія взаємна — це збіг! Почніть чат просто зараз.",
+            test_tag: "Реальні історії", test_tit: 'Кохання на <span class="gt">O-Buba</span>', test_sub: "Почитайте відгуки нашої спільноти.",
+            test1_text: '"Ми познайомилися через O-Buba. Спільні православні традиції зробили спілкування легким і щирим."',
+            test2_text: '"Теги інтересів — це просто супер! Знайшов людину з точно такими ж захопленнями."',
+            test3_text: '"Функція повернення врятувала мої стосунки. Випадково пропустив профіль, повернув — і тепер ми разом!"',
+            show_tag: "Досвід", show_tit: 'Кожен профіль<br>розповідає <span class="gt">історію</span>', show_sub: "Детальні профілі: фото, біографії, треки та інтереси.",
+            show_p1_t: "Галерея фотографій", show_p1_d: "Гортайте фото для кращого ознайомлення.",
+            show_p2_t: "Трек з Spotify", show_p2_d: "Пісня, яка розповість про вас краще за будь-які слова.",
+            show_p3_t: "Індикатор онлайн", show_p3_d: "Дивіться, хто зараз в мережі.",
+            show_p4_t: "Фільтри пошуку", show_p4_d: "Вік, відстань, стать — налаштовуйте під себе.",
+            cta_tit: 'Твоя людина вже<br><span class="gt">на O-Buba</span>', cta_sub: "Приєднуйтесь до понад 2,4 млн людей, які обрали справжні знайомства.",
+            cta_btn: "🔥&nbsp;&nbsp;Знайти пару", cta_learn: "Дізнатися більше", cta_note: "Безкоштовна реєстрація · Без картки · Скасування у будь-який час",
+            foot_privacy: "Конфіденційність", foot_terms: "Умови", foot_safety: "Безпека", foot_support: "Підтримка", foot_copy: "© 2026 O-Buba. Усі права захищені."
+        },
+        AR: {
+            nav_features: "المميزات", nav_how_it_works: "كيف يعمل", nav_stories: "قصص", nav_login: "تسجيل الدخول", nav_get_started: "ابدأ الآن",
+            hero_badge: "من في الجوار", hero_title: 'مرحباً<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba هو المكان الذي تبدأ فيه العلاقات الأرثوذكسية. اكتشف توافقاً حقيقياً وأشخاصاً يشاركونك قيمك.", hero_enter: "دخول", hero_show_me: "أرني",
+            feat_tag: "لماذا O-Buba", feat_tit: 'مصمم بشكل مختلف،<br><span class="gt">لحب حقيقي</span>', feat_sub: "كل نقرة تساعدك على تكوين العلاقات.",
+            f1_tit: "توافق ذكي", f1_desc: "يتعلم الخوارزمية تفضيلاتك ليعرض لك الأشخاص المناسبين لك حقاً.",
+            f2_tit: "محادثة فورية", f2_desc: "راسل من توافقت معهم فوراً بسهولة وسرعة.",
+            f3_tit: "وسوم الاهتمامات", f3_desc: "شارك اهتماماتك وجد الأشخاص الذين يحبون ما تحب.",
+            f4_tit: "آمن وخاص", f4_desc: "بياناتك محمية بمحادثات مشفرة وتأكيد الحسابات.",
+            f5_tit: "وضع التعزيز", f5_desc: "زد من ظهور ملفك الشخصي في أوقات الذروة.",
+            f6_tit: "إعادة", f6_desc: "هل تجاوزت شخصاً بالخطأ؟ اضغط إعادة واحصل على فرصة ثانية.",
+            how_tag: "كيف تبدأ", how_tit: 'ابدأ <span class="gt">رحلتك الآن</span>',
+            s1_tit: "أنشئ ملفك الشخصي", s1_desc: "أنشئه في دقائق. أضف الصور والحديث عن نفسك.",
+            s2_tit: "اسحب واكتشف", s2_desc: "تصفح الملفات الشخصية واسحب لليمين للإعجاب.",
+            s3_tit: "تواصل والتقِ", s3_desc: "عندما يعجب كلاكما بالآخر — يتم التوافق! ابدأ المحادثة.",
+            test_tag: "قصص حقيقية", test_tit: 'الحب على <span class="gt">O-Buba</span>', test_sub: "إليك ما يقوله مجتمعنا.",
+            test1_text: '"التقينا على O-Buba. جعلت القيم الأرثوذكسية المشتركة كل شيء سهلاً ورائعاً."',
+            test2_text: '"وسوم الاهتمامات رائعة جداً! وجدت شخصاً يشاركني نفس الهوايات."',
+            test3_text: '"ميزة الإعادة أنقذت علاقتي. تجاوزت الملف بالخطأ وعدت إليه، والآن نخطط لمستقبلنا معا."',
+            show_tag: "التجربة", show_tit: 'كل ملف شخصي<br>يحكي <span class="gt">قصة</span>', show_sub: "ملفات غنية بالصور والموسيقى والاهتمامات.",
+            show_p1_t: "معرض صور متعدد", show_p1_d: "تصفح عدة صور للتعرف بشكل أفضل.",
+            show_p2_t: "أغنية Spotify", show_p2_d: "أغنية تعبر عنك أكثر من الكلام.",
+            show_p3_t: "مؤشر الاتصال", show_p3_d: "شاهد من متصل الآن وابدأ المحادثة.",
+            show_p4_t: "فلترة البحث", show_p4_d: "العمر، المسافة، الجنس — أنت تحدد المعايير.",
+            cta_tit: 'شريكك موجود بالفعل<br><span class="gt">على O-Buba</span>', cta_sub: "انضم إلى أكثر من 2.4 مليون شخص اختاروا علاقات حقيقية.",
+            cta_btn: "🔥&nbsp;&nbsp;اعثر على توافقي", cta_learn: "اعرف المزيد", cta_note: "انضمام مجاني · لا يلزم بطاقة ائتمان · إلغاء في أي وقت",
+            foot_privacy: "الخصوصية", foot_terms: "الشروط", foot_safety: "الأمان", foot_support: "الدعم", foot_copy: "© 2026 O-Buba. جميع الحقوق محفوظة."
+        },
+        FR: {
+            nav_features: "Fonctionnalités", nav_how_it_works: "Comment ça marche", nav_stories: "Témoignages", nav_login: "Connexion", nav_get_started: "Démarrer",
+            hero_badge: "Qui est dans le coin", hero_title: 'Hey<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba est là où commencent les connexions orthodoxes. Découvrez de vraies affinités et des profils authentiques.", hero_enter: "Entrer", hero_show_me: "Montrez-moi",
+            feat_tag: "Pourquoi O-Buba", feat_tit: 'Conçu différemment,<br><span class="gt">pour le vrai amour</span>', feat_sub: "Chaque clic vous rapproche d'une belle rencontre.",
+            f1_tit: "Matchs intelligents", f1_desc: "Notre algorithme apprend vos préférences pour vous proposer des personnes qui vous correspondent vraiment.",
+            f2_tit: "Chat en direct", f2_desc: "Discutez instantanément avec vos matchs. Rapide, fluide et expressif.",
+            f3_tit: "Tags de passions", f3_desc: "Partagez vos passions et trouvez des personnes qui aiment les mêmes choses que vous.",
+            f4_tit: "Sûr et privé", f4_desc: "Vos données restent protégées avec des chats chiffrés et des profils vérifiés.",
+            f5_tit: "Mode Boost", f5_desc: "Boostez la visibilité de votre profil aux heures de pointe.",
+            f6_tit: "Retour arrière", f6_desc: "Passé quelqu'un par erreur ? Cliquez sur retour et obtenez une deuxième chance.",
+            how_tag: "Pour commencer", how_tit: 'Commencez votre <span class="gt">aventure maintenant</span>',
+            s1_tit: "Créez votre profil", s1_desc: "Configurez en quelques minutes. Ajoutez des photos, vos racines et une bio.",
+            s2_tit: "Swipez et découvrez", s2_desc: "Parcourez les profils. Swipez à droite pour aimer.",
+            s3_tit: "Connectez et rencontrez", s3_desc: "Quand le swipe est réciproque — c'est un match ! Lancez la conversation.",
+            test_tag: "Vraies histoires", test_tit: 'L\'amour trouvé <span class="gt">sur O-Buba</span>', test_sub: "Découvrez les témoignages de notre communauté.",
+            test1_text: '"Nous nous sommes rencontrés sur O-Buba. Nos valeurs communes ont tout rendu naturel et évident."',
+            test2_text: '"Les tags de passions sont géniaux ! J\'ai rencontré quelqu\'un avec exactement les mêmes centres d\'intérêt."',
+            test3_text: '"Le retour arrière a sauvé ma rencontre. Nous planifions aujourd\'hui notre mariage !"',
+            show_tag: "L'expérience", show_tit: 'Chaque profil<br>raconte une <span class="gt">histoire</span>', show_sub: "Des profils riches avec photos, musique et passions.",
+            show_p1_t: "Carrousels photo", show_p1_d: "Parcourez plusieurs photos pour mieux découvrir la personne.",
+            show_p2_t: "Hymne Spotify", show_p2_d: "Une chanson qui en dit plus sur vous que de longs discours.",
+            show_p3_t: "Indicateur en ligne", show_p3_d: "Voyez qui est actif maintenant et discutez sans attendre.",
+            show_p4_t: "Filtres de recherche", show_p4_d: "Âge, distance, genre — vous fixez les règles.",
+            cta_tit: 'Votre moitié est déjà<br><span class="gt">sur O-Buba</span>', cta_sub: "Rejoignez plus de 2,4 millions de personnes qui ont choisi de vraies rencontres.",
+            cta_btn: "🔥&nbsp;&nbsp;Trouver mon match", cta_learn: "En savoir plus", cta_note: "Inscription gratuite · Sans carte bancaire · Annulez à tout moment",
+            foot_privacy: "Confidentialité", foot_terms: "Conditions", foot_safety: "Sécurité", foot_support: "Support", foot_copy: "© 2026 O-Buba. Tous droits réservés."
+        },
+        ES: {
+            nav_features: "Características", nav_how_it_works: "Cómo funciona", nav_stories: "Historias", nav_login: "Iniciar sesión", nav_get_started: "Empezar",
+            hero_badge: "Quién está cerca", hero_title: 'Hola<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba es donde comienzan las conexiones ortodoxas. Descubre coincidencias de calidad y química real.", hero_enter: "Entrar", hero_show_me: "Muéstrame",
+            feat_tag: "Por qué O-Buba", feat_tit: 'Creado diferente,<br><span class="gt">para el amor real</span>', feat_sub: "Cada clic te ayuda a conectar con personas genuinas.",
+            f1_tit: "Match inteligente", f1_desc: "Nuestro algoritmo aprende tus preferencias para mostrarte personas compatibles.",
+            f2_tit: "Chat en tiempo real", f2_desc: "Envía mensajes al instante. Rápido, fácil y expresivo.",
+            f3_tit: "Etiquetas de pasión", f3_desc: "Comparte tus aficiones y encuentra personas con los mismos intereses.",
+            f4_tit: "Seguro y privado", f4_desc: "Tus datos están protegidos con chats cifrados y verificación de perfil.",
+            f5_tit: "Modo Boost", f5_desc: "Aumenta la visibilidad de tu perfil en las horas de mayor actividad.",
+            f6_tit: "Rebobinar", f6_desc: "¿Pasaste a alguien por error? Pulsa rebobinar y obtén una segunda oportunidad.",
+            how_tag: "Cómo empezar", how_tit: 'Empieza tu <span class="gt">viaje ahora</span>',
+            s1_tit: "Crea tu perfil", s1_desc: "Configúralo en minutos. Añade fotos, tus raíces y tu biografía.",
+            s2_tit: "Desliza y descubre", s2_desc: "Explora perfiles. Desliza a la derecha si te gusta.",
+            s3_tit: "Conecta y conoce", s3_desc: "Cuando ambos deslizáis a la derecha — ¡es un match! Empieza a chatear.",
+            test_tag: "Historias reales", test_tit: 'Amor encontrado <span class="gt">en O-Buba</span>', test_sub: "Descubre lo que dice nuestra comunidad.",
+            test1_text: '"Nos conocimos en O-Buba. Compartir los mismos valores hizo que todo fluyera perfectamente."',
+            test2_text: '"¡Las etiquetas de pasión son geniales! Encontré a alguien con exactamente las mismas aficiones."',
+            test3_text: '"El botón de rebobinar salvó mi relación. ¡Ahora estamos planeando nuestra boda!"',
+            show_tag: "La experiencia", show_tit: 'Cada perfil<br>cuenta una <span class="gt">historia</span>', show_sub: "Perfiles detallados con fotos, música y pasiones.",
+            show_p1_t: "Carrusel de fotos", show_p1_d: "Navega por varias fotos para conocer mejor a la persona.",
+            show_p2_t: "Himno de Spotify", show_p2_d: "Una canción que dice más sobre ti que las palabras.",
+            show_p3_t: "Indicador en línea", show_p3_d: "Mira quién está activo ahora y chatea sin esperas.",
+            show_p4_t: "Filtros de búsqueda", show_p4_d: "Edad, distancia, género — tú eliges los parámetros.",
+            cta_tit: 'Tu pareja ya está<br><span class="gt">en O-Buba</span>', cta_sub: "Únete a más de 2,4 millones de personas que eligieron conexiones reales.",
+            cta_btn: "🔥&nbsp;&nbsp;Encontrar mi match", cta_learn: "Saber más", cta_note: "Registro gratis · Sin tarjeta · Cancela cuando quieras",
+            foot_privacy: "Privacidad", foot_terms: "Términos", foot_safety: "Seguridad", foot_support: "Soporte", foot_copy: "© 2026 O-Buba. Todos los derechos reservados."
+        },
+        IT: {
+            nav_features: "Caratteristiche", nav_how_it_works: "Come funziona", nav_stories: "Storie", nav_login: "Accedi", nav_get_started: "Inizia",
+            hero_badge: "Chi c'è nelle vicinanze", hero_title: 'Ciao<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba è dove iniziano le connessioni ortodosse. Scopri persone affini e chimica reale.", hero_enter: "Entra", hero_show_me: "Mostrami",
+            feat_tag: "Perché O-Buba", feat_tit: 'Creato diversamente,<br><span class="gt">per l\'amore vero</span>', feat_sub: "Ogni click ti aiuta a fare le giuste connessioni.",
+            f1_tit: "Match intelligente", f1_desc: "Il nostro algoritmo impara le tue preferenze per mostrarti persone compatibili.",
+            f2_tit: "Chat in tempo reale", f2_desc: "Invia messaggi all'istante. Veloce, facile ed espressivo.",
+            f3_tit: "Tag passioni", f3_desc: "Condividi i tuoi hobby e trova persone con i tuoi stessi interessi.",
+            f4_tit: "Sicuro e privato", f4_desc: "I tuoi dati rimangono protetti con chat crittografate e verifica dei profili.",
+            f5_tit: "Modalità Boost", f5_desc: "Aumenta la visibilità del tuo profilo nelle ore di punta.",
+            f6_tit: "Riavvolgi", f6_desc: "Hai scartato qualcuno per errore? Premi riavvolgi e ottieni una seconda chance.",
+            how_tag: "Come iniziare", how_tit: 'Inizia il tuo <span class="gt">viaggio ora</span>',
+            s1_tit: "Crea il tuo profilo", s1_desc: "Imposta in pochi minuti. Aggiungi foto, radici e biografia.",
+            s2_tit: "Scorri e scopri", s2_desc: "Esplora i profili. Scorri a destra per mettere mi piace.",
+            s3_tit: "Connettiti e incontra", s3_desc: "Quando il mi piace è reciproco — è un match! Inizia a chattare.",
+            test_tag: "Storie reali", test_tit: 'L\'amore trovato <span class="gt">su O-Buba</span>', test_sub: "Scopri cosa dice la nostra community.",
+            test1_text: '"Ci siamo conosciuti su O-Buba. Condividere gli stessi valori ha reso tutto spontaneo e bellissimo."',
+            test2_text: '"I tag passioni sono fantastici! Ho trovato qualcuno con i miei stessi identici hobby."',
+            test3_text: '"Il tasto riavvolgi ha salvato la mia storia d\'amore. Ora stiamo programmando il matrimonio!"',
+            show_tag: "L'esperienza", show_tit: 'Ogni profilo<br>racconta una <span class="gt">storia</span>', show_sub: "Profili ricchi di dettagli con foto, musica e passioni.",
+            show_p1_t: "Carosello foto", show_p1_d: "Sfoglia più foto per conoscere meglio la persona.",
+            show_p2_t: "Inno Spotify", show_p2_d: "Una canzone che dice su di te più delle parole.",
+            show_p3_t: "Indicatore online", show_p3_d: "Vedi chi è attivo ora e inizia subito a chattare.",
+            show_p4_t: "Filtri di ricerca", show_p4_d: "Età, distanza, genere — sei tu a impostare i parametri.",
+            cta_tit: 'La tua persona è già<br><span class="gt">su O-Buba</span>', cta_sub: "Unisciti a oltre 2,4 milioni di persone che hanno scelto connessioni vere.",
+            cta_btn: "🔥&nbsp;&nbsp;Trova il mio match", cta_learn: "Scopri di più", cta_note: "Iscrizione gratuita · Senza carta di credito · Annulli quando vuoi",
+            foot_privacy: "Privacy", foot_terms: "Termini", foot_safety: "Sicurezza", foot_support: "Supporto", foot_copy: "© 2026 O-Buba. Tutti i diritti riservati."
+        },
+        PL: {
+            nav_features: "Funkcje", nav_how_it_works: "Jak to działa", nav_stories: "Historie", nav_login: "Zaloguj się", nav_get_started: "Rozpocznij",
+            hero_badge: "Kto jest w pobliżu", hero_title: 'Hej<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba to miejsce, gdzie zaczynają się prawosławne relacje. Odkryj prawdziwą chemię i wartościowych ludzi.", hero_enter: "Wejdź", hero_show_me: "Pokaż mi",
+            feat_tag: "Dlaczego O-Buba", feat_tit: 'Stworzony inaczej,<br><span class="gt">dla prawdziwej miłości</span>', feat_sub: "Każde kliknięcie pomaga Ci budować wartościowe relacje.",
+            f1_tit: "Inteligentne dopasowanie", f1_desc: "Nasz algorytm uczy się Twoich preferencji, aby proponować odpowiednie osoby.",
+            f2_tit: "Czat w czasie rzeczywistym", f2_desc: "Pisz do swoich dopasowań natychmiast. Szybko, wygodnie i ekspresyjnie.",
+            f3_tit: "Tagi pasji", f3_desc: "Dziel się swoimi zainteresowaniami i znajduj ludzi z tymi samymi pasjami.",
+            f4_tit: "Bezpiecznie i prywatnie", f4_desc: "Twoje dane są bezpieczne dzięki szyfrowanym czatom i weryfikacji profili.",
+            f5_tit: "Tryb Boost", f5_desc: "Zwiększ widoczność swojego profilu w godzinach szczytu.",
+            f6_tit: "Cofnij", f6_desc: "Pominąłeś kogoś przez przypadek? Użyj przycisku cofnij i zyskaj drugą szansę.",
+            how_tag: "Jak zacząć", how_tit: 'Rozpocznij swoją <span class="gt">przygodę teraz</span>',
+            s1_tit: "Stwórz swój profil", s1_desc: "Konfiguracja w kilka minut. Dodaj zdjęcia, prawosławne korzenie i opis.",
+            s2_tit: "Przeglądaj i odkrywaj", s2_desc: "Przeglądaj profile. Przesuń w prawo, aby polubić.",
+            s3_tit: "Połącz się i poznaj", s3_desc: "Gdy oboje przesuniecie w prawo — to dopasowanie! Zacznijcie rozmawiać.",
+            test_tag: "Prawdziwe historie", test_tit: 'Miłość znaleziona <span class="gt">na O-Buba</span>', test_sub: "Zobacz, co mówi nasza społeczność.",
+            test1_text: '"Poznaliśmy się na O-Buba. Wspólne wartości sprawiły, że od razu zaiskrzyło."',
+            test2_text: '"Tagi pasji są niesamowite! Znalazłem kogoś z dokładnie takimi samymi zainteresowaniami."',
+            test3_text: '"Przycisk cofnij uratował moją relację. Dziś planujemy wspólną przyszłość!"',
+            show_tag: "Doświadczenie", show_tit: 'Każdy profil<br>opowiada <span class="gt">historię</span>', show_sub: "Rozbudowane profile ze zdjęciami, muzyką i pasjami.",
+            show_p1_t: "Galeria zdjęć", show_p1_d: "Przeglądaj wiele zdjęć dla lepszego poznania osoby.",
+            show_p2_t: "Hymn Spotify", show_p2_d: "Piosenka, która mówi o Tobie więcej niż słowa.",
+            show_p3_t: "Wskaźnik online", show_p3_d: "Zobacz, kto jest teraz aktywny i zacznij rozmawiać.",
+            show_p4_t: "Filtry wyszukiwania", show_p4_d: "Wiek, odległość, płeć — Ty ustalasz zasady.",
+            cta_tit: 'Twoja druga połówka jest już<br><span class="gt">na O-Buba</span>', cta_sub: "Dołącz do ponad 2,4 miliona osób, które wybrały prawdziwe relacje.",
+            cta_btn: "🔥&nbsp;&nbsp;Znajdź moje dopasowanie", cta_learn: "Dowiedz się więcej", cta_note: "Darmowa rejestracja · Bez karty płatniczej · Anuluj w dowolnym momencie",
+            foot_privacy: "Prywatność", foot_terms: "Regulamin", foot_safety: "Bezpieczeństwo", foot_support: "Wsparcie", foot_copy: "© 2026 O-Buba. Wszelkie prawa zastrzeżone."
+        },
+        NL: {
+            nav_features: "Functies", nav_how_it_works: "Hoe het werkt", nav_stories: "Verhalen", nav_login: "Inloggen", nav_get_started: "Aan de slag",
+            hero_badge: "Wie is er in de buurt", hero_title: 'Hey<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba is waar orthodoxe verbindingen beginnen. Ontdek echte chemie en waardevolle matches.", hero_enter: "Binnengaan", hero_show_me: "Laat zien",
+            feat_tag: "Waarom O-Buba", feat_tit: 'Anders gebouwd,<br><span class="gt">voor echte liefde</span>', feat_sub: "Elke klik helpt je om echte verbindingen te maken.",
+            f1_tit: "Slimme matching", f1_desc: "Ons algoritme leert jouw voorkeuren om geschikte mensen te tonen.",
+            f2_tit: "Echttijd chat", f2_desc: "Stuur direct berichten naar je matches. Snel, eenvoudig en expressief.",
+            f3_tit: "Passie-tags", f3_desc: "Deel je hobby's en vind mensen met dezelfde interesses.",
+            f4_tit: "Veilig en privé", f4_desc: "Jouw gegevens blijven beschermd met versleutelde chats en profielverificatie.",
+            f5_tit: "Boost-modus", f5_desc: "Verhoog de zichtbaarheid van je profiel op piekmomenten.",
+            f6_tit: "Terugspoelen", f6_desc: "Per ongeluk iemand overgeslagen? Druk op terugspoelen voor een tweede kans.",
+            how_tag: "Aan de slag", how_tit: 'Begin nu je <span class="gt">reis</span>',
+            s1_tit: "Maak je profiel aan", s1_desc: "Binnen enkele minuten ingesteld. Voeg foto's, orthodoxe roots en een bio toe.",
+            s2_tit: "Swipen en ontdekken", s2_desc: "Bekijk profielen. Swipe naar rechts om te liken.",
+            s3_tit: "Verbinden en ontmoeten", s3_desc: "Wanneer jullie beiden naar rechts swipen — is het een match! Begin te chatten.",
+            test_tag: "Echte verhalen", test_tit: 'Liefde gevonden <span class="gt">op O-Buba</span>', test_sub: "Dit is wat onze community zegt.",
+            test1_text: '"We hebben elkaar ontmoet op O-Buba. Gedeelde waarden maakten alles meteen vertrouwd."',
+            test2_text: '"De passie-tags zijn fantastisch! Ik vond iemand met precies dezelfde hobby\'s."',
+            test3_text: '"De terugspoelknop heeft mijn relatie gered. Nu plannen we onze toekomst samen!"',
+            show_tag: "De ervaring", show_tit: 'Elk profiel<br>vertelt een <span class="gt">verhaal</span>', show_sub: "Rijke profielen met foto's, muziek en passies.",
+            show_p1_t: "Fotogalerij", show_p1_d: "Bekijk meerdere foto's om iemand beter te leren kennen.",
+            show_p2_t: "Spotify Anthem", show_p2_d: "Een nummer dat meer over jou zegt dan woorden.",
+            show_p3_t: "Online indicator", show_p3_d: "Zie wie er nu online is en begin meteen te chatten.",
+            show_p4_t: "Zoekfilters", show_p4_d: "Leeftijd, afstand, geslacht — jij bepaalt de parameters.",
+            cta_tit: 'Jouw persoon is al<br><span class="gt">op O-Buba</span>', cta_sub: "Sluit je aan bij meer dan 2,4 miljoen mensen die kozen voor echte verbindingen.",
+            cta_btn: "🔥&nbsp;&nbsp;Vind mijn match", cta_learn: "Meer informatie", cta_note: "Gratis aanmelden · Geen creditcard nodig · Altijd opzegbaar",
+            foot_privacy: "Privacy", foot_terms: "Voorwaarden", foot_safety: "Veiligheid", foot_support: "Ondersteuning", foot_copy: "© 2026 O-Buba. Alle rechten voorbehouden."
+        },
+        PT: {
+            nav_features: "Funcionalidades", nav_how_it_works: "Como funciona", nav_stories: "Histórias", nav_login: "Entrar", nav_get_started: "Começar",
+            hero_badge: "Quem está por perto", hero_title: 'Olá<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba é onde começam as conexões ortodoxas. Descubra química real e correspondências de qualidade.", hero_enter: "Entrar", hero_show_me: "Mostrar",
+            feat_tag: "Porquê O-Buba", feat_tit: 'Criado de forma diferente,<br><span class="gt">para o amor verdadeiro</span>', feat_sub: "Cada clique ajuda a construir conexões genuínas.",
+            f1_tit: "Correspondência inteligente", f1_desc: "O nosso algoritmo aprende as suas preferências para mostrar pessoas compatíveis.",
+            f2_tit: "Chat em tempo real", f2_desc: "Envie mensagens instantaneamente. Rápido, simples e expressivo.",
+            f3_tit: "Tags de paixões", f3_desc: "Partilhe os seus hobbies e encontre pessoas com os mesmos interesses.",
+            f4_tit: "Seguro e privado", f4_desc: "Os seus dados permanecem protegidos com chats encriptados e verificação.",
+            f5_tit: "Modo Boost", f5_desc: "Aumente a visibilidade do seu perfil nas horas de maior movimento.",
+            f6_tit: "Retroceder", f6_desc: "Passou alguém por engano? Prima retroceder e tenha uma segunda oportunidade.",
+            how_tag: "Como começar", how_tit: 'Comece a sua <span class="gt">jornada agora</span>',
+            s1_tit: "Crie o seu perfil", s1_desc: "Configure em minutos. Adicione fotos, origens ortodoxas e biografia.",
+            s2_tit: "Deslize e descubra", s2_desc: "Explore perfis. Deslize para a direita para gostar.",
+            s3_tit: "Conecte-se e conheça", s3_desc: "Quando ambos deslizam para a direita — é um match! Comece a conversar.",
+            test_tag: "Histórias reais", test_tit: 'Amor encontrado <span class="gt">no O-Buba</span>', test_sub: "Veja o que a nossa comunidade diz.",
+            test1_text: '"Conhecemo-nos no O-Buba. Partilhar os mesmos valores tornou tudo muito natural."',
+            test2_text: '"As tags de paixões são incríveis! Encontrei alguém com exatamente os mesmos hobbies."',
+            test3_text: '"O botão retroceder salvou a minha relação. Agora estamos a planear o nosso casamento!"',
+            show_tag: "A experiência", show_tit: 'Cada perfil<br>conta uma <span class="gt">história</span>', show_sub: "Perfis ricos com fotos, música e paixões.",
+            show_p1_t: "Carrossel de fotos", show_p1_d: "Navegue por várias fotos para conhecer melhor a pessoa.",
+            show_p2_t: "Hino do Spotify", show_p2_d: "Uma música que diz mais sobre si do que as palavras.",
+            show_p3_t: "Indicador online", show_p3_d: "Veja quem está ativo agora e comece a conversar.",
+            show_p4_t: "Filtros de pesquisa", show_p4_d: "Idade, distância, género — você define os parâmetros.",
+            cta_tit: 'A sua pessoa já está<br><span class="gt">no O-Buba</span>', cta_sub: "Junte-se a mais de 2,4 milhões de pessoas que escolheram conexões reais.",
+            cta_btn: "🔥&nbsp;&nbsp;Encontrar o meu match", cta_learn: "Saber mais", cta_note: "Registo gratuito · Sem cartão de crédito · Cancele quando quiser",
+            foot_privacy: "Privacidade", foot_terms: "Termos", foot_safety: "Segurança", foot_support: "Suporte", foot_copy: "© 2026 O-Buba. Todos os direitos reservados."
+        },
+        SV: {
+            nav_features: "Funktioner", nav_how_it_works: "Hur det fungerar", nav_stories: "Berättelser", nav_login: "Logga in", nav_get_started: "Börja nu",
+            hero_badge: "Vilka är i närheten", hero_title: 'Hej<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba är där ortodoxa relationer börjar. Upptäck äkta kemi och fina matcher.", hero_enter: "Gå in", hero_show_me: "Visa mig",
+            feat_tag: "Varför O-Buba", feat_tit: 'Byggt annorlunda,<br><span class="gt">för äkta kärlek</span>', feat_sub: "Varje klick hjälper dig att skapa äkta relationer.",
+            f1_tit: "Smart matchning", f1_desc: "Vår algoritm lär sig dina preferenser för att visa rätt personer för dig.",
+            f2_tit: "Realtidschatt", f2_desc: "Skicka meddelanden till dina matcher direkt. Snabbt, enkelt och uttrycksfullt.",
+            f3_tit: "Intressetaggar", f3_desc: "Dela dina intressen och hitta personer med samma hobbys.",
+            f4_tit: "Säkert och privat", f4_desc: "Dina uppgifter är skyddade med krypterade chattar och profilverifiering.",
+            f5_tit: "Boost-läge", f5_desc: "Öka synligheten för din profil under rusningstid.",
+            f6_tit: "Spola tillbaka", f6_desc: "Råkade du hoppa över någon? Tryck på spola tillbaka och få en andra chans.",
+            how_tag: "Hur du börjar", how_tit: 'Börja din <span class="gt">resa nu</span>',
+            s1_tit: "Skapa din profil", s1_desc: "Fixat på några minuter. Lägg till foton, ortodoxa rötter och biografi.",
+            s2_tit: "Svep och upptäck", s2_desc: "Bläddra bland profiler. Svep höger för att gilla.",
+            s3_tit: "Mötas och ansluta", s3_desc: "När båda sveper höger — det är en match! Börja chatta direkt.",
+            test_tag: "Äkta berättelser", test_tit: 'Kärlek funnen <span class="gt">på O-Buba</span>', test_sub: "Läs vad vår community säger.",
+            test1_text: '"Vi träffades på O-Buba. Gemensamma värderingar gjorde att allt kändes rätt direkt."',
+            test2_text: '"Intressetaggarna är fantastiska! Jag hittade någon med exakt samma hobbys."',
+            test3_text: '"Bakåtknappen räddade min relation. Nu planerar vi bröllop!"',
+            show_tag: "Upplevelsen", show_tit: 'Varje profil<br>berättar en <span class="gt">historia</span>', show_sub: "Rika profiler med foton, musik och intressen.",
+            show_p1_t: "Fotogalleri", show_p1_d: "Bläddra bland flera foton för att lära känna personen bättre.",
+            show_p2_t: "Spotify-låt", show_p2_d: "En låt som säger mer om dig än ord.",
+            show_p3_t: "Online-indikator", show_p3_d: "Se vem som är aktiv nu och börja chatta.",
+            show_p4_t: "Sökfilter", show_p4_d: "Ålder, avstånd, kön — du bestämmer ramarna.",
+            cta_tit: 'Din person finns redan<br><span class="gt">på O-Buba</span>', cta_sub: "Gå med över 2,4 miljoner människor som valt äkta relationer.",
+            cta_btn: "🔥&nbsp;&nbsp;Hitta min match", cta_learn: "Läs mer", cta_note: "Gratis att gå med · Inget kreditkort krävs · Avbryt när som helst",
+            foot_privacy: "Integritet", foot_terms: "Villkor", foot_safety: "Säkerhet", foot_support: "Support", foot_copy: "© 2026 O-Buba. Alla rättigheter förbehållna."
+        },
+        NO: {
+            nav_features: "Funksjoner", nav_how_it_works: "Hvordan det fungerer", nav_stories: "Historier", nav_login: "Logg inn", nav_get_started: "Start nå",
+            hero_badge: "Hvem er i nærheten", hero_title: 'Hei<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba er hvor ortodokse relasjoner starter. Oppdag ekte kjemi og flotte matcher.", hero_enter: "Gå inn", hero_show_me: "Vis meg",
+            feat_tag: "Hvorfor O-Buba", feat_tit: 'Bygget annerledes,<br><span class="gt">for ekte kjærlighet</span>', feat_sub: "Hvert klikk hjelper deg å skape ekte relasjoner.",
+            f1_tit: "Smart megling", f1_desc: "Vår algoritme lærer dine preferanser for å vise de rette folkene.",
+            f2_tit: "Sanntids chat", f2_desc: "Send meldinger til dine matcher umiddelbart.",
+            f3_tit: "Interessetagger", f3_desc: "Del hobbyene dine og finn folk med samme interesser.",
+            f4_tit: "Trygt og privat", f4_desc: "Dine data er beskyttet med kryptert chat og profilverifisering.",
+            f5_tit: "Boost-modus", f5_desc: "Øk profilens synlighet i de mest aktive timene.",
+            f6_tit: "Spol tilbake", f6_desc: "Hoppet du over noen ved et uhell? Trykk spol tilbake for en ny sjanse.",
+            how_tag: "Kom i gang", how_tit: 'Start din <span class="gt">reise nå</span>',
+            s1_tit: "Opprett profil", s1_desc: "Sett opp på få minutter med bilder og biografi.",
+            s2_tit: "Sveip og oppdag", s2_desc: "Bla gjennom profiler og sveip til høyre for å like.",
+            s3_tit: "Koble til og møt", s3_desc: "Når begge sveiper til høyre — er det en match!",
+            test_tag: "Ekte historier", test_tit: 'Kjærlighet funnet <span class="gt">på O-Buba</span>', test_sub: "Hva våre brukere sier.",
+            test1_text: '"Vi møttes på O-Buba. Felles verdier gjorde at alt føltes naturlig instantly."',
+            test2_text: '"Interessetaggene er fantastiske! Fant noen med nøyaktig samme hobbier."',
+            test3_text: '"Spol tilbake knappen reddet forholdet mitt. Nå planlegger vi fremtiden!"',
+            show_tag: "Opplevelsen", show_tit: 'Hver profil<br>forteller en <span class="gt">historie</span>', show_sub: "Rike profiler med bilder og musikksmak.",
+            show_p1_t: "Bildegalleri", show_p1_d: "Bla gjennom flere bilder for å bli bedre kjent.",
+            show_p2_t: "Spotify låt", show_p2_d: "En sang som sier mer om deg enn ord.",
+            show_p3_t: "Online indikator", show_p3_d: "Se hvem som er aktiv nå.",
+            show_p4_t: "Søkefiltre", show_p4_d: "Alder, avstand, kjønn — du bestemmer.",
+            cta_tit: 'Din person er allerede<br><span class="gt">på O-Buba</span>', cta_sub: "Bli med over 2,4 millioner mennesker som valgte ekte relasjoner.",
+            cta_btn: "🔥&nbsp;&nbsp;Finn min match", cta_learn: "Les mer", cta_note: "Gratis å bli med · Ingen kredittkort · Avbryt når som helst",
+            foot_privacy: "Personvern", foot_terms: "Vilkår", foot_safety: "Sikkerhet", foot_support: "Støtte", foot_copy: "© 2026 O-Buba. Alle rettigheter forbeholdt."
+        },
+        DA: {
+            nav_features: "Funktioner", nav_how_it_works: "Sådan virker det", nav_stories: "Historier", nav_login: "Log ind", nav_get_started: "Start nu",
+            hero_badge: "Hvem er i nærheden", hero_title: 'Hej<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba er hvor ortodokse forbindelser starter. Oplev ægte kemi og gode matches.", hero_enter: "Gå ind", hero_show_me: "Vis mig",
+            feat_tag: "Hvorfor O-Buba", feat_tit: 'Bygget annerledes,<br><span class="gt">for ægte kærlighed</span>', feat_sub: "Hvert klik hjælper dig med at skabe ægte forbindelser.",
+            f1_tit: "Smart matchning", f1_desc: "Vores algoritme lærer dine præferencer at kende.",
+            f2_tit: "Realtidschat", f2_desc: "Skriv direkte med dine matches med det samme.",
+            f3_tit: "Interessetags", f3_desc: "Del dine hobbier og find folk med samme interesser.",
+            f4_tit: "Sikkert og privat", f4_desc: "Dine data er beskyttet med krypteret chat.",
+            f5_tit: "Boost-tilstand", f5_desc: "Øg din profils synlighed i spidsbelastningen.",
+            f6_tit: "Spol tilbage", f6_desc: "Kom du til at springe en over? Spol tilbage og få en ny chance.",
+            how_tag: "Kom i gang", how_tit: 'Start din <span class="gt">rejse nu</span>',
+            s1_tit: "Opret profil", s1_desc: "Opsætning på få minutter med foto og biografi.",
+            s2_tit: "Swipe og opdag", s2_desc: "Gennemse profiler og swipe til højre for at like.",
+            s3_tit: "Forbind og mød", s3_desc: "Når begge swiper til højre — er det et match!",
+            test_tag: "Egte historier", test_tit: 'Kærlighed fundet <span class="gt">på O-Buba</span>', test_sub: "Hvad vores brugere siger.",
+            test1_text: '"Vi mødtes på O-Buba. Fælles værdier gjorde alt nemt fra starten."',
+            test2_text: '"Interessetags er fantastiske! Jeg fandt en med nøjagtig samme hobbier."',
+            test3_text: '"Spol tilbage knappen reddede mitt forhold. Nu planlægger vi fremtiden!"',
+            show_tag: "Oplevelsen", show_tit: 'Enhver profil<br>fortæller en <span class="gt">historie</span>', show_sub: "Rige profiler med fotos og musiksmag.",
+            show_p1_t: "Fotogalleri", show_p1_d: "Se flere fotos for at lære personen bedre at kende.",
+            show_p2_t: "Spotify sang", show_p2_d: "En sang der siger mere om dig end ord.",
+            show_p3_t: "Online indikator", show_p3_d: "Se hvem der er aktiv nu.",
+            show_p4_t: "Søgefiltre", show_p4_d: "Alder, afstand, køn — du bestemmer rammerne.",
+            cta_tit: 'Din person er allerede<br><span class="gt">på O-Buba</span>', cta_sub: "Deltag med over 2,4 millioner mennesker.",
+            cta_btn: "🔥&nbsp;&nbsp;Find mit match", cta_learn: "Læs mere", cta_note: "Gratis at deltage · Intet kreditkort · Afbryd når som helst",
+            foot_privacy: "Privatliv", foot_terms: "Vilkår", foot_safety: "Sikkerhed", foot_support: "Support", foot_copy: "© 2026 O-Buba. Alle rettigheder forbeholdes."
+        },
+        FI: {
+            nav_features: "Ominaisuudet", nav_how_it_works: "Miten se toimii", nav_stories: "Tarinat", nav_login: "Kirjaudu", nav_get_started: "Aloita",
+            hero_badge: "Kuka on lähistöllä", hero_title: 'Hei<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba on paikka, josta ortodoksiset yhteydet alkavat. Löydä aitoa kemiaa ja laadukkaita osumia.", hero_enter: "Sisään", hero_show_me: "Näytä",
+            feat_tag: "Miksi O-Buba", feat_tit: 'Luotu eri tavalla,<br><span class="gt">aito rakkaus mielessä</span>', feat_sub: "Jokainen klikkaus auttaa sinua luomaan aitoja yhteyksiä.",
+            f1_tit: "Älykäs täsmäys", f1_desc: "Algoritmimme oppii mieltymyksesi näyttääkseen sinulle sopivat ihmiset.",
+            f2_tit: "Reaaliaikainen chatti", f2_desc: "Lähetä viestejä osumillesi välittömästi.",
+            f3_tit: "Kiinnostustagit", f3_desc: "Jaa harrastuksesi ja löydä ihmisiä, joilla on samat mielenkiinnon kohteet.",
+            f4_tit: "Turvallinen ja yksityinen", f4_desc: "Tietosi pysyvät suojattuina kryptatuissa chateissa.",
+            f5_tit: "Boost-tila", f5_desc: "Nosta profiilisi näkyvyyttä huipputunteina.",
+            f6_tit: "Kelaa taaksepäin", f6_desc: "Hylkäsitkö jonkun vahingossa? Paina kelaa taaksepäin saadaksesi toisen mahdollisuuden.",
+            how_tag: "Miten aloittaa", how_tit: 'Aloita <span class="gt">matkasi nyt</span>',
+            s1_tit: "Luo profiili", s1_desc: "Aseta minuuteissa kuvat ja biografia.",
+            s2_tit: "Pyyhkäise ja löydä", s2_desc: "Selaa profiileja ja pyyhkäise oikealle tykätäksesi.",
+            s3_tit: "Yhdistä ja tapaa", s3_desc: "Kun molemmat pyyhkäisevät oikealle — se on osuma!",
+            test_tag: "Aitoja tarinoita", test_tit: 'Rakkaus löytyi <span class="gt">O-Bubasta</span>', test_sub: "Katso mitä yhteisömme sanoo.",
+            test1_text: '"Tapasimme O-Bubassa. Samat arvot tekivät kaikesta luontevaa heti alusta alkaen."',
+            test2_text: '"Kiinnostustagit ovat mahtavia! Löysin jonkun, jolla on täsmälleen samat harrastukset."',
+            test3_text: '"Kelaa taaksepäin -painike pelasti suhteeni. Nyt suunnittelemme yhteistä tulevaisuutta!"',
+            show_tag: "Kokemus", show_tit: 'Jokainen profiili<br>kertoo <span class="gt">tarinan</span>', show_sub: "Rikkaat profiilit kuvilla ja musiikkimaulla.",
+            show_p1_t: "Kuvagalleria", show_p1_d: "Selaa useita kuvia tutustuaksesi paremmin.",
+            show_p2_t: "Spotify-kappale", show_p2_d: "Kappale, joka kertoo sinusta enemmän kuin sanat.",
+            show_p3_t: "Online-ilmaisin", show_p3_d: "Katso kuka on aktiivinen nyt.",
+            show_p4_t: "Hakusuodattimet", show_p4_d: "Ikä, etäisyys, sukupuoli — sinä päätät raamit.",
+            cta_tit: 'Tuleva kumppanisi on jo<br><span class="gt">O-Bubassa</span>', cta_sub: "Liity yli 2,4 miljoonan ihmisen joukkoon.",
+            cta_btn: "🔥&nbsp;&nbsp;Löydä osumani", cta_learn: "Lue lisää", cta_note: "Ilmainen liittyminen · Ei luottokorttia · Peru milloin vain",
+            foot_privacy: "Yksityisyys", foot_terms: "Ehdot", foot_safety: "Turvallisuus", foot_support: "Tuki", foot_copy: "© 2026 O-Buba. Kaikki oikeudet pidätetään."
+        },
+        CS: {
+            nav_features: "Funkce", nav_how_it_works: "Jak to funguje", nav_stories: "Příběhy", nav_login: "Přihlásit se", nav_get_started: "Začít",
+            hero_badge: "Kdo je v okolí", hero_title: 'Ahoj<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba je místo, kde začínají pravoslavné vztahy. Objevte opravdovou chemii a skvělé lidi.", hero_enter: "Vstoupit", hero_show_me: "Ukaž mi",
+            feat_tag: "Proč O-Buba", feat_tit: 'Vytvořeno jinak,<br><span class="gt">pro opravdovou lásku</span>', feat_sub: "Každé kliknutí vám pomáhá vytvářet skvělé vztahy.",
+            f1_tit: "Chytré párování", f1_desc: "Náš algoritmus se učí vaše preference pro doporučení správných lidí.",
+            f2_tit: "Chat v reálném čase", f2_desc: "Pište si se svými shody okamžitě.",
+            f3_tit: "Tagy zájmů", f3_desc: "Sdílejte své koníčky a najděte lidi se stejnými zájmy.",
+            f4_tit: "Bezpečné a soukromé", f4_desc: "Vaše data jsou chráněna šifrovanými chaty.",
+            f5_tit: "Režim Boost", f5_desc: "Zvyšte viditelnost svého profilu ve špičce.",
+            f6_tit: "Vrátit zpět", f6_desc: "Přeskočili jste někoho omylem? Použijte tlačítko zpět a získejte druhou šanci.",
+            how_tag: "Jak začít", how_tit: 'Začněte svou <span class="gt">cestu nyní</span>',
+            s1_tit: "Vytvořte si profil", s1_desc: "Nastavte si profil během pár minut.",
+            s2_tit: "Procházejte a objevujte", s2_desc: "Přejíždějte doprava pro To se mi líbí.",
+            s3_tit: "Propojte se a seznamte", s3_desc: "Když oba přejedete doprava — je to shoda!",
+            test_tag: "Reálné příběhy", test_tit: 'Láska nalezená <span class="gt">na O-Buba</span>', test_sub: "Co říká naše komunita.",
+            test1_text: '"Seznámili jsme se na O-Buba. Společné hodnoty způsobily, že vše hned fungovalo."',
+            test2_text: '"Tagy zájmů jsou skvělé! Našel jsem někoho se stejnými koníčky."',
+            test3_text: '"Tlačítko zpět zachránilo můj vztah. Nyní plánujeme společnou budoucnost!"',
+            show_tag: "Zkušenost", show_tit: 'Každý profil<br>vypráví <span class="gt">příběh</span>', show_sub: "Bohate profily s fotkami a hudbou.",
+            show_p1_t: "Fotogalerie", show_p1_d: "Prohlédněte si více fotek pro lepší představu.",
+            show_p2_t: "Spotify píseň", show_p2_d: "Píseň, která o vás řekne více než slova.",
+            show_p3_t: "Indikátor online", show_p3_d: "Podívejte se, kdo je právě aktivní.",
+            show_p4_t: "Filtry vyhledávání", show_p4_d: "Věk, vzdálenost, pohlaví — vy určujete pravidla.",
+            cta_tit: 'Váš člověk už je<br><span class="gt">na O-Buba</span>', cta_sub: "Připojte se k více než 2,4 milionu lidí.",
+            cta_btn: "🔥&nbsp;&nbsp;Najít mou shodu", cta_learn: "Zjistit více", cta_note: "Zdarma · Bez kreditní karty · Zrušení kdykoliv",
+            foot_privacy: "Soukromí", foot_terms: "Podmínky", foot_safety: "Bezpečnost", foot_support: "Podpora", foot_copy: "© 2026 O-Buba. Všechna práva vyhrazena."
+        },
+        SK: {
+            nav_features: "Funkcie", nav_how_it_works: "Ako to funguje", nav_stories: "Príbehy", nav_login: "Prihlásiť sa", nav_get_started: "Začať",
+            hero_badge: "Kto je v okolí", hero_title: 'Ahoj<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba je miesto, kde sa začínajú pravoslávne vzťahy. Objavte opravdivú chémiu a skvelých ľudí.", hero_enter: "Vstúpiť", hero_show_me: "Ukáž mi",
+            feat_tag: "Prečo O-Buba", feat_tit: 'Vytvorené inak,<br><span class="gt">pre skutočnú lásku</span>', feat_sub: "Každé kliknutie vám pomáha vytvárať skvelé vzťahy.",
+            f1_tit: "Múdre párovanie", f1_desc: "Náš algoritmus sa učí vaše preferencie.",
+            f2_tit: "Chat v reálnom čase", f2_desc: "Píšte si so svojimi zhodami okamžite.",
+            f3_tit: "Tagy záujmov", f3_desc: "Zdieľajte svoje záľuby a nájdite ľudí s rovnakými záujmami.",
+            f4_tit: "Bezpečné a súkromné", f4_desc: "Vaše dáta sú chránené šifrovanými chatmi.",
+            f5_tit: "Režim Boost", f5_desc: "Zvýšte viditeľnosť svojho profilu v špičke.",
+            f6_tit: "Vrátiť späť", f6_desc: "Preskočili ste někoho omylom? Použite tlačidlo späť a získajte druhú šancu.",
+            how_tag: "Ako začať", how_tit: 'Začnite svoju <span class="gt">cestu teraz</span>',
+            s1_tit: "Vytvorte si profil", s1_desc: "Nastavte si profil za pár minút.",
+            s2_tit: "Prechádzajte a objavujte", s2_desc: "Prechádzajte doprava pre Páči sa mi to.",
+            s3_tit: "Prepojte sa a spoznajte", s3_desc: "Keď obaja prejdete doprava — je to zhoda!",
+            test_tag: "Reálne príbehy", test_tit: 'Láska nájdená <span class="gt">na O-Buba</span>', test_sub: "Čo hovorí naša komunita.",
+            test1_text: '"Zoznámili sme sa na O-Buba. Spoločné hodnoty spôsobili, že všetko hneď fungovalo."',
+            test2_text: '"Tagy záujmov sú skvelé! Našiel som někoho s rovnakými záľubami."',
+            test3_text: '"Tlačidlo späť zachránilo môj vzťah. Teraz plánujeme spoločnú budúcnosť!"',
+            show_tag: "Skúsenosť", show_tit: 'Každý profil<br>rozpráva <span class="gt">príbeh</span>', show_sub: "Bohaté profily s fotkami a hudbou.",
+            show_p1_t: "Fotogaléria", show_p1_d: "Prezrite si viac fotiek pre lepšiu predstavu.",
+            show_p2_t: "Spotify pieseň", show_p2_d: "Pieseň, ktorá o vás povie viac než slová.",
+            show_p3_t: "Indikátor online", show_p3_d: "Pozrite sa, kto je práve aktívny.",
+            show_p4_t: "Filtre vyhľadávania", show_p4_d: "Vek, vzdialenosť, pohlavie — vy určujete pravidlá.",
+            cta_tit: 'Váš človek už je<br><span class="gt">na O-Buba</span>', cta_sub: "Pripojte sa k viac ako 2,4 miliónom ľudí.",
+            cta_btn: "🔥&nbsp;&nbsp;Nájsť moju zhodu", cta_learn: "Zistiť viac", cta_note: "Zadarmo · Bez kreditnej karty · Zrušenie kedykoľvek",
+            foot_privacy: "Súkromie", foot_terms: "Podmienky", foot_safety: "Bezpečnosť", foot_support: "Podpora", foot_copy: "© 2026 O-Buba. Všetky práva vyhradené."
+        },
+        HU: {
+            nav_features: "Funkciók", nav_how_it_works: "Hogyan működik", nav_stories: "Történetek", nav_login: "Bejelentkezés", nav_get_started: "Kezdés",
+            hero_badge: "Kik vannak a közelben", hero_title: 'Szia<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "Az O-Buba ahol az ortodox kapcsolatok kezdődnek. Fedezd fel az igazi kémiát és a minőségi párokat.", hero_enter: "Belépés", hero_show_me: "Mutasd",
+            feat_tag: "Miért az O-Buba", feat_tit: 'Másképp építve,<br><span class="gt">az igazi szerelemért</span>', feat_sub: "Minden kattintás segít igazi kapcsolatokat építeni.",
+            f1_tit: "Okos párosítás", f1_desc: "Algoritmusunk megtanulja a preferenciáidat.",
+            f2_tit: "Valós idejű chat", f2_desc: "Üzenj a párjaidnak azonnal.",
+            f3_tit: "Szenvedély tagek", f3_desc: "Oszd meg a hobbijaidat és találj hasonló érdeklődésű embereket.",
+            f4_tit: "Biztonságos és privát", f4_desc: "Adataid védve vannak titkosított chatekkel.",
+            f5_tit: "Boost mód", f5_desc: "Növeld a profilod láthatóságát a csúcsidőben.",
+            f6_tit: "Visszatekerés", f6_desc: "Véletlenül átugrottál valakit? Nyomd meg a visszatekerést egy második esélyért.",
+            how_tag: "Hogyan kezdj hozzá", how_tit: 'Kezdd el a <span class="gt">utazásodat most</span>',
+            s1_tit: "Hozd létre a profilod", s1_desc: "Állítsd be percek alatt fotókkal és leírással.",
+            s2_tit: "Húzz és fedezz fel", s2_desc: "Böngéssz a profilok között és húzz jobbra a lájkoláshoz.",
+            s3_tit: "Kapcsolódj és találkozz", s3_desc: "Ha mindketten jobbra húzzátok — az egy pár!",
+            test_tag: "Valódi történetek", test_tit: 'Szerelem az <span class="gt">O-Buba-n</span>', test_sub: "Mit mond a közösségünk.",
+            test1_text: '"Az O-Buba-n találkoztunk. A közös értékek miatt minden azonnal működött."',
+            test2_text: '"A szenvedély tagek zseniálisak! Találtam valakit pontosan ugyanazokkal a hobbikkal."',
+            test3_text: '"A visszatekerés gomb megmentette a kapcsolatomat. Most közös jövőt tervezünk!"',
+            show_tag: "A élmény", show_tit: 'Minden profil<br>egy <span class="gt">történetet</span> mesél el', show_sub: "Részletes profilok fotókkal és zenei ízléssel.",
+            show_p1_t: "Fotógaléria", show_p1_d: "Böngéssz több fotó között a jobb megismerésért.",
+            show_p2_t: "Spotify dal", show_p2_d: "Egy dal, ami többet mond rólad a szavaknál.",
+            show_p3_t: "Online jelző", show_p3_d: "Nézd meg ki aktív most.",
+            show_p4_t: "Keresési szűrők", show_p4_d: "Kor, távolság, nem — te határozod meg a kereteket.",
+            cta_tit: 'A párod már<br><span class="gt">az O-Buba-n van</span>', cta_sub: "Csatlakozz több mint 2,4 millió emberhez.",
+            cta_btn: "🔥&nbsp;&nbsp;Párom megtalálása", cta_learn: "Tudj meg többet", cta_note: "Ingyenes csatlakozás · Bankkártya nem szükséges · Bármikor lemondható",
+            foot_privacy: "Adatvédelem", foot_terms: "Feltételek", foot_safety: "Biztonság", foot_support: "Támogatás", foot_copy: "© 2026 O-Buba. Minden jog fenntartva."
+        },
+        HR: {
+            nav_features: "Značajke", nav_how_it_works: "Kako radi", nav_stories: "Priče", nav_login: "Prijava", nav_get_started: "Započni",
+            hero_badge: "Tko je u blizini", hero_title: 'Bok<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba je mjesto gdje počinju pravoslavne veze. Otkrijte pravu kemiju i kvalitetne spojeve.", hero_enter: "Uđi", hero_show_me: "Pokaži mi",
+            feat_tag: "Zašto O-Buba", feat_tit: 'Stvoreno drugačije,<br><span class="gt">za pravu ljubav</span>', feat_sub: "Svaki klik vam pomaže u stvaranju pravih veza.",
+            f1_tit: "Pametno spajanje", f1_desc: "Naš algoritam uči vaše preferencije kako bi vam prikazao prave ljude.",
+            f2_tit: "Chat u stvarnom vremenu", f2_desc: "Šaljite poruke svojim spojevima odmah.",
+            f3_tit: "Oznake strasti", f3_desc: "Podijelite svoje hobije i pronađite ljude s istim interesima.",
+            f4_tit: "Sigurno i privatno", f4_desc: "Vaši podaci ostaju zaštićeni šifriranim chatovima.",
+            f5_tit: "Boost način", f5_desc: "Povećajte vidljivost svog profila u najaktivnijim satima.",
+            f6_tit: "Vrati natrag", f6_desc: "Jeste li slučajno preskočili nekoga? Pritisnite vrati natrag za drugu priliku.",
+            how_tag: "Kako započeti", how_tit: 'Započnite svoje <span class="gt">putovanje sada</span>',
+            s1_tit: "Stvorite profil", s1_desc: "Postavite u nekoliko minuta s fotografijama i biografijom.",
+            s2_tit: "Prijeđite i otkrijte", s2_desc: "Pregledavajte profile i prijeđite udesno za sviđanje.",
+            s3_tit: "Povežite se i upoznajte", s3_desc: "Kada oboje prijeđete udesno — to je spoj!",
+            test_tag: "Prave priče", test_tit: 'Ljubav pronađena <span class="gt">na O-Buba</span>', test_sub: "Što kaže naša zajednica.",
+            test1_text: '"Upoznali smo se na O-Buba. Dijeljenje istih vrijednosti učinilo je da sve odmah klikne."',
+            test2_text: '"Oznake strasti su fantastične! Našao sam nekoga s potpuno istim hobijima."',
+            test3_text: '"Gumb vrati natrag spasio je moju vezu. Sada planiramo zajedničku budućnost!"',
+            show_tag: "Iskustvo", show_tit: 'Svaki profil<br>priča <span class="gt">priču</span>', show_sub: "Bogati profili s fotografijama i glazbenim ukusom.",
+            show_p1_t: "Galerija fotografija", show_p1_d: "Pregledajte više slika za bolji dojam.",
+            show_p2_t: "Spotify pjesma", show_p2_d: "Pjesma koja govori o vama više od riječi.",
+            show_p3_t: "Online indikator", show_p3_d: "Pogledajte tko je aktivan sada.",
+            show_p4_t: "Filtri pretraživanja", show_p4_d: "Dob, udaljenost, spol — vi određujete pravila.",
+            cta_tit: 'Vaša osoba je već<br><span class="gt">na O-Buba</span>', cta_sub: "Pridružite se preko 2,4 milijuna ljudi koji su odabrali prave veze.",
+            cta_btn: "🔥&nbsp;&nbsp;Pronađi moj spoj", cta_learn: "Saznaj više", cta_note: "Besplatna prijava · Bez kreditne kartice · Otkaži bilo kada",
+            foot_privacy: "Privatnost", foot_terms: "Uvjeti", foot_safety: "Sigurnost", foot_support: "Podrška", foot_copy: "© 2026 O-Buba. Sva prava pridržana."
+        },
+        BS: {
+            nav_features: "Osobine", nav_how_it_works: "Kako radi", nav_stories: "Priče", nav_login: "Prijava", nav_get_started: "Započni",
+            hero_badge: "Ko je u blizini", hero_title: 'Zdravo<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba je mjesto gdje počinju prave veze. Otkrijte pravu hemiju i kvalitetne spojeve.", hero_enter: "Uđi", hero_show_me: "Pokaži mi",
+            feat_tag: "Zašto O-Buba", feat_tit: 'Napravljeno drugačije,<br><span class="gt">za pravu ljubav</span>', feat_sub: "Svaki klik vam pomaže u stvaranju pravih veza.",
+            f1_tit: "Pametno spajanje", f1_desc: "Naš algoritam uči vaše želje kako bi vam prikazao prave ljude.",
+            f2_tit: "Chat u stvarnom vremenu", f2_desc: "Šaljite poruke svojim spojevima odmah.",
+            f3_tit: "Oznake interesa", f3_desc: "Podijelite svoje hobije i pronađite ljude s istim interesima.",
+            f4_tit: "Sigurno i privatno", f4_desc: "Vaši podaci ostaju zaštićeni šifrovanim chatovima.",
+            f5_tit: "Boost način", f5_desc: "Povećajte vidljivost svog profila u najaktivnijim satima.",
+            f6_tit: "Vrati nazad", f6_desc: "Jeste li slučajno preskočili nekoga? Pritisnite vrati nazad za drugu priliku.",
+            how_tag: "Kako započeti", how_tit: 'Započnite svoje <span class="gt">putovanje sada</span>',
+            s1_tit: "Kreirajte profil", s1_desc: "Postavite u nekoliko minuta s fotografijama i biografijom.",
+            s2_tit: "Pređite i otkrijte", s2_desc: "Pregledajte profile i pređite desno za sviđanje.",
+            s3_tit: "Povežite se i upoznajte", s3_desc: "Kada oboje pređete desno — to je spoj!",
+            test_tag: "Prave priče", test_tit: 'Ljubav pronađena <span class="gt">na O-Buba</span>', test_sub: "Šta kaže naša zajednica.",
+            test1_text: '"Upoznali smo se na O-Buba. Dijeljenje istih vrijednosti učinilo je da sve odmah klikne."',
+            test2_text: '"Oznake interesa su fantastične! Našao sam nekoga s potpuno istim hobijima."',
+            test3_text: '"Dugme vrati nazad spasilo je moju vezu. Sada planiramo zajedničku budućnost!"',
+            show_tag: "Iskustvo", show_tit: 'Svaki profil<br>priča <span class="gt">priču</span>', show_sub: "Bogati profili s fotografijama i muzičkim ukusom.",
+            show_p1_t: "Galerija fotografija", show_p1_d: "Pregledajte više slika za bolji utisak.",
+            show_p2_t: "Spotify pjesma", show_p2_d: "Pjesma koja govori o vama više od riječi.",
+            show_p3_t: "Online indikator", show_p3_d: "Pogledajte ko je aktivan sada.",
+            show_p4_t: "Filteri pretrage", show_p4_d: "Dob, udaljenost, spol — vi određujete pravila.",
+            cta_tit: 'Vaša osoba je već<br><span class="gt">na O-Buba</span>', cta_sub: "Pridružite se preko 2,4 miliona ljudi koji su izabrali prave veze.",
+            cta_btn: "🔥&nbsp;&nbsp;Pronađi moj spoj", cta_learn: "Saznaj više", cta_note: "Besplatna prijava · Bez kreditne kartice · Otkaži bilo kada",
+            foot_privacy: "Privatnost", foot_terms: "Uslovi", foot_safety: "Sigurnost", foot_support: "Podrška", foot_copy: "© 2026 O-Buba. Sva prava zadržana."
+        },
+        SQ: {
+            nav_features: "Veçoritë", nav_how_it_works: "Si funksionon", nav_stories: "Histori", nav_login: "Hyr", nav_get_started: "Fillo",
+            hero_badge: "Kush është afër", hero_title: 'Përshëndetje<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba është ku fillojnë lidhjet e vërteta. Zbuloni kimi të vërtetë dhe njerëz cilësorë.", hero_enter: "Hyr", hero_show_me: "Më trego",
+            feat_tag: "Pse O-Buba", feat_tit: 'Ndërtuar ndryshe,<br><span class="gt">për dashuri të vërtetë</span>', feat_sub: "Çdo klikim ju ndihmon të krijoni lidhje të vërteta.",
+            f1_tit: "Përputhje inteligjente", f1_desc: "Algoritmi ynë mëson preferencat tuaja për t'ju treguar njerëzit e duhur.",
+            f2_tit: "Bisedë në kohë reale", f2_desc: "Dërgoni mesazhe përputhjeve tuaja menjëherë.",
+            f3_tit: "Etiketat e pasioneve", f3_desc: "Ndani hobit tuaja dhe gjeni njerëz me të njëjtat interesa.",
+            f4_tit: "I sigurt dhe privat", f4_desc: "Të dhënat tuaja mbeten të mbrojtura me biseda të enkriptuara.",
+            f5_tit: "Mënyra Boost", f5_desc: "Rritni dukshmërinë e profilit tuaj në orët më aktive.",
+            f6_tit: "Kthehu prapa", f6_desc: "Kaluat dikë gabimisht? Shtypni kthehu prapa për një shans të dytë.",
+            how_tag: "Si të filloni", how_tit: 'Filloni <span class="gt">udhëtimin tuaj tani</span>',
+            s1_tit: "Krijoni profilin tuaj", s1_desc: "Vendosni në pak minuta me foto dhe biografi.",
+            s2_tit: "Rrëshqitni dhe zbuloni", s2_desc: "Shfletoni profilet dhe rrëshqitni djathtas për pëlqim.",
+            s3_tit: "Lidhuni dhe takohuni", s3_desc: "Kur të dy rrëshqitni djathtas — është një përputhje!",
+            test_tag: "Histori të vërteta", test_tit: 'Dashuri e gjetur <span class="gt">në O-Buba</span>', test_sub: "Ja çfarë thotë komuniteti ynë.",
+            test1_text: '"U takuam në O-Buba. Ndarja e të njëjtave vlerave bëri që gjithçka të funksiononte menjëherë."',
+            test2_text: '"Etiketat e pasioneve janë fantastike! Gjeta dikë me të njëjtat hobi."',
+            test3_text: '"Butoni kthehu prapa shpëtoi marrëdhënien time. Tani po planifikojmë të ardhmen!"',
+            show_tag: "Përvoja", show_tit: 'Çdo profil<br>tregon një <span class="gt">histori</span>', show_sub: "Profile të pasura me foto dhe shije muzikore.",
+            show_p1_t: "Galeri fotosh", show_p1_d: "Shfletoni disa foto për t'u njohur më mirë.",
+            show_p2_t: "Këngë Spotify", show_p2_d: "Një këngë që thotë më shumë për ju se fjalët.",
+            show_p3_t: "Treguesi online", show_p3_d: "Shihni kush është aktiv tani.",
+            show_p4_t: "Filtrat e kërkimit", show_p4_d: "Mosa, distanca, gjinia — ju i vendosni rregullat.",
+            cta_tit: 'Personi juaj është tashmë<br><span class="gt">në O-Buba</span>', cta_sub: "Bashkohuni me mbi 2.4 milionë njerëz që zgjodhën lidhje të vërteta.",
+            cta_btn: "🔥&nbsp;&nbsp;Gjej përputhjen time", cta_learn: "Mëso më shumë", cta_note: "Regjistrim falas · Pa kartë krediti · Anulo në çdo kohë",
+            foot_privacy: "Privatësia", foot_terms: "Kushtet", foot_safety: "Siguria", foot_support: "Mbështetja", foot_copy: "© 2026 O-Buba. Të gjitha të drejtat e rezervuara."
+        },
+        SL: {
+            nav_features: "Funkcije", nav_how_it_works: "Kako deluje", nav_stories: "Zgodbe", nav_login: "Prijava", nav_get_started: "Začni",
+            hero_badge: "Kdo je v bližini", hero_title: 'Živjo<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba je kraj, kjer se začnejo prave povezave. Odkrijte pravo kemijo in kakovostne ujemanje.", hero_enter: "Vstopi", hero_show_me: "Pokaži mi",
+            feat_tag: "Zakaj O-Buba", feat_tit: 'Zgrajeno drugače,<br><span class="gt">za pravo ljubezen</span>', feat_sub: "Vsak klik vam pomaga ustvariti prave povezave.",
+            f1_tit: "Pametno ujemanje", f1_desc: "Naš algoritem se uči vaših preferenc.",
+            f2_tit: "Klepet v realnem času", f2_desc: "Pošiljajte sporočila svojim ujemanjem takoj.",
+            f3_tit: "Oznake strasti", f3_desc: "Delite svoje hobije in poiščite ljudi z enakimi interesi.",
+            f4_tit: "Varno in zasebno", f4_desc: "Vaši podatki ostanejo zaščiteni s šifriranimi klepeti.",
+            f5_tit: "Način Boost", f5_desc: "Povečajte vidnost svojega profila v najbolj aktivnih urah.",
+            f6_tit: "Zavrti nazaj", f6_desc: "Ste koga pomotoma preskočili? Pritisnite zavrti nazaj za drugo priložnost.",
+            how_tag: "Kako začeti", how_tit: 'Začnite svoje <span class="gt">potovanje zdaj</span>',
+            s1_tit: "Ustvarite profil", s1_desc: "Nastavite v nekaj minutah s fotografijami in biografijo.",
+            s2_tit: "Podrsajte in odkrijte", s2_desc: "Brskajte po profilih in podrsajte desno za všečkanje.",
+            s3_tit: "Povežite se in spoznajte", s3_desc: "Ko oba podrsata desno — je to ujemanje!",
+            test_tag: "Prave zgodbe", test_tit: 'Ljubezen najdena <span class="gt">na O-Buba</span>', test_sub: "Kaj pravi naša skupnost.",
+            test1_text: '"Spoznala sva se na O-Buba. Deljenje istih vrednot je povzročilo, da je vse takoj kliknilo."',
+            test2_text: '"Oznake strasti so fantastične! Našel sem nekoga z enakimi hobiji."',
+            test3_text: '"Gumb zavrti nazaj je rešil mojo zvezo. Zdaj načrtujeva skupno prihodnost!"',
+            show_tag: "Izkušnja", show_tit: 'Vsak profil<br>pripoveduje <span class="gt">zgodbo</span>', show_sub: "Bogati profili s fotografijami in glasbenim okusom.",
+            show_p1_t: "Galerija fotografij", show_p1_d: "Prebrskajte več slik za boljši vtis.",
+            show_p2_t: "Spotify pesem", show_p2_d: "Pesem, ki o vas pove več kot besede.",
+            show_p3_t: "Indikator na spletu", show_p3_d: "Poglejte kdo je aktiven zdaj.",
+            show_p4_t: "Filtri iskanja", show_p4_d: "Starost, razdalja, spol — vi določate pravila.",
+            cta_tit: 'Vaša oseba je že<br><span class="gt">na O-Buba</span>', cta_sub: "Pridružite se več kot 2,4 milijona ljudem.",
+            cta_btn: "🔥&nbsp;&nbsp;Poišči moje ujemanje", cta_learn: "Več o tem", cta_note: "Brezplačna prijava · Brez kreditne kartice · Prekliči kadarkoli",
+            foot_privacy: "Zasebnost", foot_terms: "Pogoji", foot_safety: "Varnost", foot_support: "Podpora", foot_copy: "© 2026 O-Buba. Vse pravice pridržane."
+        },
+        BE: {
+            nav_features: "Магчымасці", nav_how_it_works: "Як гэта працуе", nav_stories: "Гісторыі", nav_login: "Увайсці", nav_get_started: "Пачаць",
+            hero_badge: "Хто побач", hero_title: 'Хэй<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba — месца, дзе пачынаюцца праваслаўныя знаёмствы. Знайдзіце сапраўдную хімію і людзей са супольнымі каштоўнасцямі.", hero_enter: "Увайсці", hero_show_me: "Паказаць",
+            feat_tag: "Чаму O-Buba", feat_tit: 'Створана інакш,<br><span class="gt">для сапраўднага кахання</span>', feat_sub: "Кожны клік дапамагае вам знаходзіць лепшыя сувязі.",
+            f1_tit: "Разумны падбор", f1_desc: "Наш алгарытм улічвае вашы перавагі і спосаб жыцця.",
+            f2_tit: "Чат у рэальным часе", f2_desc: "Маментальна камунікуйце са сваімі супадзеннямі.",
+            f3_tit: "Тэгі захапленняў", f3_desc: "Дзяліцеся хобі і знаходзьце аднадумцаў.",
+            f4_tit: "Бяспечна і прыватна", f4_desc: "Вашы дадзеныя абаронены зашыфраванымі чатамі.",
+            f5_tit: "Рэжым Буст", f5_desc: "Павялічце бачнасць профілю ў пікавыя гадзіны.",
+            f6_tit: "Вярнуць назад", f6_desc: "Выпадкова прапусцілі чалавека? Націсніце назад для другога шанец.",
+            how_tag: "Як пачаць", how_tit: 'Пачніце свой <span class="gt">шлях зараз</span>',
+            s1_tit: "Стварыце профіль", s1_desc: "Наладзьце за пару хвілін з фота і апісаннем.",
+            s2_tit: "Свайпайце і знаходзьце", s2_desc: "Праглядайце профілі і свайпайце ўправа для лайка.",
+            s3_tit: "Камунікуйце і знаёмцеся", s3_desc: "Калі сімпатыя ўзаемная — гэта супадзенне!",
+            test_tag: "Сапраўдныя гісторыі", test_tit: 'Каханне на <span class="gt">O-Buba</span>', test_sub: "Пачытайце водгукі нашай супольнасці.",
+            test1_text: '"Мы пазнаёміліся праз O-Buba. Супольныя каштоўнасці зрабілі зносіны лёгкімі."',
+            test2_text: '"Тэгі захапленняў — гэта супер! Знайшоў чалавека з такімі ж хобі."',
+            test3_text: '"Кнопка назад выратавала мае адносіны. Цяпер мы плануем будучыню!"',
+            show_tag: "Досвед", show_tit: 'Кожны профіль<br>расказвае <span class="gt">гісторыю</span>', show_sub: "Падрабязныя профілі з фота і музычным густам.",
+            show_p1_t: "Галерэя фотаздымкаў", show_p1_d: "Гартайце фота для лепшага азнаямлення.",
+            show_p2_t: "Трэк з Spotify", show_p2_d: "Песня, якая раскажа пра вас лепш за словы.",
+            show_p3_t: "Індыкатар анлайн", show_p3_d: "Глядзіце, хто зараз у сетцы.",
+            show_p4_t: "Фільтры пошуку", show_p4_d: "Узрост, адлегласць, пол — вы вызначаеце рамкі.",
+            cta_tit: 'Твой чалавек ужо<br><span class="gt">на O-Buba</span>', cta_sub: "Далучайцеся да больш чым 2,4 млн чалавек.",
+            cta_btn: "🔥&nbsp;&nbsp;Знайсці пару", cta_learn: "Датэлефанавацца", cta_note: "Бясплатная рэгістрацыя · Без карты · Адмена ў любы час",
+            foot_privacy: "Канфідэнцыйнасць", foot_terms: "Умовы", foot_safety: "Бяспека", foot_support: "Падтрымка", foot_copy: "© 2026 O-Buba. Усе правы абаронены."
+        },
+        LT: {
+            nav_features: "Funkcijos", nav_how_it_works: "Kaip tai veikia", nav_stories: "Istorijos", nav_login: "Prisijungti", nav_get_started: "Pradėti",
+            hero_badge: "Kas yra netoliese", hero_title: 'Labas<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba yra vieta, kur prasideda tikri ryšiai. Atraskite tikrą chemiją ir puikias atitiktis.", hero_enter: "Įeiti", hero_show_me: "Parodyk man",
+            feat_tag: "Kodėl O-Buba", feat_tit: 'Sukurta kitaip,<br><span class="gt">tikrai meilei</span>', feat_sub: "Kiekvienas spustelėjimas padeda kurti tikrus ryšius.",
+            f1_tit: "Išmanusis atitikimas", f1_desc: "Mūsų algoritmas mokosi jūsų preferencijų.",
+            f2_tit: "Pokalbiai realiuoju laiku", f2_desc: "Siųskite žinutes savo atitiktims iškart.",
+            f3_tit: "Pomegų žymos", f3_desc: "Dalinkitės pomėgiais ir raskite bendraminčių.",
+            f4_tit: "Saugu ir privatu", f4_desc: "Jūsų duomenys apsaugoti užšifruotais pokalbiais.",
+            f5_tit: "Boost režimas", f5_desc: "Padidinkite profilio matomumą pikų valandomis.",
+            f6_tit: "Atsukti atgal", f6_desc: "Praleidote kažką netyčia? Paspauskite atsukti ir gaukite antrą šansą.",
+            how_tag: "Kaip pradėti", how_tit: 'Pradėkite savo <span class="gt">kelionę dabar</span>',
+            s1_tit: "Sukurkite profilį", s1_desc: "Nustatykite per kelias minutes su nuotraukomis ir biografija.",
+            s2_tit: "Braukite ir atraskite", s2_desc: "Naršykite profilius ir braukite į dešinę.",
+            s3_tit: "Susijunkite ir susitikite", s3_desc: "Kai abu abraukiate į dešinę — tai atitiktis!",
+            test_tag: "Tikros istorijos", test_tit: 'Meilė rasta <span class="gt">O-Buba</span>', test_sub: "Ką sako mūsų bendruomenė.",
+            test1_text: '"Susipažinome O-Buba. Bendros vertybės lėmė, kad viskas iškart pavyko."',
+            test2_text: '"Pomėgių žymos yra nuostabios! Radau žmogų su tais pačiais hobiais."',
+            test3_text: '"Atsukimo mygtukas išgelbėjo mano santykius. Dabar planuojame ateitį!"',
+            show_tag: "Patirtis", show_tit: 'Kiekvienas profilis<br>pasakoja <span class="gt">istoriją</span>', show_sub: "Turtingi profiliai su nuotraukomis ir muzika.",
+            show_p1_t: "Nuotraukų galerija", show_p1_d: "Naršykite kelias nuotraukas geresniam pažinimui.",
+            show_p2_t: "Spotify daina", show_p2_d: "Daina, kuri pasakoja apie vas daugiau nei žodžiai.",
+            show_p3_t: "Prisijungimo indikatorius", show_p3_d: "Žiūrėkite kas aktyvus dabar.",
+            show_p4_t: "Paieškos filtrai", show_p4_d: "Amžius, atstumas, lytis — jūs nustatote ribas.",
+            cta_tit: 'Jūsų žmogus jau yra<br><span class="gt">O-Buba</span>', cta_sub: "Prisijunkite prie daugiau nei 2,4 mln. žmonių.",
+            cta_btn: "🔥&nbsp;&nbsp;Rasti mano atitiktį", cta_learn: "Sužinoti daugiau", cta_note: "Nemokama registracija · Be kortelės · Atšaukite bet kada",
+            foot_privacy: "Privatumas", foot_terms: "Sąlygos", foot_safety: "Saugumas", foot_support: "Pagalba", foot_copy: "© 2026 O-Buba. Visos teisės saugomos."
+        },
+        LV: {
+            nav_features: "Funkcijas", nav_how_it_works: "Kā tas strādā", nav_stories: "Stāsti", nav_login: "Ieejiet", nav_get_started: "Sākt",
+            hero_badge: "Kas ir tuvumā", hero_title: 'Sveiki<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba ir vieta, kur sākas īstas attiecības. Atklājiet īstu ķīmiju un lieliskus mačus.", hero_enter: "Ieejiet", hero_show_me: "Parādi man",
+            feat_tag: "Kāpēc O-Buba", feat_tit: 'Veidots citādi,<br><span class="gt">īstai mīlestībai</span>', feat_sub: "Katrs klikšķis palīdz veidot īstas attiecības.",
+            f1_tit: "Viedā saskaņošana", f1_desc: "Mūsu algoritms mācās jūsu vēlmes.",
+            f2_tit: "Reāllaika čats", f2_desc: "Sūtiet ziņas saviem mačiem uzreiz.",
+            f3_tit: "Interešu birkas", f3_desc: "Dalieties ar vaļaspriekiem un atrodiet domubiedrus.",
+            f4_tit: "Droši un privāti", f4_desc: "Jūsu dati ir aizsargāti ar šifrētām sarunām.",
+            f5_tit: "Boost režīms", f5_desc: "Palieliniet profila redzamību noslogotākajās stundās.",
+            f6_tit: "Attīt atpakaļ", f6_desc: "Nejauši izlaidāt kādu? Nospiediet attīt atpakaļ un iegūstiet otro iespēju.",
+            how_tag: "Kā sākt", how_tit: 'Sāciet savu <span class="gt">ceļojumu tagad</span>',
+            s1_tit: "Izveidojiet profilu", s1_desc: "Uzstādiet minūtēs ar fotoattēliem un aprakstu.",
+            s2_tit: "Velciet un atklājiet", s2_desc: "Pārlūkojiet profilus un velciet pa labi.",
+            s3_tit: "Savienojieties un tiecieties", s3_desc: "Kad abi velkat pa labi — tas ir mačs!",
+            test_tag: "Īsti stāsti", test_tit: 'Mīlestība atrasta <span class="gt">O-Buba</span>', test_sub: "Ko saka mūsu kopiena.",
+            test1_text: '"Mēs iepazināmies O-Buba. Kopīgās vērtības padarīja visu vieglu uzreiz."',
+            test2_text: '"Interešu birkas ir lieliskas! Atradu kādu ar tieši tādiem pašiem hobijiem."',
+            test3_text: '"Attīšanas poga izglāba manas attiecības. Tagad plānojam nākotni!"',
+            show_tag: "Pieredze", show_tit: 'Katrs profils<br>stāsta <span class="gt">stāstu</span>', show_sub: "Bagātīgi profili ar fotoattēliem un mūziku.",
+            show_p1_t: "Foto galerija", show_p1_d: "Pārlūkojiet vairākus foto labākai iepazīšanai.",
+            show_p2_t: "Spotify dziesma", show_p2_d: "Dziesma, kas pasaka vairāk nekā vārdi.",
+            show_p3_t: "Tiešsaistes indikators", show_p3_d: "Skatieties, kurš ir aktīvs tagad.",
+            show_p4_t: "Meklēšanas filtri", show_p4_d: "Vecums, attālums, dzimums — jūs nosakat robežas.",
+            cta_tit: 'Jūsu cilvēks jau ir<br><span class="gt">O-Buba</span>', cta_sub: "Pievienojieties vairāk nekā 2,4 miljoniem cilvēku.",
+            cta_btn: "🔥&nbsp;&nbsp;Atrast manu maču", cta_learn: "Uzzināt vairāk", cta_note: "Bezmaksas reģistrācija · Bez kartes · Atceliet jebkurā laikā",
+            foot_privacy: "Privātums", foot_terms: "Noteikumi", foot_safety: "Drošība", foot_support: "Atbalsts", foot_copy: "© 2026 O-Buba. Visas tiesības aizsargātas."
+        },
+        ET: {
+            nav_features: "Funktsioonid", nav_how_it_works: "Kuidas see töötab", nav_stories: "Lood", nav_login: "Logi sisse", nav_get_started: "Alusta",
+            hero_badge: "Kes on lähedal", hero_title: 'Tere<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba on koht, kust algavad tõelised suhted. Avasta õiget keemiat ja suurepäraseid klappe.", hero_enter: "Sisene", hero_show_me: "Näita mulle",
+            feat_tag: "Miks O-Buba", feat_tit: 'Loodud teistmoodi,<br><span class="gt">tõelise armastuse jaoks</span>', feat_sub: "Iga klikk aitab luua tõelisi suhteid.",
+            f1_tit: "Nutikas klapitamine", f1_desc: "Meie algoritm õpib sinu eelistusi parimate tulemuste saamiseks.",
+            f2_tit: "Reaalajas vestlus", f2_desc: "Saada oma klappidele sõnumeid koheselt.",
+            f3_tit: "Huvide sildid", f3_desc: "Jaga oma hobisid ja leia samade huvidega inimesi.",
+            f4_tit: "Turvaline ja privaatne", f4_desc: "Sinu andmed on kaitstud krüpteeritud vestlustega.",
+            f5_tit: "Boost-režiim", f5_desc: "Tõsta oma profiili nähtavust tipptunnil.",
+            f6_tit: "Keri tagasi", f6_desc: "Jätsid keegi kogemata vahele? Vajuta keri tagasi uueks võimaluseks.",
+            how_tag: "Kuidas alustada", how_tit: 'Alusta oma <span class="gt">teekonda nüüd</span>',
+            s1_tit: "Loo oma profiil", s1_desc: "Seadista minutitega fotode ja kirjeldustega.",
+            s2_tit: "Pühkimine ja avastamine", s2_desc: "Sirvi profiile ja pühki paremale meeldimiseks.",
+            s3_tit: "Ühendu ja kohtu", s3_desc: "Kui mõlemad pühivad paremale — see on klapp!",
+            test_tag: "Tõelised lood", test_tit: 'Armastus leitud <span class="gt">O-Bubast</span>', test_sub: "Mida ütleb meie kogukond.",
+            test1_text: '"Kohtusime O-Bubas. Ühised väärtused panid kõik kohe toimima."',
+            test2_text: '"Huvide sildid on suurepärased! Leidsin täpselt samade hobidega inimese."',
+            test3_text: '"Tagasikerimise nupp päästis mu suhted. Nüüd planeerime ühist tulevikku!"',
+            show_tag: "Kogemus", show_tit: 'Iga profiil<br>räägib <span class="gt">loo</span>', show_sub: "Rikkalikud profiilid fotode ja muusikamaitsega.",
+            show_p1_t: "Fotogalerii", show_p1_d: "Sirvi mitut fotot paremaks tutvumiseks.",
+            show_p2_t: "Spotify lugu", show_p2_d: "Lugu, mis räägib sinust rohkem kui sõnad.",
+            show_p3_t: "Online-indikaator", show_p3_d: "Vaata kes on praegu aktiivne.",
+            show_p4_t: "Otsingufiltrid", show_p4_d: "Vanus, kaugus, sugu — sina määrad piirid.",
+            cta_tit: 'Sinu inimene on juba<br><span class="gt">O-Bubas</span>', cta_sub: "Liitu rohkem kui 2,4 miljoni inimesega.",
+            cta_btn: "🔥&nbsp;&nbsp;Leia minu klapp", cta_learn: "Loe lähemalt", cta_note: "Tasuta liitumine · Krediitkaarti pole vaja · Tühista igal ajal",
+            foot_privacy: "Privaatsus", foot_terms: "Tingimused", foot_safety: "Turvalisus", foot_support: "Tugi", foot_copy: "© 2026 O-Buba. Kõik õigused kaitstud."
+        },
+        GA: {
+            nav_features: "Gnéithe", nav_how_it_works: "Conas a oibríonn sé", nav_stories: "Scéalta", nav_login: "Logáil isteach", nav_get_started: "Tosaigh",
+            hero_badge: "Cé atá in aice láimhe", hero_title: 'Dia dhuit<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "Is é O-Buba áit a dtosaíonn na nasc cearta. Faigh fíor-cheimic agus matches iontacha.", hero_enter: "Isteach", hero_show_me: "Taispeáin dom",
+            feat_tag: "Cén fáth O-Buba", feat_tit: 'Tógtha ar bhealach difriúil,<br><span class="gt">d\'fhíor-ghrá</span>', feat_sub: "Cuidíonn gach cliceáil leat na nasc cearta a dhéanamh.",
+            f1_tit: "Meaitseáil chliste", f1_desc: "Foghlaimíonn ár n-algartam do roghanna.",
+            f2_tit: "Comhrá beo", f2_desc: "Seol teachtaireachtaí chuig do mheaitseálacha láithreach.",
+            f3_tit: "Clibeanna paisean", f3_desc: "Roinn do chaitheamh aimsire agus faigh daoine le spéiseanna cosúla.",
+            f4_tit: "Sábháilte agus príobháideach", f4_desc: "Tá do chuid sonraí cosanta le comhráite criptithe.",
+            f5_tit: "Mód Treisithe", f5_desc: "Méadaigh infheictheacht do phróifíl sna huaireanta is gnóthaí.",
+            f6_tit: "Athchasadh", f6_desc: "Ar léim tú thar dhuine gan iarracht? Brúigh athchasadh le haghaidh dara seans.",
+            how_tag: "Conas tosú", how_tit: 'Tosaigh do <span class="gt">thuras anois</span>',
+            s1_tit: "Cruthaigh do phróifíl", s1_desc: "Socrú i gceann cúpla nóiméad le grianghraif agus életrajz.",
+            s2_tit: "Svaidhpeáil agus faigh amach", s2_desc: "Brabhsáil próifílí agus svaidhpeáil ar dheis chun layceáil.",
+            s3_tit: "Nasc agus buail le chéile", s3_desc: "Nuair a svaidhpeálann an bheirt ar dheis — is meaitseáil é!",
+            test_tag: "Fíorscéalta", test_tit: 'Grá faighte <span class="gt">ar O-Buba</span>', test_sub: "Seo a deir ár bpobal.",
+            test1_text: '"Bhuail muid le chéile ar O-Buba. D\'fhág luachanna comhroinnte gur oibrigh gach rud láithreach."',
+            test2_text: '"Tá clibeanna paisean iontach! Fuair mé duine leis na caitheamh aimsire céanna exact."',
+            test3_text: '"Shábháil an cnaipe athchasadh mo chaidreamh. Anois táimid ag pleanáil ár dtodhchaí!"',
+            show_tag: "An taithí", show_tit: 'Insíonn gach próifíl<br><span class="gt">scéal</span>', show_sub: "Próifílí saibhre le grianghraif agus ceol.",
+            show_p1_t: "Ghailearaí grianghraf", show_p1_d: "Brabhsáil grianghraif iolracha chun aithne níos fearr a chur ar an duine.",
+            show_p2_t: "Amhrán Spotify", show_p2_d: "Amhrán a deir níos mó fút ná focail.",
+            show_p3_t: "Táscaire ar líne", show_p3_d: "Féach cé atá gníomhach anois.",
+            show_p4_t: "Scagairí cuardaigh", show_p4_d: "Aois, achar, inscne — socraíonn tú na rialacha.",
+            cta_tit: 'Tá do dhuine cheana féin<br><span class="gt">ar O-Buba</span>', cta_sub: "Bígí linn le níos mó ná 2.4 milliún duine.",
+            cta_btn: "🔥&nbsp;&nbsp;Faigh mo mheaitseáil", cta_learn: "Foghlaim níos mó", cta_note: "Saor in aisce chun bheith linn · Gan cárta creidmheasa · Cealaigh am ar bith",
+            foot_privacy: "Príobháideachas", foot_terms: "Téarmaí", foot_safety: "Sábháilteacht", foot_support: "Tacaíocht", foot_copy: "© 2026 O-Buba. Gach ceart ar cosaint."
+        },
+        MT: {
+            nav_features: "Karatteristiċi", nav_how_it_works: "Kif jaħdem", nav_stories: "Stejjer", nav_login: "Illoggja", nav_get_started: "Ibda",
+            hero_badge: "Min jinsab viċin", hero_title: 'Jinsab<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba huwa fejn jibdew konnessjonijiet reali. Skopri kimika vera u matches mill-aqwa.", hero_enter: "Idħol", hero_show_me: "Uri li",
+            feat_tag: "Għaliex O-Buba", feat_tit: 'Mibni b\'mod differenti,<br><span class="gt">għall-imħabba vera</span>', feat_sub: "Kull klikk tgħinek tibni konnessjonijiet reali.",
+            f1_tit: "Tlaqqigħ intelliġenti", f1_desc: "L-algoritmu tagħna jitgħallem il-preferenzi tiegħek.",
+            f2_tit: "Chat f'ħin reali", f2_desc: "Ibgħat messaġġi lill-matches tiegħek minnufih.",
+            f3_tit: "Tags ta' passjonijiet", f3_desc: "Aqsma l-passatempi tiegħek u sib nies b'interessi simili.",
+            f4_tit: "Sigurtà u privatezza", f4_desc: "Id-dejta tiegħek tibqa' protetta b'chats kkrejtsjati.",
+            f5_tit: "Modalità Boost", f5_desc: "Żid il-visibbiltà tal-profil tiegħek fil-ħinijiet l-aktar meħtieġa.",
+            f6_tit: "Erġa' lura", f6_desc: "Aqbeż xi ħadd b'inċident? Agħfas erġa' lura għal tieni ċans.",
+            how_tag: "Kif tibda", how_tit: 'Ibda l-<span class="gt">vjaġġ tiegħek issa</span>',
+            s1_tit: "Oħloq il-profil tiegħek", s1_desc: "Imwaqqaf f'ftit minuti b'ritratti u deskrizzjoni.",
+            s2_tit: "Swipe u skopri", s2_desc: "Fittex profili u swipe lejn il-lemin biex togħġob lilek innifsek.",
+            s3_tit: "Qabbad u ltaqa'", s3_desc: "Kada t-tnejn li huma tagħmlu swipe lejn il-lemin — huwa match!",
+            test_tag: "Stejjer reali", test_tit: 'Imħabba misjuba <span class="gt">fuq O-Buba</span>', test_sub: "Ara x'qed tgħid il-komunità tagħna.",
+            test1_text: '"Iltaqajna fuq O-Buba. Valuri komuni għamlu kollox jaħdem mill-ewwel."',
+            test2_text: '"It-tags ta\' passjonijiet huma sbieħ ħafna! Sibt lil xi ħadd bl-istess passatempi exact."',
+            test3_text: '"Il-buttuna erġa\' lura salvat ir-relazzjoni tiegħi. Issa qed nippjanaw il-futur tagħna!"',
+            show_tag: "L-esperjenza", show_tit: 'Kull profil<br>jigħid <span class="gt">storja</span>', show_sub: "Profili sinjuri b'ritratti u mużika.",
+            show_p1_t: "Gallerija tar-ritratti", show_p1_d: "Fittex diversi ritratti biex issir taf aħjar.",
+            show_p2_t: "Innu ta' Spotify", show_p2_d: "Kanzunetta li tgħid aktar dwarek minn kliem.",
+            show_p3_t: "Indikatur online", show_p3_d: "Ara min huwa attiv issa.",
+            show_p4_t: "Filtri tat-tfittxija", show_p4_d: "Età, distanza, sess — inti tiddetermina r-regoli.",
+            cta_tit: 'Il-persuna tiegħek tinsab diġà<br><span class="gt">fuq O-Buba</span>', cta_sub: "Ingħaqad ma' aktar minn 2.4 miljun ruħ.",
+            cta_btn: "🔥&nbsp;&nbsp;Sib il-match tiegħi", cta_learn: "Sir af aktar", cta_note: "Registrazzjoni b'xejn · L-ebda karta ta' kreditu · Ikkanċella fi kwalunkwe ħin",
+            foot_privacy: "Privatezza", foot_terms: "Termini", foot_safety: "Sigurtà", foot_support: "Sostenn", foot_copy: "© 2026 O-Buba. Id-drittijiet kollha riżervati."
+        },
+        IS: {
+            nav_features: "Eiginleikar", nav_how_it_works: "Hvernig það virkar", nav_stories: "Sögur", nav_login: "Skrá inn", nav_get_started: "Byrja",
+            hero_badge: "Hverjir eru nálægt", hero_title: 'Hæ<br><span class="gt">O-Buba</span> <span style="font-size:0.55em;vertical-align:middle;">❤️</span>', hero_sub: "O-Buba er þar sem raunveruleg tengsl hefjast. Uppgötvaðu alvöru efnafræði og frábær match.", hero_enter: "Koma inn", hero_show_me: "Sýndu mér",
+            feat_tag: "Af hverju O-Buba", feat_tit: 'Búið til öðruvísi,<br><span class="gt">fyrir alvöru ást</span>', feat_sub: "Hvert smellur hjálpar þér að búa til raunveruleg tengsl.",
+            f1_tit: "Snjöll jafnan", f1_desc: "Reikniritið okkar lærir óskir þínar.",
+            f2_tit: "Spjall í rauntíma", f2_desc: "Sendu skilaboð til matchen þinna strax.",
+            f3_tit: "Áhugamálamerki", f3_desc: "Deildu áhugamálum þínum og finndu fólk með sömu áhugamál.",
+            f4_tit: "Öruggt og einkamál", f4_desc: "Gögnin þín eru vernduð með dulkóðuðu spjalli.",
+            f5_tit: "Boost stilling", f5_desc: "Aktu sýnileika prófílsins þíns á mestu álagstímum.",
+            f6_tit: "Spóla til baka", f6_desc: "Hoppaðirðu yfir einhvern óvart? Ýttu á spóla til baka fyrir annan séns.",
+            how_tag: "Hvernig á að byrja", how_tit: 'Byrjaðu þína <span class="gt">ferð núna</span>',
+            s1_tit: "Búðu til prófíl", s1_desc: "Setja upp á nokkrum mínútum með myndum og lýsingu.",
+            s2_tit: "Strjúktu og uppgötvaðu", s2_desc: "Flettu í gegnum prófíla og strjúktu til hægri til að líka við.",
+            s3_tit: "Tengstu og hittu", s3_desc: "Þegar bæði strjúka til hægri — það er match!",
+            test_tag: "Raunverulegar sögur", test_tit: 'Ást fannst <span class="gt">á O-Buba</span>', test_sub: "Hvað samfélagið okkar segir.",
+            test1_text: '"Við hittumst á O-Buba. Sömu gildi gerðu það að verkum að allt smellti saman strax."',
+            test2_text: '"Áhugamálamerkin eru frábær! Ég fann einhvern með nákvæmlega sömu áhugamál."',
+            test3_text: '"Til baka hnappurinn bjargaði sambandinu mínu. Nú skipuleggjum við framtíðina saman!"',
+            show_tag: "Upplifunin", show_tit: 'Hver prófíll<br>segir <span class="gt">sögu</span>', show_sub: "Ríkir prófílar með myndum og tónlistarsmakki.",
+            show_p1_t: "Ljósmyndasafn", show_p1_d: "Flettu í gegnum margar myndir til að kynnast betur.",
+            show_p2_t: "Spotify lag", show_p2_d: "Lag sem segir meira um þig en orð.",
+            show_p3_t: "Nettengdur mælir", show_p3_d: "Sjáðu hver er virkur núna.",
+            show_p4_t: "Leitarsíur", show_p4_d: "Aldur, fjarlægð, kyn — þú ákveður rammann.",
+            cta_tit: 'Einstaklingurinn þinn er nú þegar<br><span class="gt">á O-Buba</span>', cta_sub: "Gaktu í hóp meira en 2,4 milljóna manna.",
+            cta_btn: "🔥&nbsp;&nbsp;Finna mitt match", cta_learn: "Læra meira", cta_note: "Ókeypis að skrá sig · Ekkert kreditkort · Hætta við hvenær sem er",
+            foot_privacy: "Persónuvernd", foot_terms: "Skilmálar", foot_safety: "Öryggi", foot_support: "Aðstoð", foot_copy: "© 2026 O-Buba. Öll réttindi áskilin."
+        }
+
+    };
+
+    function applyLanguage(code) {
+        const dict = TRANSLATIONS[code] || {};
+        const fallback = TRANSLATIONS['EN'];
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            const val = dict[key] || fallback[key];
+            if (val) {
+                el.innerHTML = val;
+            }
+        });
+    }
+
+    // Language Dropdown Selector
+    const langBtn = document.getElementById('lang-menu-btn');
+    const langMenu = document.getElementById('lang-dropdown-menu');
+    const currentLangLabel = document.getElementById('current-lang-label');
+    const langOptions = document.querySelectorAll('.lang-option');
+
+    if (langBtn && langMenu) {
+        langBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isVisible = langMenu.style.display === 'block';
+            langMenu.style.display = isVisible ? 'none' : 'block';
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.lang-dropdown-wrapper')) {
+                langMenu.style.display = 'none';
+            }
+        });
+
+        langOptions.forEach(opt => {
+            opt.addEventListener('click', () => {
+                const code = opt.getAttribute('data-lang');
+                const flag = opt.getAttribute('data-flag');
+                
+                langOptions.forEach(o => o.classList.remove('active'));
+                opt.classList.add('active');
+                
+                currentLangLabel.textContent = `Language: ${flag} ${code}`;
+                langMenu.style.display = 'none';
+                
+                applyLanguage(code);
+
+                try {
+                    localStorage.setItem('obuba_lang', code);
+                } catch(e){}
+            });
+        });
+
+        // Restore saved language if any
+        try {
+            const saved = localStorage.getItem('obuba_lang');
+            if (saved) {
+                const match = document.querySelector(`.lang-option[data-lang="${saved}"]`);
+                if (match) match.click();
+            }
+        } catch(e){}
+
+        // Log Out Button Handler
+        const navLogoutBtn = document.getElementById('nav-logout-btn');
+        if (navLogoutBtn) {
+            navLogoutBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                localStorage.setItem('buba_logged_in', 'false');
+                window.location.href = 'home.html';
+            });
+        }
+    }
+
+
+</script>
+</body>
+</html>
