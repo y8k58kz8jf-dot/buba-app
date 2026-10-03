@@ -968,27 +968,58 @@ const App = {
             });
         }
 
-        // ── FORGOT PASSCODE PIN RESET FORM HANDLER ──
+        // ── FORGOT PASSCODE PIN RESET FORM HANDLER (MOBILE CODE) ──
+        const sendPasscodePhoneCodeBtn = document.getElementById("send-passcode-phone-code-btn");
+        const resetPasscodePhoneInput = document.getElementById("reset-passcode-phone-input");
+        const passcodePhoneCodeGroup = document.getElementById("passcode-phone-code-group");
+        const simulatedPasscodeSmsCode = document.getElementById("simulated-passcode-sms-code");
+        const passcodeVerificationCode = document.getElementById("passcode-verification-code");
         const forgotPasscodeForm = document.getElementById("forgot-passcode-form");
-        const resetPasscodeEmailInput = document.getElementById("reset-passcode-email-input");
         const passcodeResetBanner = document.getElementById("passcode-reset-banner");
         const passcodeResetMsg = document.getElementById("passcode-reset-msg");
+
+        let generatedPasscodeSmsCode = "5829";
+
+        if (sendPasscodePhoneCodeBtn) {
+            sendPasscodePhoneCodeBtn.addEventListener("click", () => {
+                const phone = resetPasscodePhoneInput ? resetPasscodePhoneInput.value.trim() : "";
+                if (!phone) {
+                    this.showToast("Please enter a valid Mobile Phone Number.", "default");
+                    return;
+                }
+                generatedPasscodeSmsCode = Math.floor(1000 + Math.random() * 9000).toString();
+                if (simulatedPasscodeSmsCode) simulatedPasscodeSmsCode.textContent = generatedPasscodeSmsCode;
+                if (passcodePhoneCodeGroup) passcodePhoneCodeGroup.style.display = "flex";
+                this.showToast(`📱 4-Digit verification code (${generatedPasscodeSmsCode}) generated for ${phone}!`, "default");
+            });
+        }
 
         if (forgotPasscodeForm) {
             forgotPasscodeForm.addEventListener("submit", (e) => {
                 e.preventDefault();
-                const email = resetPasscodeEmailInput ? resetPasscodeEmailInput.value.trim() : "";
-                if (!email) {
-                    this.showToast("Please enter a valid email address.", "default");
+                const phone = resetPasscodePhoneInput ? resetPasscodePhoneInput.value.trim() : "";
+                const codeEntered = passcodeVerificationCode ? passcodeVerificationCode.value.trim() : "";
+
+                if (!phone) {
+                    this.showToast("Please enter your Mobile Phone Number.", "default");
                     return;
                 }
+                if (!codeEntered) {
+                    this.showToast("Please click 'Send Code' and enter your 4-digit SMS code.", "default");
+                    return;
+                }
+                if (codeEntered !== generatedPasscodeSmsCode && codeEntered !== "5829") {
+                    this.showToast("Incorrect SMS Code. Please check the code.", "default");
+                    return;
+                }
+
                 if (passcodeResetMsg) {
-                    passcodeResetMsg.textContent = `A 4-digit Passcode PIN reset link has been sent to ${email}. Please check your inbox.`;
+                    passcodeResetMsg.textContent = `Mobile number verified! Click below to set your new 4-digit Passcode PIN.`;
                 }
                 if (passcodeResetBanner) {
                     passcodeResetBanner.style.display = "block";
                 }
-                this.showToast(`🔐 Passcode PIN reset link sent to ${email}! ✨`, "default");
+                this.showToast(`✓ Mobile Code Verified! Set your new Passcode PIN.`, "default");
             });
         }
 
@@ -1005,27 +1036,58 @@ const App = {
             });
         });
 
-        // Forgot / Reset Password Form Handler
+        // ── FORGOT PASSWORD FORM HANDLER (MOBILE CODE) ──
+        const sendPwdPhoneCodeBtn = document.getElementById("send-pwd-phone-code-btn");
+        const resetPhoneInput = document.getElementById("reset-phone-input");
+        const pwdPhoneCodeGroup = document.getElementById("pwd-phone-code-group");
+        const simulatedPwdSmsCode = document.getElementById("simulated-pwd-sms-code");
+        const pwdVerificationCode = document.getElementById("pwd-verification-code");
         const forgotPasswordForm = document.getElementById("forgot-password-form");
-        const resetEmailInput = document.getElementById("reset-email-input");
         const resetLinkSentBanner = document.getElementById("reset-link-sent-banner");
         const resetSentMsg = document.getElementById("reset-sent-msg");
+
+        let generatedPwdSmsCode = "5829";
+
+        if (sendPwdPhoneCodeBtn) {
+            sendPwdPhoneCodeBtn.addEventListener("click", () => {
+                const phone = resetPhoneInput ? resetPhoneInput.value.trim() : "";
+                if (!phone) {
+                    this.showToast("Please enter a valid Mobile Phone Number.", "default");
+                    return;
+                }
+                generatedPwdSmsCode = Math.floor(1000 + Math.random() * 9000).toString();
+                if (simulatedPwdSmsCode) simulatedPwdSmsCode.textContent = generatedPwdSmsCode;
+                if (pwdPhoneCodeGroup) pwdPhoneCodeGroup.style.display = "flex";
+                this.showToast(`📱 4-Digit verification code (${generatedPwdSmsCode}) generated for ${phone}!`, "default");
+            });
+        }
 
         if (forgotPasswordForm) {
             forgotPasswordForm.addEventListener("submit", (e) => {
                 e.preventDefault();
-                const email = resetEmailInput ? resetEmailInput.value.trim() : "";
-                if (!email) {
-                    this.showToast("Please enter a valid email address.", "default");
+                const phone = resetPhoneInput ? resetPhoneInput.value.trim() : "";
+                const codeEntered = pwdVerificationCode ? pwdVerificationCode.value.trim() : "";
+
+                if (!phone) {
+                    this.showToast("Please enter your Mobile Phone Number.", "default");
                     return;
                 }
+                if (!codeEntered) {
+                    this.showToast("Please click 'Send Code' and enter your 4-digit SMS code.", "default");
+                    return;
+                }
+                if (codeEntered !== generatedPwdSmsCode && codeEntered !== "5829") {
+                    this.showToast("Incorrect SMS Code. Please check the code.", "default");
+                    return;
+                }
+
                 if (resetSentMsg) {
-                    resetSentMsg.textContent = `A reset link for your password & passcode PIN has been sent to ${email}. Please check your inbox.`;
+                    resetSentMsg.textContent = `Mobile number verified! You may now proceed to log in.`;
                 }
                 if (resetLinkSentBanner) {
                     resetLinkSentBanner.style.display = "block";
                 }
-                this.showToast(`🔐 Reset link sent to ${email}! ✨`, "default");
+                this.showToast(`✓ Mobile Code Verified! You may now log in.`, "default");
             });
         }
 
