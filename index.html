@@ -95,36 +95,40 @@
                             <button type="button" class="next-step-btn" data-next="step-welcome" style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s; padding: 0;" title="Back to Log In">
                                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
                             </button>
-                            <h2 style="margin: 0; font-size: 20px;">Reset Passcode PIN</h2>
+                            <h2 style="margin: 0; font-size: 20px;">Recover Passcode PIN</h2>
                             <div style="width: 34px;"></div>
                         </div>
-                        <p style="font-size: 13.5px; opacity: 0.9; margin-bottom: 16px;">Enter your Mobile Phone number below. We will send a 4-digit SMS verification code to your mobile phone to reset your Passcode PIN.</p>
+                        <p style="font-size: 13.5px; opacity: 0.9; margin-bottom: 16px;">Enter your registered Email Address below. We will send a 4-digit verification code to your email to recover your Passcode PIN and Password.</p>
 
                         <form id="forgot-passcode-form" onsubmit="event.preventDefault();" style="text-align: left; display: flex; flex-direction: column; gap: 14px;">
                             <div class="input-group">
-                                <label for="reset-passcode-phone-input">Mobile Phone Number</label>
+                                <label for="reset-passcode-email-input">Email Address</label>
                                 <div style="display: flex; gap: 8px;">
-                                    <input type="tel" id="reset-passcode-phone-input" required placeholder="e.g. +61 400 000 000" inputmode="tel" style="flex: 1;">
-                                    <button type="button" id="send-passcode-phone-code-btn" class="btn btn-primary" style="padding: 10px 14px; font-size: 12px; border-radius: 12px; white-space: nowrap;">Send Code 📱</button>
+                                    <input type="email" id="reset-passcode-email-input" required placeholder="e.g. alex@example.com" autocomplete="email" style="flex: 1;">
+                                    <button type="button" id="send-passcode-email-code-btn" class="btn btn-primary" style="padding: 10px 14px; font-size: 12px; border-radius: 12px; white-space: nowrap;">Send Code ✉️</button>
                                 </div>
                             </div>
 
-                            <div id="passcode-phone-code-group" style="display: none; flex-direction: column; gap: 10px; margin-top: 4px;">
+                            <div id="passcode-email-code-group" style="display: none; flex-direction: column; gap: 10px; margin-top: 4px;">
                                 <div style="background: rgba(16, 211, 131, 0.12); border: 1px solid rgba(16, 211, 131, 0.3); border-radius: 12px; padding: 10px 12px; font-size: 12px; color: #10d383; font-weight: 600;">
-                                    ✓ 4-Digit verification code generated for your mobile phone: <strong id="simulated-passcode-sms-code">5829</strong>
+                                    ✓ 4-Digit verification code sent to your email! (Code: <strong id="simulated-passcode-email-code">5829</strong>)
                                 </div>
                                 <div class="input-group">
-                                    <label for="passcode-verification-code">Enter 4-Digit SMS Code</label>
-                                    <input type="text" id="passcode-verification-code" inputmode="numeric" maxlength="6" placeholder="e.g. 5829" style="width: 100%; letter-spacing: 4px; font-size: 16px; font-weight: 700; text-align: center;">
+                                    <label for="passcode-email-verification-code">Enter 4-Digit Email Code</label>
+                                    <input type="text" id="passcode-email-verification-code" inputmode="numeric" maxlength="6" placeholder="e.g. 5829" style="width: 100%; letter-spacing: 4px; font-size: 16px; font-weight: 700; text-align: center;">
                                 </div>
-                                <button type="submit" id="verify-passcode-code-btn" class="btn btn-primary btn-block" style="margin-top: 4px; width: 100%;">Verify Code &amp; Reset Passcode PIN →</button>
+                                <button type="submit" id="verify-passcode-email-code-btn" class="btn btn-primary btn-block" style="margin-top: 4px; width: 100%;">Verify Code &amp; Recover Credentials →</button>
                             </div>
                         </form>
 
                         <div id="passcode-reset-banner" style="display: none; margin-top: 16px; background: rgba(16, 211, 131, 0.15); border: 1px solid #10d383; border-radius: 14px; padding: 14px; text-align: left;">
-                            <div style="font-weight: 800; color: #10d383; font-size: 14px; margin-bottom: 4px;">✓ Code Verified &amp; Passcode Reset Ready!</div>
-                            <div id="passcode-reset-msg" style="font-size: 12.5px; color: rgba(255,255,255,0.9); line-height: 1.4;">Mobile code verified. Please set your new 4-digit Passcode PIN.</div>
-                            <button type="button" class="next-step-btn btn btn-primary btn-block" data-next="step-create-passcode" style="margin-top: 10px; width: 100%; font-size: 13px;">Create New Passcode PIN →</button>
+                            <div style="font-weight: 800; color: #10d383; font-size: 14px; margin-bottom: 6px;">✓ Code Verified &amp; Credentials Sent to Email!</div>
+                            <div id="passcode-reset-msg" style="font-size: 12.5px; color: rgba(255,255,255,0.9); line-height: 1.6;">
+                                ✉️ Email: <strong id="rec-passcode-email" style="color: #fff;">alex@example.com</strong><br>
+                                🔢 Passcode PIN: <strong id="rec-passcode-pin" style="color: #ff33bb;">1234</strong><br>
+                                🔑 Password: <strong id="rec-passcode-password" style="color: #10d383;">••••••••</strong>
+                            </div>
+                            <button type="button" id="btn-proceed-login-passcode" class="next-step-btn btn btn-primary btn-block" data-next="step-welcome" style="margin-top: 12px; width: 100%; font-size: 13px;">Continue to Log In →</button>
                         </div>
 
                         <div style="margin-top: 20px; font-size: 13px; text-align: center;">
@@ -138,36 +142,40 @@
                             <button type="button" class="next-step-btn" data-next="step-welcome" style="display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 50%; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; font-size: 16px; font-weight: 700; cursor: pointer; transition: all 0.2s; padding: 0;" title="Back to Log In">
                                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
                             </button>
-                            <h2 style="margin: 0; font-size: 20px;">Reset Password</h2>
+                            <h2 style="margin: 0; font-size: 20px;">Recover Password</h2>
                             <div style="width: 34px;"></div>
                         </div>
-                        <p style="font-size: 13.5px; opacity: 0.9; margin-bottom: 16px;">Enter your Mobile Phone number below. We will send a 4-digit SMS verification code to your phone to reset your password.</p>
+                        <p style="font-size: 13.5px; opacity: 0.9; margin-bottom: 16px;">Enter your registered Email Address below. We will send a 4-digit verification code to your email to recover your Password and Passcode PIN.</p>
 
                         <form id="forgot-password-form" onsubmit="event.preventDefault();" style="text-align: left; display: flex; flex-direction: column; gap: 14px;">
                             <div class="input-group">
-                                <label for="reset-phone-input">Mobile Phone Number</label>
+                                <label for="reset-email-input">Email Address</label>
                                 <div style="display: flex; gap: 8px;">
-                                    <input type="tel" id="reset-phone-input" required placeholder="e.g. +61 400 000 000" inputmode="tel" style="flex: 1;">
-                                    <button type="button" id="send-pwd-phone-code-btn" class="btn btn-primary" style="padding: 10px 14px; font-size: 12px; border-radius: 12px; white-space: nowrap;">Send Code 📱</button>
+                                    <input type="email" id="reset-email-input" required placeholder="e.g. alex@example.com" autocomplete="email" style="flex: 1;">
+                                    <button type="button" id="send-pwd-email-code-btn" class="btn btn-primary" style="padding: 10px 14px; font-size: 12px; border-radius: 12px; white-space: nowrap;">Send Code ✉️</button>
                                 </div>
                             </div>
 
-                            <div id="pwd-phone-code-group" style="display: none; flex-direction: column; gap: 10px; margin-top: 4px;">
+                            <div id="pwd-email-code-group" style="display: none; flex-direction: column; gap: 10px; margin-top: 4px;">
                                 <div style="background: rgba(16, 211, 131, 0.12); border: 1px solid rgba(16, 211, 131, 0.3); border-radius: 12px; padding: 10px 12px; font-size: 12px; color: #10d383; font-weight: 600;">
-                                    ✓ 4-Digit verification code generated for your mobile phone: <strong id="simulated-pwd-sms-code">5829</strong>
+                                    ✓ 4-Digit verification code sent to your email! (Code: <strong id="simulated-pwd-email-code">5829</strong>)
                                 </div>
                                 <div class="input-group">
-                                    <label for="pwd-verification-code">Enter 4-Digit SMS Code</label>
-                                    <input type="text" id="pwd-verification-code" inputmode="numeric" maxlength="6" placeholder="e.g. 5829" style="width: 100%; letter-spacing: 4px; font-size: 16px; font-weight: 700; text-align: center;">
+                                    <label for="pwd-email-verification-code">Enter 4-Digit Email Code</label>
+                                    <input type="text" id="pwd-email-verification-code" inputmode="numeric" maxlength="6" placeholder="e.g. 5829" style="width: 100%; letter-spacing: 4px; font-size: 16px; font-weight: 700; text-align: center;">
                                 </div>
-                                <button type="submit" id="verify-pwd-code-btn" class="btn btn-primary btn-block" style="margin-top: 4px; width: 100%;">Verify Code &amp; Continue to Log In →</button>
+                                <button type="submit" id="verify-pwd-email-code-btn" class="btn btn-primary btn-block" style="margin-top: 4px; width: 100%;">Verify Code &amp; Recover Credentials →</button>
                             </div>
                         </form>
 
                         <div id="reset-link-sent-banner" style="display: none; margin-top: 16px; background: rgba(16, 211, 131, 0.15); border: 1px solid #10d383; border-radius: 14px; padding: 14px; text-align: left;">
-                            <div style="font-weight: 800; color: #10d383; font-size: 14px; margin-bottom: 4px;">✓ Code Verified &amp; Password Ready!</div>
-                            <div id="reset-sent-msg" style="font-size: 12.5px; color: rgba(255,255,255,0.9); line-height: 1.4;">Mobile code verified successfully. Please enter your password or passcode PIN to log in.</div>
-                            <button type="button" class="next-step-btn btn btn-primary btn-block" data-next="step-welcome" style="margin-top: 10px; width: 100%; font-size: 13px;">Continue to Log In →</button>
+                            <div style="font-weight: 800; color: #10d383; font-size: 14px; margin-bottom: 6px;">✓ Code Verified &amp; Credentials Sent to Email!</div>
+                            <div id="reset-sent-msg" style="font-size: 12.5px; color: rgba(255,255,255,0.9); line-height: 1.6;">
+                                ✉️ Email: <strong id="rec-pwd-email" style="color: #fff;">alex@example.com</strong><br>
+                                🔑 Password: <strong id="rec-pwd-password" style="color: #10d383;">••••••••</strong><br>
+                                🔢 Passcode PIN: <strong id="rec-pwd-pin" style="color: #ff33bb;">1234</strong>
+                            </div>
+                            <button type="button" id="btn-proceed-login-pwd" class="next-step-btn btn btn-primary btn-block" data-next="step-welcome" style="margin-top: 12px; width: 100%; font-size: 13px;">Continue to Log In →</button>
                         </div>
 
                         <div style="margin-top: 20px; font-size: 13px; text-align: center;">

@@ -888,58 +888,79 @@ const App = {
         // ── FORGOT NAME / EMAIL RECOVERY FORM HANDLER (MOBILE SMS CODE) ──
 
 
-        // ── FORGOT PASSCODE PIN RESET FORM HANDLER (MOBILE CODE) ──
-        const sendPasscodePhoneCodeBtn = document.getElementById("send-passcode-phone-code-btn");
-        const resetPasscodePhoneInput = document.getElementById("reset-passcode-phone-input");
-        const passcodePhoneCodeGroup = document.getElementById("passcode-phone-code-group");
-        const simulatedPasscodeSmsCode = document.getElementById("simulated-passcode-sms-code");
-        const passcodeVerificationCode = document.getElementById("passcode-verification-code");
+        // ── FORGOT PASSCODE PIN RECOVERY HANDLER (EMAIL CODE) ──
+        const sendPasscodeEmailCodeBtn = document.getElementById("send-passcode-email-code-btn");
+        const resetPasscodeEmailInput = document.getElementById("reset-passcode-email-input");
+        const passcodeEmailCodeGroup = document.getElementById("passcode-email-code-group");
+        const simulatedPasscodeEmailCode = document.getElementById("simulated-passcode-email-code");
+        const passcodeEmailVerificationCode = document.getElementById("passcode-email-verification-code");
         const forgotPasscodeForm = document.getElementById("forgot-passcode-form");
         const passcodeResetBanner = document.getElementById("passcode-reset-banner");
-        const passcodeResetMsg = document.getElementById("passcode-reset-msg");
+        const recPasscodeEmail = document.getElementById("rec-passcode-email");
+        const recPasscodePin = document.getElementById("rec-passcode-pin");
+        const recPasscodePassword = document.getElementById("rec-passcode-password");
+        const btnProceedLoginPasscode = document.getElementById("btn-proceed-login-passcode");
 
-        let generatedPasscodeSmsCode = "5829";
+        let generatedPasscodeEmailCode = "5829";
 
-        if (sendPasscodePhoneCodeBtn) {
-            sendPasscodePhoneCodeBtn.addEventListener("click", () => {
-                const phone = resetPasscodePhoneInput ? resetPasscodePhoneInput.value.trim() : "";
-                if (!phone) {
-                    this.showToast("Please enter a valid Mobile Phone Number.", "default");
+        if (sendPasscodeEmailCodeBtn) {
+            sendPasscodeEmailCodeBtn.addEventListener("click", () => {
+                const email = resetPasscodeEmailInput ? resetPasscodeEmailInput.value.trim() : "";
+                if (!email) {
+                    this.showToast("Please enter a valid Email Address.", "default");
                     return;
                 }
-                generatedPasscodeSmsCode = Math.floor(1000 + Math.random() * 9000).toString();
-                if (simulatedPasscodeSmsCode) simulatedPasscodeSmsCode.textContent = generatedPasscodeSmsCode;
-                if (passcodePhoneCodeGroup) passcodePhoneCodeGroup.style.display = "flex";
-                this.showToast(`📱 4-Digit verification code (${generatedPasscodeSmsCode}) generated for ${phone}!`, "default");
+                generatedPasscodeEmailCode = Math.floor(1000 + Math.random() * 9000).toString();
+                if (simulatedPasscodeEmailCode) simulatedPasscodeEmailCode.textContent = generatedPasscodeEmailCode;
+                if (passcodeEmailCodeGroup) passcodeEmailCodeGroup.style.display = "flex";
+                this.showToast(`✉️ 4-Digit verification code (${generatedPasscodeEmailCode}) sent to ${email}!`, "default");
             });
         }
 
         if (forgotPasscodeForm) {
             forgotPasscodeForm.addEventListener("submit", (e) => {
                 e.preventDefault();
-                const phone = resetPasscodePhoneInput ? resetPasscodePhoneInput.value.trim() : "";
-                const codeEntered = passcodeVerificationCode ? passcodeVerificationCode.value.trim() : "";
+                const email = resetPasscodeEmailInput ? resetPasscodeEmailInput.value.trim() : "";
+                const codeEntered = passcodeEmailVerificationCode ? passcodeEmailVerificationCode.value.trim() : "";
 
-                if (!phone) {
-                    this.showToast("Please enter your Mobile Phone Number.", "default");
+                if (!email) {
+                    this.showToast("Please enter your Email Address.", "default");
                     return;
                 }
                 if (!codeEntered) {
-                    this.showToast("Please click 'Send Code' and enter your 4-digit SMS code.", "default");
+                    this.showToast("Please click 'Send Code' and enter your 4-digit Email code.", "default");
                     return;
                 }
-                if (codeEntered !== generatedPasscodeSmsCode && codeEntered !== "5829") {
-                    this.showToast("Incorrect SMS Code. Please check the code.", "default");
+                if (codeEntered !== generatedPasscodeEmailCode && codeEntered !== "5829") {
+                    this.showToast("Incorrect Email Code. Please check the code sent to your email.", "default");
                     return;
                 }
 
-                if (passcodeResetMsg) {
-                    passcodeResetMsg.textContent = `Mobile number verified! Click below to set your new 4-digit Passcode PIN.`;
-                }
-                if (passcodeResetBanner) {
-                    passcodeResetBanner.style.display = "block";
-                }
-                this.showToast(`✓ Mobile Code Verified! Set your new Passcode PIN.`, "default");
+                const currentPasscode = state.userProfile.passcode || "1234";
+                const currentPassword = state.userProfile.password || "Password123!";
+
+                if (recPasscodeEmail) recPasscodeEmail.textContent = email;
+                if (recPasscodePin) recPasscodePin.textContent = currentPasscode;
+                if (recPasscodePassword) recPasscodePassword.textContent = currentPassword;
+                if (passcodeResetBanner) passcodeResetBanner.style.display = "block";
+
+                // Pre-fill login username
+                const loginUsernameInput = document.getElementById("login-username");
+                if (loginUsernameInput) loginUsernameInput.value = email;
+
+                this.showToast(`✓ Email Code Verified! Password & Passcode PIN recovered.`, "default");
+            });
+        }
+
+        if (btnProceedLoginPasscode) {
+            btnProceedLoginPasscode.addEventListener("click", () => {
+                const email = resetPasscodeEmailInput ? resetPasscodeEmailInput.value.trim() : "";
+                const loginUsernameInput = document.getElementById("login-username");
+                if (loginUsernameInput && email) loginUsernameInput.value = email;
+                document.querySelectorAll(".onboarding-card").forEach(c => c.classList.remove("active"));
+                const stepWelcome = document.getElementById("step-welcome");
+                if (stepWelcome) stepWelcome.classList.add("active");
+                this.showToast(`Credentials sent! Enter your Passcode PIN or Password to log in.`, "default");
             });
         }
 
@@ -956,58 +977,79 @@ const App = {
             });
         });
 
-        // ── FORGOT PASSWORD FORM HANDLER (MOBILE CODE) ──
-        const sendPwdPhoneCodeBtn = document.getElementById("send-pwd-phone-code-btn");
-        const resetPhoneInput = document.getElementById("reset-phone-input");
-        const pwdPhoneCodeGroup = document.getElementById("pwd-phone-code-group");
-        const simulatedPwdSmsCode = document.getElementById("simulated-pwd-sms-code");
-        const pwdVerificationCode = document.getElementById("pwd-verification-code");
+        // ── FORGOT PASSWORD RECOVERY HANDLER (EMAIL CODE) ──
+        const sendPwdEmailCodeBtn = document.getElementById("send-pwd-email-code-btn");
+        const resetEmailInput = document.getElementById("reset-email-input");
+        const pwdEmailCodeGroup = document.getElementById("pwd-email-code-group");
+        const simulatedPwdEmailCode = document.getElementById("simulated-pwd-email-code");
+        const pwdEmailVerificationCode = document.getElementById("pwd-email-verification-code");
         const forgotPasswordForm = document.getElementById("forgot-password-form");
         const resetLinkSentBanner = document.getElementById("reset-link-sent-banner");
-        const resetSentMsg = document.getElementById("reset-sent-msg");
+        const recPwdEmail = document.getElementById("rec-pwd-email");
+        const recPwdPassword = document.getElementById("rec-pwd-password");
+        const recPwdPin = document.getElementById("rec-pwd-pin");
+        const btnProceedLoginPwd = document.getElementById("btn-proceed-login-pwd");
 
-        let generatedPwdSmsCode = "5829";
+        let generatedPwdEmailCode = "5829";
 
-        if (sendPwdPhoneCodeBtn) {
-            sendPwdPhoneCodeBtn.addEventListener("click", () => {
-                const phone = resetPhoneInput ? resetPhoneInput.value.trim() : "";
-                if (!phone) {
-                    this.showToast("Please enter a valid Mobile Phone Number.", "default");
+        if (sendPwdEmailCodeBtn) {
+            sendPwdEmailCodeBtn.addEventListener("click", () => {
+                const email = resetEmailInput ? resetEmailInput.value.trim() : "";
+                if (!email) {
+                    this.showToast("Please enter a valid Email Address.", "default");
                     return;
                 }
-                generatedPwdSmsCode = Math.floor(1000 + Math.random() * 9000).toString();
-                if (simulatedPwdSmsCode) simulatedPwdSmsCode.textContent = generatedPwdSmsCode;
-                if (pwdPhoneCodeGroup) pwdPhoneCodeGroup.style.display = "flex";
-                this.showToast(`📱 4-Digit verification code (${generatedPwdSmsCode}) generated for ${phone}!`, "default");
+                generatedPwdEmailCode = Math.floor(1000 + Math.random() * 9000).toString();
+                if (simulatedPwdEmailCode) simulatedPwdEmailCode.textContent = generatedPwdEmailCode;
+                if (pwdEmailCodeGroup) pwdEmailCodeGroup.style.display = "flex";
+                this.showToast(`✉️ 4-Digit verification code (${generatedPwdEmailCode}) sent to ${email}!`, "default");
             });
         }
 
         if (forgotPasswordForm) {
             forgotPasswordForm.addEventListener("submit", (e) => {
                 e.preventDefault();
-                const phone = resetPhoneInput ? resetPhoneInput.value.trim() : "";
-                const codeEntered = pwdVerificationCode ? pwdVerificationCode.value.trim() : "";
+                const email = resetEmailInput ? resetEmailInput.value.trim() : "";
+                const codeEntered = pwdEmailVerificationCode ? pwdEmailVerificationCode.value.trim() : "";
 
-                if (!phone) {
-                    this.showToast("Please enter your Mobile Phone Number.", "default");
+                if (!email) {
+                    this.showToast("Please enter your Email Address.", "default");
                     return;
                 }
                 if (!codeEntered) {
-                    this.showToast("Please click 'Send Code' and enter your 4-digit SMS code.", "default");
+                    this.showToast("Please click 'Send Code' and enter your 4-digit Email code.", "default");
                     return;
                 }
-                if (codeEntered !== generatedPwdSmsCode && codeEntered !== "5829") {
-                    this.showToast("Incorrect SMS Code. Please check the code.", "default");
+                if (codeEntered !== generatedPwdEmailCode && codeEntered !== "5829") {
+                    this.showToast("Incorrect Email Code. Please check the code sent to your email.", "default");
                     return;
                 }
 
-                if (resetSentMsg) {
-                    resetSentMsg.textContent = `Mobile number verified! You may now proceed to log in.`;
-                }
-                if (resetLinkSentBanner) {
-                    resetLinkSentBanner.style.display = "block";
-                }
-                this.showToast(`✓ Mobile Code Verified! You may now log in.`, "default");
+                const currentPasscode = state.userProfile.passcode || "1234";
+                const currentPassword = state.userProfile.password || "Password123!";
+
+                if (recPwdEmail) recPwdEmail.textContent = email;
+                if (recPwdPassword) recPwdPassword.textContent = currentPassword;
+                if (recPwdPin) recPwdPin.textContent = currentPasscode;
+                if (resetLinkSentBanner) resetLinkSentBanner.style.display = "block";
+
+                // Pre-fill login username
+                const loginUsernameInput = document.getElementById("login-username");
+                if (loginUsernameInput) loginUsernameInput.value = email;
+
+                this.showToast(`✓ Email Code Verified! Password & Passcode PIN recovered.`, "default");
+            });
+        }
+
+        if (btnProceedLoginPwd) {
+            btnProceedLoginPwd.addEventListener("click", () => {
+                const email = resetEmailInput ? resetEmailInput.value.trim() : "";
+                const loginUsernameInput = document.getElementById("login-username");
+                if (loginUsernameInput && email) loginUsernameInput.value = email;
+                document.querySelectorAll(".onboarding-card").forEach(c => c.classList.remove("active"));
+                const stepWelcome = document.getElementById("step-welcome");
+                if (stepWelcome) stepWelcome.classList.add("active");
+                this.showToast(`Credentials sent! Enter your Password or Passcode PIN to log in.`, "default");
             });
         }
 
