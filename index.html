@@ -43,14 +43,19 @@
                         </div>
                         <p id="login-subtitle">Choose your login method: Password or 4-Digit Passcode (PIN).</p>
 
-                        <!-- Login Method Selector Tabs -->
-                        <div class="login-method-tabs" style="display: flex; background: rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 4px; gap: 6px; margin-top: 12px; margin-bottom: 14px;">
-                            <button type="button" class="login-method-tab active" id="tab-login-password" style="flex: 1; padding: 9px 12px; border-radius: 8px; border: 1px solid #ff33bb; background: rgba(255, 51, 187, 0.25); color: #fff; font-weight: 700; font-size: 13px; cursor: pointer; transition: all 0.2s;">
-                                🔑 Password
-                            </button>
-                            <button type="button" class="login-method-tab" id="tab-login-passcode" style="flex: 1; padding: 9px 12px; border-radius: 8px; border: 1px solid transparent; background: transparent; color: rgba(255, 255, 255, 0.7); font-weight: 600; font-size: 13px; cursor: pointer; transition: all 0.2s;">
-                                🔢 Passcode (PIN)
-                            </button>
+                        <!-- Login Option Selector (Password or Passcode) -->
+                        <div class="input-group" style="margin-top: 14px; margin-bottom: 2px;">
+                            <label style="margin-bottom: 8px; display: block; font-weight: 700; font-size: 13px;">Choose Login Option</label>
+                            <div style="display: flex; gap: 10px;">
+                                <label class="login-option-card active" id="option-card-password" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 14px; background: rgba(255, 51, 187, 0.2); border: 2px solid #ff33bb; border-radius: 12px; cursor: pointer; transition: all 0.2s;">
+                                    <input type="radio" name="login-auth-type" id="radio-auth-password" value="password" checked style="accent-color: #ff33bb; width: 16px; height: 16px; cursor: pointer;">
+                                    <span style="font-weight: 700; font-size: 13.5px; color: #fff;">🔑 Password</span>
+                                </label>
+                                <label class="login-option-card" id="option-card-passcode" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 14px; background: rgba(255, 255, 255, 0.05); border: 1.5px solid rgba(255, 255, 255, 0.2); border-radius: 12px; cursor: pointer; transition: all 0.2s;">
+                                    <input type="radio" name="login-auth-type" id="radio-auth-passcode" value="passcode" style="accent-color: #ff33bb; width: 16px; height: 16px; cursor: pointer;">
+                                    <span style="font-weight: 700; font-size: 13.5px; color: rgba(255, 255, 255, 0.8);">🔢 Passcode</span>
+                                </label>
+                            </div>
                         </div>
 
                         <form id="login-form" onsubmit="event.preventDefault();" style="margin-top: 10px; text-align: left; display: flex; flex-direction: column; gap: 14px;">

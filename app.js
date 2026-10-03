@@ -693,9 +693,12 @@ const App = {
             appLogoutBtn.addEventListener("click", handleLogout);
         }
 
-        // ── LOGIN METHOD SWITCHER TABS (Password vs Passcode/PIN) ──
-        const tabPassword = document.getElementById("tab-login-password");
-        const tabPasscode = document.getElementById("tab-login-passcode");
+        // ── LOGIN METHOD SWITCHER (Password vs Passcode/PIN Radio Options) ──
+        const cardPassword = document.getElementById("option-card-password");
+        const cardPasscode = document.getElementById("option-card-passcode");
+        const radioPassword = document.getElementById("radio-auth-password");
+        const radioPasscode = document.getElementById("radio-auth-passcode");
+
         const loginPasswordGroup = document.getElementById("login-password-group");
         const loginPasscodeGroup = document.getElementById("login-passcode-group");
         const loginSubmitBtn = document.getElementById("login-submit-btn");
@@ -704,34 +707,32 @@ const App = {
         const switchLoginMethod = (method) => {
             state.activeLoginMethod = method;
             if (method === "password") {
-                if (tabPassword) {
-                    tabPassword.classList.add("active");
-                    tabPassword.style.border = "1px solid #ff33bb";
-                    tabPassword.style.background = "rgba(255, 51, 187, 0.25)";
-                    tabPassword.style.color = "#fff";
+                if (radioPassword) radioPassword.checked = true;
+                if (cardPassword) {
+                    cardPassword.classList.add("active");
+                    cardPassword.style.border = "2px solid #ff33bb";
+                    cardPassword.style.background = "rgba(255, 51, 187, 0.2)";
                 }
-                if (tabPasscode) {
-                    tabPasscode.classList.remove("active");
-                    tabPasscode.style.border = "1px solid transparent";
-                    tabPasscode.style.background = "transparent";
-                    tabPasscode.style.color = "rgba(255, 255, 255, 0.7)";
+                if (cardPasscode) {
+                    cardPasscode.classList.remove("active");
+                    cardPasscode.style.border = "1.5px solid rgba(255, 255, 255, 0.2)";
+                    cardPasscode.style.background = "rgba(255, 255, 255, 0.05)";
                 }
                 if (loginPasswordGroup) loginPasswordGroup.style.display = "block";
                 if (loginPasscodeGroup) loginPasscodeGroup.style.display = "none";
                 if (loginSubmitBtn) loginSubmitBtn.textContent = "Log In with Password";
                 if (loginSubtitle) loginSubtitle.textContent = "Enter your name or email and password to access your profile.";
             } else {
-                if (tabPasscode) {
-                    tabPasscode.classList.add("active");
-                    tabPasscode.style.border = "1px solid #ff33bb";
-                    tabPasscode.style.background = "rgba(255, 51, 187, 0.25)";
-                    tabPasscode.style.color = "#fff";
+                if (radioPasscode) radioPasscode.checked = true;
+                if (cardPasscode) {
+                    cardPasscode.classList.add("active");
+                    cardPasscode.style.border = "2px solid #ff33bb";
+                    cardPasscode.style.background = "rgba(255, 51, 187, 0.2)";
                 }
-                if (tabPassword) {
-                    tabPassword.classList.remove("active");
-                    tabPassword.style.border = "1px solid transparent";
-                    tabPassword.style.background = "transparent";
-                    tabPassword.style.color = "rgba(255, 255, 255, 0.7)";
+                if (cardPassword) {
+                    cardPassword.classList.remove("active");
+                    cardPassword.style.border = "1.5px solid rgba(255, 255, 255, 0.2)";
+                    cardPassword.style.background = "rgba(255, 255, 255, 0.05)";
                 }
                 if (loginPasswordGroup) loginPasswordGroup.style.display = "none";
                 if (loginPasscodeGroup) loginPasscodeGroup.style.display = "block";
@@ -740,8 +741,10 @@ const App = {
             }
         };
 
-        if (tabPassword) tabPassword.addEventListener("click", () => switchLoginMethod("password"));
-        if (tabPasscode) tabPasscode.addEventListener("click", () => switchLoginMethod("passcode"));
+        if (cardPassword) cardPassword.addEventListener("click", () => switchLoginMethod("password"));
+        if (cardPasscode) cardPasscode.addEventListener("click", () => switchLoginMethod("passcode"));
+        if (radioPassword) radioPassword.addEventListener("change", () => switchLoginMethod("password"));
+        if (radioPasscode) radioPasscode.addEventListener("change", () => switchLoginMethod("passcode"));
 
         // Login Form Submission -> Validates credentials (Password or Passcode) and logs in
         const loginForm = document.getElementById("login-form");
