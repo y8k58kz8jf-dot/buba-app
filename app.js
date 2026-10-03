@@ -390,8 +390,11 @@ const state = {
         isLicenseVerified: false,
         licenseDoc: null,
         savedPaymentMethod: "applepay",
-        avatarShape: "square"
+        avatarShape: "square",
+        password: "",
+        passcode: "1234"
     },
+    activeLoginMethod: "password",
     activePhotoSlotIndex: 0,
     deck: [],          // Active matching candidates
     swipes: {},        // id -> 'like' / 'nope' / 'superlike'
@@ -690,28 +693,89 @@ const App = {
             appLogoutBtn.addEventListener("click", handleLogout);
         }
 
-        // Login Form Submission -> Validates credentials and opens next onboarding step
+        // ── LOGIN METHOD SWITCHER TABS (Password vs Passcode/PIN) ──
+        const tabPassword = document.getElementById("tab-login-password");
+        const tabPasscode = document.getElementById("tab-login-passcode");
+        const loginPasswordGroup = document.getElementById("login-password-group");
+        const loginPasscodeGroup = document.getElementById("login-passcode-group");
+        const loginSubmitBtn = document.getElementById("login-submit-btn");
+        const loginSubtitle = document.getElementById("login-subtitle");
+
+        const switchLoginMethod = (method) => {
+            state.activeLoginMethod = method;
+            if (method === "password") {
+                if (tabPassword) {
+                    tabPassword.classList.add("active");
+                    tabPassword.style.border = "1px solid #ff33bb";
+                    tabPassword.style.background = "rgba(255, 51, 187, 0.25)";
+                    tabPassword.style.color = "#fff";
+                }
+                if (tabPasscode) {
+                    tabPasscode.classList.remove("active");
+                    tabPasscode.style.border = "1px solid transparent";
+                    tabPasscode.style.background = "transparent";
+                    tabPasscode.style.color = "rgba(255, 255, 255, 0.7)";
+                }
+                if (loginPasswordGroup) loginPasswordGroup.style.display = "block";
+                if (loginPasscodeGroup) loginPasscodeGroup.style.display = "none";
+                if (loginSubmitBtn) loginSubmitBtn.textContent = "Log In with Password";
+                if (loginSubtitle) loginSubtitle.textContent = "Enter your name or email and password to access your profile.";
+            } else {
+                if (tabPasscode) {
+                    tabPasscode.classList.add("active");
+                    tabPasscode.style.border = "1px solid #ff33bb";
+                    tabPasscode.style.background = "rgba(255, 51, 187, 0.25)";
+                    tabPasscode.style.color = "#fff";
+                }
+                if (tabPassword) {
+                    tabPassword.classList.remove("active");
+                    tabPassword.style.border = "1px solid transparent";
+                    tabPassword.style.background = "transparent";
+                    tabPassword.style.color = "rgba(255, 255, 255, 0.7)";
+                }
+                if (loginPasswordGroup) loginPasswordGroup.style.display = "none";
+                if (loginPasscodeGroup) loginPasscodeGroup.style.display = "block";
+                if (loginSubmitBtn) loginSubmitBtn.textContent = "Log In with Passcode (PIN)";
+                if (loginSubtitle) loginSubtitle.textContent = "Enter your name or email and your 4-digit passcode PIN.";
+            }
+        };
+
+        if (tabPassword) tabPassword.addEventListener("click", () => switchLoginMethod("password"));
+        if (tabPasscode) tabPasscode.addEventListener("click", () => switchLoginMethod("passcode"));
+
+        // Login Form Submission -> Validates credentials (Password or Passcode) and logs in
         const loginForm = document.getElementById("login-form");
         if (loginForm) {
             loginForm.addEventListener("submit", (e) => {
                 e.preventDefault();
                 const usernameInput = document.getElementById("login-username");
                 const passwordInput = document.getElementById("login-password");
+                const passcodeInput = document.getElementById("login-passcode");
                 
                 const nameOrEmail = usernameInput ? usernameInput.value.trim() : "";
                 const password = passwordInput ? passwordInput.value : "";
+                const passcode = passcodeInput ? passcodeInput.value.trim() : "";
 
                 const savedName = (state.userProfile.name || state.userProfile.firstName || "").toLowerCase();
                 const savedEmail = (state.userProfile.email || "").toLowerCase();
                 const savedPassword = state.userProfile.password;
+                const savedPasscode = state.userProfile.passcode || "1234";
 
                 const inputLower = nameOrEmail.toLowerCase();
                 const matchesIdentity = !savedName && !savedEmail ? true : (inputLower === savedName || inputLower === savedEmail || (savedEmail && inputLower.includes(savedEmail)) || (savedName && inputLower.includes(savedName)) || (savedEmail && savedEmail.includes(inputLower)));
-                const matchesPassword = !savedPassword ? true : (password === savedPassword);
 
-                if (savedPassword && (savedName || savedEmail) && nameOrEmail && password && (!matchesIdentity || !matchesPassword)) {
-                    this.showToast("Invalid Name/Email or Password. Please check credentials or click Forgot Password.", "default");
-                    return;
+                if (state.activeLoginMethod === "password") {
+                    const matchesPassword = !savedPassword ? true : (password === savedPassword);
+                    if (savedPassword && (savedName || savedEmail) && nameOrEmail && password && (!matchesIdentity || !matchesPassword)) {
+                        this.showToast("Invalid Name/Email or Password. Please check credentials or click Forgot Password.", "default");
+                        return;
+                    }
+                } else {
+                    const matchesPasscode = !savedPasscode ? true : (passcode === savedPasscode);
+                    if ((savedName || savedEmail) && nameOrEmail && passcode && (!matchesIdentity || !matchesPasscode)) {
+                        this.showToast("Invalid Name/Email or Passcode PIN. Default PIN is 1234.", "default");
+                        return;
+                    }
                 }
                 
                 if (nameOrEmail) {
@@ -731,7 +795,7 @@ const App = {
                 localStorage.setItem("buba_has_setup", "true");
                 Storage.save();
                 
-                // Open Fourth Page (Main App Workspace / Matches Page)
+                // Open Main App Workspace / Matches Page
                 DOM.app.classList.remove("onboarding-active");
                 DOM.onboardingScreen.classList.remove("active");
                 DOM.mainApp.classList.add("active");
@@ -743,7 +807,8 @@ const App = {
                 this.renderSidebarMatches();
                 this.renderSidebarConversations();
                 
-                this.showToast("Credentials matched! Welcome to Fourth Page (O-Buba Matches) ✨", "default");
+                const methodLabel = state.activeLoginMethod === "passcode" ? "Passcode PIN" : "Password";
+                this.showToast(`Logged in successfully via ${methodLabel}! Welcome to O-Buba ✨`, "default");
             });
         }
 
@@ -775,7 +840,7 @@ const App = {
                     return;
                 }
                 if (resetSentMsg) {
-                    resetSentMsg.textContent = `A password reset link has been sent to ${email}. Please check your inbox.`;
+                    resetSentMsg.textContent = `A reset link for your password & passcode PIN has been sent to ${email}. Please check your inbox.`;
                 }
                 if (resetLinkSentBanner) {
                     resetLinkSentBanner.style.display = "block";
@@ -789,7 +854,9 @@ const App = {
         const detailsNameInput = document.getElementById("details-name-input");
         const detailsEmailInput = document.getElementById("details-email-input");
         const detailsPasswordInput = document.getElementById("details-password-input");
+        const detailsPasscodeInput = document.getElementById("details-passcode-input");
         const toggleDetailsPasswordBtn = document.getElementById("toggle-details-password-btn");
+        const toggleDetailsPasscodeBtn = document.getElementById("toggle-details-passcode-btn");
 
         const settingsLoginNameVal = document.getElementById("settings-login-name-val");
         const settingsLoginEmailVal = document.getElementById("settings-login-email-val");
@@ -802,6 +869,15 @@ const App = {
                 const isPassword = detailsPasswordInput.type === "password";
                 detailsPasswordInput.type = isPassword ? "text" : "password";
                 toggleDetailsPasswordBtn.textContent = isPassword ? "🙈 Hide" : "👁️ Show";
+            });
+        }
+
+        // Toggle Passcode Visibility in Details Page
+        if (toggleDetailsPasscodeBtn && detailsPasscodeInput) {
+            toggleDetailsPasscodeBtn.addEventListener("click", () => {
+                const isPassword = detailsPasscodeInput.type === "password";
+                detailsPasscodeInput.type = isPassword ? "text" : "password";
+                toggleDetailsPasscodeBtn.textContent = isPassword ? "🙈 Hide" : "👁️ Show";
             });
         }
 
@@ -821,6 +897,7 @@ const App = {
                 const name = detailsNameInput ? detailsNameInput.value.trim() : "";
                 const email = detailsEmailInput ? detailsEmailInput.value.trim() : "";
                 const password = detailsPasswordInput ? detailsPasswordInput.value : "";
+                const passcode = detailsPasscodeInput ? detailsPasscodeInput.value.trim() : "";
 
                 if (name) {
                     state.userProfile.name = name;
@@ -832,12 +909,15 @@ const App = {
                 if (password) {
                     state.userProfile.password = password;
                 }
+                if (passcode) {
+                    state.userProfile.passcode = passcode;
+                }
 
                 this.updateOwnProfileDOM();
                 this.syncSettingsFormWithState();
                 Storage.save();
 
-                this.showToast("🔐 Log In Details updated successfully! ✨", "default");
+                this.showToast("🔐 Log In Details & Passcode PIN updated successfully! ✨", "default");
             });
         }
 
@@ -1661,6 +1741,7 @@ const App = {
         const currentName = state.userProfile.firstName || state.userProfile.name || "";
         const currentEmail = state.userProfile.email || "";
         const currentPassword = state.userProfile.password || "";
+        const currentPasscode = state.userProfile.passcode || "1234";
 
         if (DOM.settingsFirstNameVal) {
             DOM.settingsFirstNameVal.value = currentName;
@@ -1676,6 +1757,7 @@ const App = {
         const detailsNameInput = document.getElementById("details-name-input");
         const detailsEmailInput = document.getElementById("details-email-input");
         const detailsPasswordInput = document.getElementById("details-password-input");
+        const detailsPasscodeInput = document.getElementById("details-passcode-input");
         const settingsLoginNameVal = document.getElementById("settings-login-name-val");
         const settingsLoginEmailVal = document.getElementById("settings-login-email-val");
         const settingsLoginPasswordVal = document.getElementById("settings-login-password-val");
@@ -1683,6 +1765,7 @@ const App = {
         if (detailsNameInput) detailsNameInput.value = currentName;
         if (detailsEmailInput) detailsEmailInput.value = currentEmail;
         if (detailsPasswordInput) detailsPasswordInput.value = currentPassword;
+        if (detailsPasscodeInput) detailsPasscodeInput.value = currentPasscode;
 
         if (settingsLoginNameVal) settingsLoginNameVal.value = currentName;
         if (settingsLoginEmailVal) settingsLoginEmailVal.value = currentEmail;
