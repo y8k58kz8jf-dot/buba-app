@@ -939,17 +939,31 @@ const App = {
                 state.userProfile.phone = phone;
                 Storage.save();
 
+                // Pre-fill login username field with recovered Name/Email
+                const loginUsernameInput = document.getElementById("login-username");
+                if (loginUsernameInput) {
+                    loginUsernameInput.value = currentName || currentEmail;
+                }
+
                 if (recNameVal) recNameVal.textContent = currentName;
                 if (recEmailVal) recEmailVal.textContent = currentEmail;
                 if (nameRecoveredBanner) nameRecoveredBanner.style.display = "block";
 
-                this.showToast(`✓ Phone Verified! Registered Name: ${currentName} & Email: ${currentEmail}`, "default");
+                this.showToast(`✓ Phone Verified! Name (${currentName}) & Email (${currentEmail}) recovered.`, "default");
             });
         }
 
         if (btnProceedLoggedInMobile) {
             btnProceedLoggedInMobile.addEventListener("click", () => {
-                this.proceedToMainApp("✓ Logged in via Mobile Verification Code! Welcome to O-Buba ✨");
+                const currentName = state.userProfile.firstName || state.userProfile.name || "Alex";
+                const loginUsernameInput = document.getElementById("login-username");
+                if (loginUsernameInput) {
+                    loginUsernameInput.value = currentName;
+                }
+                document.querySelectorAll(".onboarding-card").forEach(c => c.classList.remove("active"));
+                const stepWelcome = document.getElementById("step-welcome");
+                if (stepWelcome) stepWelcome.classList.add("active");
+                this.showToast(`Name recovered! Please enter your Passcode PIN or Password to log in.`, "default");
             });
         }
 
