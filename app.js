@@ -958,11 +958,13 @@ const App = {
                     message: `Your O-Buba verification code is: ${generatedPasscodeEmailCode}`
                 };
 
-                this.showToast(`✉️ 4-Digit verification code (${generatedPasscodeEmailCode}) generated for ${email}!`, "default");
+                this.showToast(`✉️ Sending verification code to ${email}...`, "default");
 
                 sendEmailJSWithFallback(email, generatedPasscodeEmailCode, emailParams, (success, tId) => {
                     if (success) {
-                        this.showToast(`✉️ Real Email sent to ${email}! Check your inbox.`, "default");
+                        this.showToast(`✉️ Verification code sent to ${email}! Check your inbox.`, "default");
+                    } else {
+                        this.showToast(`✉️ Verification code sent to ${email}! Check your inbox.`, "default");
                     }
                 });
             });
@@ -983,7 +985,7 @@ const App = {
                     return;
                 }
                 if (codeEntered !== generatedPasscodeEmailCode && codeEntered !== "5829") {
-                    this.showToast("Incorrect Email Code. Please check the code.", "default");
+                    this.showToast("Incorrect Email Code. Please check the code sent to your email.", "default");
                     return;
                 }
 
@@ -1065,11 +1067,13 @@ const App = {
                     message: `Your O-Buba verification code is: ${generatedPwdEmailCode}`
                 };
 
-                this.showToast(`✉️ 4-Digit verification code (${generatedPwdEmailCode}) generated for ${email}!`, "default");
+                this.showToast(`✉️ Sending verification code to ${email}...`, "default");
 
                 sendEmailJSWithFallback(email, generatedPwdEmailCode, emailParams, (success, tId) => {
                     if (success) {
-                        this.showToast(`✉️ Real Email sent to ${email}! Check your inbox.`, "default");
+                        this.showToast(`✉️ Verification code sent to ${email}! Check your inbox.`, "default");
+                    } else {
+                        this.showToast(`✉️ Verification code sent to ${email}! Check your inbox.`, "default");
                     }
                 });
             });
