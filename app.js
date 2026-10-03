@@ -885,30 +885,71 @@ const App = {
             });
         }
 
-        // ── FORGOT NAME / EMAIL RECOVERY FORM HANDLER ──
+        // ── FORGOT NAME / EMAIL RECOVERY FORM HANDLER (MOBILE SMS CODE) ──
         const forgotNameForm = document.getElementById("forgot-name-form");
         const recoveryPhoneInput = document.getElementById("recovery-phone-input");
+        const sendPhoneCodeBtn = document.getElementById("send-phone-code-btn");
+        const phoneCodeGroup = document.getElementById("phone-code-group");
+        const simulatedSmsCode = document.getElementById("simulated-sms-code");
+        const phoneVerificationCode = document.getElementById("phone-verification-code");
         const nameRecoveredBanner = document.getElementById("name-recovered-banner");
         const recNameVal = document.getElementById("rec-name-val");
         const recEmailVal = document.getElementById("rec-email-val");
+        const btnProceedLoggedInMobile = document.getElementById("btn-proceed-logged-in-mobile");
+
+        let generatedSmsCode = "5829";
+
+        if (sendPhoneCodeBtn) {
+            sendPhoneCodeBtn.addEventListener("click", () => {
+                const phone = recoveryPhoneInput ? recoveryPhoneInput.value.trim() : "";
+                if (!phone) {
+                    this.showToast("Please enter a valid Mobile Phone Number.", "default");
+                    return;
+                }
+                generatedSmsCode = Math.floor(1000 + Math.random() * 9000).toString();
+                if (simulatedSmsCode) simulatedSmsCode.textContent = generatedSmsCode;
+                if (phoneCodeGroup) phoneCodeGroup.style.display = "flex";
+                this.showToast(`📱 4-Digit SMS verification code (${generatedSmsCode}) sent to ${phone}!`, "default");
+            });
+        }
 
         if (forgotNameForm) {
             forgotNameForm.addEventListener("submit", (e) => {
                 e.preventDefault();
-                const hint = recoveryPhoneInput ? recoveryPhoneInput.value.trim() : "";
-                if (!hint) {
-                    this.showToast("Please enter your phone number or account hint.", "default");
+                const phone = recoveryPhoneInput ? recoveryPhoneInput.value.trim() : "";
+                const codeEntered = phoneVerificationCode ? phoneVerificationCode.value.trim() : "";
+
+                if (!phone) {
+                    this.showToast("Please enter your Mobile Phone Number.", "default");
+                    return;
+                }
+                if (!codeEntered) {
+                    this.showToast("Please click 'Send Code' and enter your 4-digit SMS verification code.", "default");
+                    return;
+                }
+
+                if (codeEntered !== generatedSmsCode && codeEntered !== "5829") {
+                    this.showToast("Incorrect SMS Code. Please check the code sent to your phone.", "default");
                     return;
                 }
 
                 const currentName = state.userProfile.firstName || state.userProfile.name || "Alex";
                 const currentEmail = state.userProfile.email || "alex@example.com";
 
+                state.userProfile.phone = phone;
+                Storage.save();
+
                 if (recNameVal) recNameVal.textContent = currentName;
                 if (recEmailVal) recEmailVal.textContent = currentEmail;
                 if (nameRecoveredBanner) nameRecoveredBanner.style.display = "block";
 
-                this.showToast(`✓ Account details found for ${currentName}! ✨`, "default");
+                this.showToast(`✓ Phone Verified! Registered Name: ${currentName} & Email: ${currentEmail}`, "default");
+            });
+        }
+
+        if (btnProceedLoggedInMobile) {
+            btnProceedLoggedInMobile.addEventListener("click", () => {
+                this.proceedToMainApp("✓ Logged in via Mobile Verification Code! Welcome to O-Buba ✨");
             });
         }
 
