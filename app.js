@@ -906,10 +906,11 @@ const App = {
                     this.showToast("Please enter a valid Mobile Phone Number.", "default");
                     return;
                 }
+                // Generate a random 4-digit code directly in the browser JavaScript
                 generatedSmsCode = Math.floor(1000 + Math.random() * 9000).toString();
                 if (simulatedSmsCode) simulatedSmsCode.textContent = generatedSmsCode;
                 if (phoneCodeGroup) phoneCodeGroup.style.display = "flex";
-                this.showToast(`📱 4-Digit SMS verification code (${generatedSmsCode}) sent to ${phone}!`, "default");
+                this.showToast(`📱 4-Digit verification code (${generatedSmsCode}) generated for ${phone}!`, "default");
             });
         }
 
