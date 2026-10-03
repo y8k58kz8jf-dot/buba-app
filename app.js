@@ -659,6 +659,33 @@ const App = {
         const stepWelcome = document.getElementById("step-welcome");
         if (stepWelcome) stepWelcome.classList.add("active");
         this.syncSettingsFormWithState();
+
+        // If passcode has been verified & set, make passcode the default option all the time
+        if (state.userProfile.hasVerifiedPasscode || state.userProfile.defaultLoginMethod === "passcode") {
+            if (this.switchLoginMethod) this.switchLoginMethod("passcode");
+        } else {
+            if (this.switchLoginMethod) this.switchLoginMethod("password");
+        }
+    },
+
+    proceedToMainApp(toastMsg) {
+        state.userProfile.isLicenseVerified = true;
+        localStorage.setItem("buba_logged_in", "true");
+        localStorage.setItem("buba_has_setup", "true");
+        Storage.save();
+
+        DOM.app.classList.remove("onboarding-active");
+        DOM.onboardingScreen.classList.remove("active");
+        DOM.mainApp.classList.add("active");
+        if (DOM.deckPanel) DOM.deckPanel.classList.add("active");
+        if (DOM.sidebarPanel) DOM.sidebarPanel.classList.add("active");
+        if (DOM.settingsView) DOM.settingsView.classList.remove("active");
+        
+        this.generateDeck();
+        this.renderSidebarMatches();
+        this.renderSidebarConversations();
+        
+        if (toastMsg) this.showToast(toastMsg, "default");
     },
 
     init() {
@@ -741,10 +768,12 @@ const App = {
             }
         };
 
+        this.switchLoginMethod = switchLoginMethod;
+
         if (btnOptPassword) btnOptPassword.addEventListener("click", () => switchLoginMethod("password"));
         if (btnOptPasscode) btnOptPasscode.addEventListener("click", () => switchLoginMethod("passcode"));
 
-        // Login Form Submission -> Validates credentials (Password or Passcode) and logs in
+        // Login Form Submission -> Validates credentials and advances to Passcode Creation/Verification
         const loginForm = document.getElementById("login-form");
         if (loginForm) {
             loginForm.addEventListener("submit", (e) => {
@@ -768,48 +797,85 @@ const App = {
                 if (state.activeLoginMethod === "password") {
                     const matchesPassword = !savedPassword ? true : (password === savedPassword);
                     if (savedPassword && (savedName || savedEmail) && nameOrEmail && password && (!matchesIdentity || !matchesPassword)) {
-                        this.showToast("Invalid Name/Email or Password. Please check credentials or click Forgot Password.", "default");
+                        this.showToast("Invalid Name/Email or Password. Please check credentials or click Forgot.", "default");
                         return;
                     }
+                    
+                    if (nameOrEmail) {
+                        if (nameOrEmail.includes("@")) {
+                            state.userProfile.email = nameOrEmail;
+                            if (!state.userProfile.name) state.userProfile.name = nameOrEmail.split("@")[0];
+                            if (!state.userProfile.firstName) state.userProfile.firstName = nameOrEmail.split("@")[0];
+                        } else {
+                            state.userProfile.firstName = nameOrEmail;
+                            state.userProfile.name = nameOrEmail;
+                        }
+                        this.updateOwnProfileDOM();
+                    }
+
+                    // If user has not created/verified passcode yet, open Create Passcode PIN page next
+                    if (!state.userProfile.hasVerifiedPasscode) {
+                        document.querySelectorAll(".onboarding-card").forEach(c => c.classList.remove("active"));
+                        const stepCreatePasscode = document.getElementById("step-create-passcode");
+                        if (stepCreatePasscode) stepCreatePasscode.classList.add("active");
+                        this.showToast("Password verified! Next, create & verify your passcode PIN.", "default");
+                        return;
+                    }
+
+                    // If passcode is already verified, open main app directly
+                    this.proceedToMainApp("Logged in via Password! Passcode is active as default. ✨");
+                    return;
                 } else {
                     const matchesPasscode = !savedPasscode ? true : (passcode === savedPasscode);
                     if ((savedName || savedEmail) && nameOrEmail && passcode && (!matchesIdentity || !matchesPasscode)) {
                         this.showToast("Invalid Name/Email or Passcode PIN. Default PIN is 1234.", "default");
                         return;
                     }
-                }
-                
-                if (nameOrEmail) {
-                    if (nameOrEmail.includes("@")) {
-                        state.userProfile.email = nameOrEmail;
-                        if (!state.userProfile.name) state.userProfile.name = nameOrEmail.split("@")[0];
-                        if (!state.userProfile.firstName) state.userProfile.firstName = nameOrEmail.split("@")[0];
-                    } else {
-                        state.userProfile.firstName = nameOrEmail;
-                        state.userProfile.name = nameOrEmail;
+                    
+                    if (nameOrEmail) {
+                        if (nameOrEmail.includes("@")) {
+                            state.userProfile.email = nameOrEmail;
+                            if (!state.userProfile.name) state.userProfile.name = nameOrEmail.split("@")[0];
+                        } else {
+                            state.userProfile.firstName = nameOrEmail;
+                            state.userProfile.name = nameOrEmail;
+                        }
+                        this.updateOwnProfileDOM();
                     }
-                    this.updateOwnProfileDOM();
+
+                    this.proceedToMainApp("Logged in with Passcode PIN! Welcome to O-Buba ✨");
+                }
+            });
+        }
+
+        // ── CREATE / VERIFY PASSCODE PIN FORM HANDLER ──
+        const createPasscodeForm = document.getElementById("create-passcode-form");
+        const newPasscodeInput = document.getElementById("new-passcode-input");
+        const confirmPasscodeInput = document.getElementById("confirm-passcode-input");
+
+        if (createPasscodeForm) {
+            createPasscodeForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const pin = newPasscodeInput ? newPasscodeInput.value.trim() : "";
+                const confirmPin = confirmPasscodeInput ? confirmPasscodeInput.value.trim() : "";
+
+                if (!pin || pin.length < 4) {
+                    this.showToast("Please enter a 4-to-6 digit numeric Passcode PIN.", "default");
+                    return;
+                }
+                if (pin !== confirmPin) {
+                    this.showToast("Passcode PINs do not match. Please re-enter.", "default");
+                    return;
                 }
 
-                state.userProfile.isLicenseVerified = true;
-                localStorage.setItem("buba_logged_in", "true");
-                localStorage.setItem("buba_has_setup", "true");
+                // Save Passcode & Set as Default forever
+                state.userProfile.passcode = pin;
+                state.userProfile.hasVerifiedPasscode = true;
+                state.userProfile.defaultLoginMethod = "passcode";
+                state.activeLoginMethod = "passcode";
                 Storage.save();
-                
-                // Open Main App Workspace / Matches Page
-                DOM.app.classList.remove("onboarding-active");
-                DOM.onboardingScreen.classList.remove("active");
-                DOM.mainApp.classList.add("active");
-                if (DOM.deckPanel) DOM.deckPanel.classList.add("active");
-                if (DOM.sidebarPanel) DOM.sidebarPanel.classList.add("active");
-                if (DOM.settingsView) DOM.settingsView.classList.remove("active");
-                
-                this.generateDeck();
-                this.renderSidebarMatches();
-                this.renderSidebarConversations();
-                
-                const methodLabel = state.activeLoginMethod === "passcode" ? "Passcode PIN" : "Password";
-                this.showToast(`Logged in successfully via ${methodLabel}! Welcome to O-Buba ✨`, "default");
+
+                this.proceedToMainApp("✓ Passcode PIN verified & set as default for all future logins! ✨");
             });
         }
 
