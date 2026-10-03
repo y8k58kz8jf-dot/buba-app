@@ -909,13 +909,14 @@ const App = {
 
         const sendEmailJSWithFallback = (email, code, params, callback) => {
             if (!window.emailjs) {
-                if (callback) callback(false);
+                if (callback) callback(false, "EmailJS SDK not loaded");
                 return;
             }
             let idx = 0;
+            let lastErr = "";
             const tryNext = () => {
                 if (idx >= TEMPLATE_IDS.length) {
-                    if (callback) callback(false);
+                    if (callback) callback(false, lastErr || "All templates failed");
                     return;
                 }
                 const templateId = TEMPLATE_IDS[idx];
@@ -925,7 +926,9 @@ const App = {
                         if (callback) callback(true, templateId);
                     })
                     .catch(err => {
-                        console.warn(`Template ${templateId} failed, trying next...`, err);
+                        const errMsg = (err && err.text) ? err.text : (err && err.message) ? err.message : JSON.stringify(err);
+                        console.warn(`Template ${templateId} failed (${errMsg}), trying next...`);
+                        lastErr = errMsg;
                         idx++;
                         tryNext();
                     });
@@ -960,11 +963,12 @@ const App = {
 
                 this.showToast(`✉️ Sending verification code to ${email}...`, "default");
 
-                sendEmailJSWithFallback(email, generatedPasscodeEmailCode, emailParams, (success, tId) => {
+                sendEmailJSWithFallback(email, generatedPasscodeEmailCode, emailParams, (success, detail) => {
                     if (success) {
-                        this.showToast(`✉️ Verification code sent to ${email}! Check your inbox.`, "default");
+                        this.showToast(`✓ Email sent to ${email}! Check your inbox.`, "default");
                     } else {
-                        this.showToast(`✉️ Verification code sent to ${email}! Check your inbox.`, "default");
+                        console.error("EmailJS error:", detail);
+                        this.showToast(`✉️ Email status: ${detail}. (Check EmailJS History tab)`, "default");
                     }
                 });
             });
@@ -1069,11 +1073,12 @@ const App = {
 
                 this.showToast(`✉️ Sending verification code to ${email}...`, "default");
 
-                sendEmailJSWithFallback(email, generatedPwdEmailCode, emailParams, (success, tId) => {
+                sendEmailJSWithFallback(email, generatedPwdEmailCode, emailParams, (success, detail) => {
                     if (success) {
-                        this.showToast(`✉️ Verification code sent to ${email}! Check your inbox.`, "default");
+                        this.showToast(`✓ Email sent to ${email}! Check your inbox.`, "default");
                     } else {
-                        this.showToast(`✉️ Verification code sent to ${email}! Check your inbox.`, "default");
+                        console.error("EmailJS error:", detail);
+                        this.showToast(`✉️ Email status: ${detail}. (Check EmailJS History tab)`, "default");
                     }
                 });
             });
