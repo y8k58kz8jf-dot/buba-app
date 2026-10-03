@@ -52,30 +52,30 @@
                             <!-- Password / Passcode Option Group -->
                             <div class="input-group" id="login-auth-group">
                                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                                    <!-- Two Options: Password vs Passcode -->
+                                    <!-- Two Options: Passcode (Default) vs Password -->
                                     <div style="display: flex; align-items: center; gap: 6px; background: rgba(255, 255, 255, 0.08); border-radius: 20px; padding: 3px 6px; border: 1px solid rgba(255, 255, 255, 0.15);">
-                                        <button type="button" id="btn-opt-password" class="auth-opt-btn active" style="background: rgba(255, 51, 187, 0.3); border: 1px solid #ff33bb; color: #fff; border-radius: 16px; padding: 4px 12px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s;">
-                                            🔑 Password
-                                        </button>
-                                        <button type="button" id="btn-opt-passcode" class="auth-opt-btn" style="background: transparent; border: 1px solid transparent; color: rgba(255, 255, 255, 0.7); border-radius: 16px; padding: 4px 12px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                                        <button type="button" id="btn-opt-passcode" class="auth-opt-btn active" style="background: rgba(255, 51, 187, 0.3); border: 1px solid #ff33bb; color: #fff; border-radius: 16px; padding: 4px 12px; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s;">
                                             🔢 Passcode
+                                        </button>
+                                        <button type="button" id="btn-opt-password" class="auth-opt-btn" style="background: transparent; border: 1px solid transparent; color: rgba(255, 255, 255, 0.7); border-radius: 16px; padding: 4px 12px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
+                                            🔑 Password
                                         </button>
                                     </div>
                                     <button type="button" class="next-step-btn" data-next="step-forgot-password" style="background: none; border: none; color: #ff33bb; font-size: 12px; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0;">Forgot?</button>
                                 </div>
 
-                                <!-- Password Input Field -->
-                                <div id="login-password-group">
-                                    <input type="password" id="login-password" placeholder="Enter your password (••••••••)" autocomplete="current-password" style="width: 100%;">
+                                <!-- Passcode PIN Input Field (DEFAULT ACTIVE) -->
+                                <div id="login-passcode-group">
+                                    <input type="password" id="login-passcode" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="Enter passcode PIN (e.g. 1234)" autocomplete="one-time-code" style="width: 100%; letter-spacing: 3px; font-size: 15px; font-weight: 700;">
                                 </div>
 
-                                <!-- Passcode PIN Input Field -->
-                                <div id="login-passcode-group" style="display: none;">
-                                    <input type="password" id="login-passcode" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="Enter passcode PIN (e.g. 1234)" autocomplete="one-time-code" style="width: 100%; letter-spacing: 3px; font-size: 15px; font-weight: 700;">
+                                <!-- Password Input Field -->
+                                <div id="login-password-group" style="display: none;">
+                                    <input type="password" id="login-password" placeholder="Enter your password (••••••••)" autocomplete="current-password" style="width: 100%;">
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn-primary btn-block" id="login-submit-btn" style="margin-top: 4px; width: 100%;">Log In with Password</button>
+                            <button type="submit" class="btn btn-primary btn-block" id="login-submit-btn" style="margin-top: 4px; width: 100%;">Log In with Passcode</button>
                         </form>
 
                         <div style="margin-top: 18px; font-size: 13px; opacity: 0.85; text-align: center;">

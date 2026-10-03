@@ -394,7 +394,7 @@ const state = {
         password: "",
         passcode: "1234"
     },
-    activeLoginMethod: "password",
+    activeLoginMethod: "passcode",
     activePhotoSlotIndex: 0,
     deck: [],          // Active matching candidates
     swipes: {},        // id -> 'like' / 'nope' / 'superlike'
