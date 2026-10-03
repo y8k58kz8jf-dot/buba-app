@@ -955,12 +955,9 @@ const App = {
         if (btnProceedLoginPasscode) {
             btnProceedLoginPasscode.addEventListener("click", () => {
                 const email = resetPasscodeEmailInput ? resetPasscodeEmailInput.value.trim() : "";
-                const loginUsernameInput = document.getElementById("login-username");
-                if (loginUsernameInput && email) loginUsernameInput.value = email;
-                document.querySelectorAll(".onboarding-card").forEach(c => c.classList.remove("active"));
-                const stepWelcome = document.getElementById("step-welcome");
-                if (stepWelcome) stepWelcome.classList.add("active");
-                this.showToast(`Credentials sent! Enter your Passcode PIN or Password to log in.`, "default");
+                state.userProfile.email = email;
+                Storage.save();
+                this.proceedToMainApp("✓ Logged in via Email Verification Code! Welcome to O-Buba ✨");
             });
         }
 
@@ -1044,12 +1041,9 @@ const App = {
         if (btnProceedLoginPwd) {
             btnProceedLoginPwd.addEventListener("click", () => {
                 const email = resetEmailInput ? resetEmailInput.value.trim() : "";
-                const loginUsernameInput = document.getElementById("login-username");
-                if (loginUsernameInput && email) loginUsernameInput.value = email;
-                document.querySelectorAll(".onboarding-card").forEach(c => c.classList.remove("active"));
-                const stepWelcome = document.getElementById("step-welcome");
-                if (stepWelcome) stepWelcome.classList.add("active");
-                this.showToast(`Credentials sent! Enter your Password or Passcode PIN to log in.`, "default");
+                state.userProfile.email = email;
+                Storage.save();
+                this.proceedToMainApp("✓ Logged in via Email Verification Code! Welcome to O-Buba ✨");
             });
         }
 
