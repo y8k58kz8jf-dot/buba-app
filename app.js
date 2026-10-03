@@ -921,30 +921,31 @@ const App = {
                 const currentPasscode = state.userProfile.passcode || "1234";
                 const currentPassword = state.userProfile.password || "Password123!";
 
-                // Send REAL email via EmailJS API
-                fetch("https://api.emailjs.com/api/v1.0/email/send", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        service_id: EMAILJS_SERVICE_ID,
-                        template_id: EMAILJS_TEMPLATE_ID,
-                        user_id: EMAILJS_PUBLIC_KEY,
-                        template_params: {
-                            to_email: email,
-                            user_email: email,
-                            email: email,
-                            code: generatedPasscodeEmailCode,
-                            otp_code: generatedPasscodeEmailCode,
-                            passcode: currentPasscode,
-                            password: currentPassword,
-                            message: `Your O-Buba verification code is: ${generatedPasscodeEmailCode}`
-                        }
-                    })
-                }).then(res => {
-                    if (res.ok) console.log("Real Email sent successfully via EmailJS!");
-                }).catch(err => console.error("EmailJS send error:", err));
+                // Send REAL email via EmailJS Browser SDK
+                const emailParams = {
+                    to_email: email,
+                    user_email: email,
+                    email: email,
+                    code: generatedPasscodeEmailCode,
+                    otp_code: generatedPasscodeEmailCode,
+                    passcode: currentPasscode,
+                    password: currentPassword,
+                    message: `Your O-Buba verification code is: ${generatedPasscodeEmailCode}`
+                };
 
-                this.showToast(`✉️ 4-Digit verification code sent to ${email}! Check your inbox.`, "default");
+                if (window.emailjs) {
+                    window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailParams, EMAILJS_PUBLIC_KEY)
+                        .then(res => {
+                            console.log("Real Email sent via EmailJS SDK!", res.status, res.text);
+                            this.showToast(`✉️ Verification code sent to ${email}! Check your inbox.`, "default");
+                        })
+                        .catch(err => {
+                            console.error("EmailJS SDK error:", err);
+                            this.showToast(`✉️ Code generated: ${generatedPasscodeEmailCode}. (Check EmailJS template setup)`, "default");
+                        });
+                } else {
+                    this.showToast(`✉️ Code generated: ${generatedPasscodeEmailCode}.`, "default");
+                }
             });
         }
 
@@ -1034,30 +1035,31 @@ const App = {
                 const currentPasscode = state.userProfile.passcode || "1234";
                 const currentPassword = state.userProfile.password || "Password123!";
 
-                // Send REAL email via EmailJS API
-                fetch("https://api.emailjs.com/api/v1.0/email/send", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        service_id: EMAILJS_SERVICE_ID,
-                        template_id: EMAILJS_TEMPLATE_ID,
-                        user_id: EMAILJS_PUBLIC_KEY,
-                        template_params: {
-                            to_email: email,
-                            user_email: email,
-                            email: email,
-                            code: generatedPwdEmailCode,
-                            otp_code: generatedPwdEmailCode,
-                            passcode: currentPasscode,
-                            password: currentPassword,
-                            message: `Your O-Buba verification code is: ${generatedPwdEmailCode}`
-                        }
-                    })
-                }).then(res => {
-                    if (res.ok) console.log("Real Email sent successfully via EmailJS!");
-                }).catch(err => console.error("EmailJS send error:", err));
+                // Send REAL email via EmailJS Browser SDK
+                const emailParams = {
+                    to_email: email,
+                    user_email: email,
+                    email: email,
+                    code: generatedPwdEmailCode,
+                    otp_code: generatedPwdEmailCode,
+                    passcode: currentPasscode,
+                    password: currentPassword,
+                    message: `Your O-Buba verification code is: ${generatedPwdEmailCode}`
+                };
 
-                this.showToast(`✉️ 4-Digit verification code sent to ${email}! Check your inbox.`, "default");
+                if (window.emailjs) {
+                    window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailParams, EMAILJS_PUBLIC_KEY)
+                        .then(res => {
+                            console.log("Real Email sent via EmailJS SDK!", res.status, res.text);
+                            this.showToast(`✉️ Verification code sent to ${email}! Check your inbox.`, "default");
+                        })
+                        .catch(err => {
+                            console.error("EmailJS SDK error:", err);
+                            this.showToast(`✉️ Code generated: ${generatedPwdEmailCode}. (Check EmailJS template setup)`, "default");
+                        });
+                } else {
+                    this.showToast(`✉️ Code generated: ${generatedPwdEmailCode}.`, "default");
+                }
             });
         }
 
