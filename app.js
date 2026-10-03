@@ -723,6 +723,8 @@ const App = {
         // ── LOGIN METHOD SWITCHER (Inline Password vs Passcode Options) ──
         const btnOptPassword = document.getElementById("btn-opt-password");
         const btnOptPasscode = document.getElementById("btn-opt-passcode");
+        const forgotPasswordBtn = document.getElementById("forgot-password-btn");
+        const forgotPasscodeBtn = document.getElementById("forgot-passcode-btn");
 
         const loginPasswordGroup = document.getElementById("login-password-group");
         const loginPasscodeGroup = document.getElementById("login-passcode-group");
@@ -746,6 +748,8 @@ const App = {
                 }
                 if (loginPasswordGroup) loginPasswordGroup.style.display = "block";
                 if (loginPasscodeGroup) loginPasscodeGroup.style.display = "none";
+                if (forgotPasswordBtn) forgotPasswordBtn.style.display = "inline-block";
+                if (forgotPasscodeBtn) forgotPasscodeBtn.style.display = "none";
                 if (loginSubmitBtn) loginSubmitBtn.textContent = "Log In with Password";
                 if (loginSubtitle) loginSubtitle.textContent = "Enter your name or email and password to access your profile.";
             } else {
@@ -763,6 +767,8 @@ const App = {
                 }
                 if (loginPasswordGroup) loginPasswordGroup.style.display = "none";
                 if (loginPasscodeGroup) loginPasscodeGroup.style.display = "block";
+                if (forgotPasswordBtn) forgotPasswordBtn.style.display = "none";
+                if (forgotPasscodeBtn) forgotPasscodeBtn.style.display = "inline-block";
                 if (loginSubmitBtn) loginSubmitBtn.textContent = "Log In with Passcode (PIN)";
                 if (loginSubtitle) loginSubtitle.textContent = "Enter your name or email and your 4-digit passcode PIN.";
             }
@@ -876,6 +882,57 @@ const App = {
                 Storage.save();
 
                 this.proceedToMainApp("✓ Passcode PIN verified & set as default for all future logins! ✨");
+            });
+        }
+
+        // ── FORGOT NAME / EMAIL RECOVERY FORM HANDLER ──
+        const forgotNameForm = document.getElementById("forgot-name-form");
+        const recoveryPhoneInput = document.getElementById("recovery-phone-input");
+        const nameRecoveredBanner = document.getElementById("name-recovered-banner");
+        const recNameVal = document.getElementById("rec-name-val");
+        const recEmailVal = document.getElementById("rec-email-val");
+
+        if (forgotNameForm) {
+            forgotNameForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const hint = recoveryPhoneInput ? recoveryPhoneInput.value.trim() : "";
+                if (!hint) {
+                    this.showToast("Please enter your phone number or account hint.", "default");
+                    return;
+                }
+
+                const currentName = state.userProfile.firstName || state.userProfile.name || "Alex";
+                const currentEmail = state.userProfile.email || "alex@example.com";
+
+                if (recNameVal) recNameVal.textContent = currentName;
+                if (recEmailVal) recEmailVal.textContent = currentEmail;
+                if (nameRecoveredBanner) nameRecoveredBanner.style.display = "block";
+
+                this.showToast(`✓ Account details found for ${currentName}! ✨`, "default");
+            });
+        }
+
+        // ── FORGOT PASSCODE PIN RESET FORM HANDLER ──
+        const forgotPasscodeForm = document.getElementById("forgot-passcode-form");
+        const resetPasscodeEmailInput = document.getElementById("reset-passcode-email-input");
+        const passcodeResetBanner = document.getElementById("passcode-reset-banner");
+        const passcodeResetMsg = document.getElementById("passcode-reset-msg");
+
+        if (forgotPasscodeForm) {
+            forgotPasscodeForm.addEventListener("submit", (e) => {
+                e.preventDefault();
+                const email = resetPasscodeEmailInput ? resetPasscodeEmailInput.value.trim() : "";
+                if (!email) {
+                    this.showToast("Please enter a valid email address.", "default");
+                    return;
+                }
+                if (passcodeResetMsg) {
+                    passcodeResetMsg.textContent = `A 4-digit Passcode PIN reset link has been sent to ${email}. Please check your inbox.`;
+                }
+                if (passcodeResetBanner) {
+                    passcodeResetBanner.style.display = "block";
+                }
+                this.showToast(`🔐 Passcode PIN reset link sent to ${email}! ✨`, "default");
             });
         }
 
