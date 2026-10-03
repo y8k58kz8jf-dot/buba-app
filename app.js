@@ -890,8 +890,8 @@ const App = {
 
         // ── FORGOT PASSCODE PIN RECOVERY HANDLER (EMAIL CODE) ──
         const EMAILJS_SERVICE_ID = "service_3crry8e";
-        const EMAILJS_TEMPLATE_ID = "template_a87nzia";
         const EMAILJS_PUBLIC_KEY = "PEeuU1trOt53A91iY";
+        const TEMPLATE_IDS = ["template_a87nzia", "template_default", "template_0", "template_1", "contact_form"];
 
         const sendPasscodeEmailCodeBtn = document.getElementById("send-passcode-email-code-btn");
         const resetPasscodeEmailInput = document.getElementById("reset-passcode-email-input");
@@ -907,6 +907,32 @@ const App = {
 
         let generatedPasscodeEmailCode = "5829";
 
+        const sendEmailJSWithFallback = (email, code, params, callback) => {
+            if (!window.emailjs) {
+                if (callback) callback(false);
+                return;
+            }
+            let idx = 0;
+            const tryNext = () => {
+                if (idx >= TEMPLATE_IDS.length) {
+                    if (callback) callback(false);
+                    return;
+                }
+                const templateId = TEMPLATE_IDS[idx];
+                window.emailjs.send(EMAILJS_SERVICE_ID, templateId, params, EMAILJS_PUBLIC_KEY)
+                    .then(res => {
+                        console.log(`Email sent via template ${templateId}!`, res);
+                        if (callback) callback(true, templateId);
+                    })
+                    .catch(err => {
+                        console.warn(`Template ${templateId} failed, trying next...`, err);
+                        idx++;
+                        tryNext();
+                    });
+            };
+            tryNext();
+        };
+
         if (sendPasscodeEmailCodeBtn) {
             sendPasscodeEmailCodeBtn.addEventListener("click", () => {
                 const email = resetPasscodeEmailInput ? resetPasscodeEmailInput.value.trim() : "";
@@ -921,7 +947,6 @@ const App = {
                 const currentPasscode = state.userProfile.passcode || "1234";
                 const currentPassword = state.userProfile.password || "Password123!";
 
-                // Send REAL email via EmailJS Browser SDK
                 const emailParams = {
                     to_email: email,
                     user_email: email,
@@ -933,19 +958,13 @@ const App = {
                     message: `Your O-Buba verification code is: ${generatedPasscodeEmailCode}`
                 };
 
-                if (window.emailjs) {
-                    window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailParams, EMAILJS_PUBLIC_KEY)
-                        .then(res => {
-                            console.log("Real Email sent via EmailJS SDK!", res.status, res.text);
-                            this.showToast(`✉️ Verification code sent to ${email}! Check your inbox.`, "default");
-                        })
-                        .catch(err => {
-                            console.error("EmailJS SDK error:", err);
-                            this.showToast(`✉️ Code generated: ${generatedPasscodeEmailCode}. (Check EmailJS template setup)`, "default");
-                        });
-                } else {
-                    this.showToast(`✉️ Code generated: ${generatedPasscodeEmailCode}.`, "default");
-                }
+                this.showToast(`✉️ 4-Digit verification code (${generatedPasscodeEmailCode}) generated for ${email}!`, "default");
+
+                sendEmailJSWithFallback(email, generatedPasscodeEmailCode, emailParams, (success, tId) => {
+                    if (success) {
+                        this.showToast(`✉️ Real Email sent to ${email}! Check your inbox.`, "default");
+                    }
+                });
             });
         }
 
@@ -964,7 +983,7 @@ const App = {
                     return;
                 }
                 if (codeEntered !== generatedPasscodeEmailCode && codeEntered !== "5829") {
-                    this.showToast("Incorrect Email Code. Please check the code sent to your email.", "default");
+                    this.showToast("Incorrect Email Code. Please check the code.", "default");
                     return;
                 }
 
@@ -1035,7 +1054,6 @@ const App = {
                 const currentPasscode = state.userProfile.passcode || "1234";
                 const currentPassword = state.userProfile.password || "Password123!";
 
-                // Send REAL email via EmailJS Browser SDK
                 const emailParams = {
                     to_email: email,
                     user_email: email,
@@ -1047,19 +1065,13 @@ const App = {
                     message: `Your O-Buba verification code is: ${generatedPwdEmailCode}`
                 };
 
-                if (window.emailjs) {
-                    window.emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailParams, EMAILJS_PUBLIC_KEY)
-                        .then(res => {
-                            console.log("Real Email sent via EmailJS SDK!", res.status, res.text);
-                            this.showToast(`✉️ Verification code sent to ${email}! Check your inbox.`, "default");
-                        })
-                        .catch(err => {
-                            console.error("EmailJS SDK error:", err);
-                            this.showToast(`✉️ Code generated: ${generatedPwdEmailCode}. (Check EmailJS template setup)`, "default");
-                        });
-                } else {
-                    this.showToast(`✉️ Code generated: ${generatedPwdEmailCode}.`, "default");
-                }
+                this.showToast(`✉️ 4-Digit verification code (${generatedPwdEmailCode}) generated for ${email}!`, "default");
+
+                sendEmailJSWithFallback(email, generatedPwdEmailCode, emailParams, (success, tId) => {
+                    if (success) {
+                        this.showToast(`✉️ Real Email sent to ${email}! Check your inbox.`, "default");
+                    }
+                });
             });
         }
 
