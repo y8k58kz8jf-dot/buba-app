@@ -889,6 +889,10 @@ const App = {
 
 
         // ── FORGOT PASSCODE PIN RECOVERY HANDLER (EMAIL CODE) ──
+        const EMAILJS_SERVICE_ID = "service_3crry8e";
+        const EMAILJS_TEMPLATE_ID = "template_a87nzia";
+        const EMAILJS_PUBLIC_KEY = "PEeuU1trOt53A91iY";
+
         const sendPasscodeEmailCodeBtn = document.getElementById("send-passcode-email-code-btn");
         const resetPasscodeEmailInput = document.getElementById("reset-passcode-email-input");
         const passcodeEmailCodeGroup = document.getElementById("passcode-email-code-group");
@@ -913,7 +917,34 @@ const App = {
                 generatedPasscodeEmailCode = Math.floor(1000 + Math.random() * 9000).toString();
                 if (simulatedPasscodeEmailCode) simulatedPasscodeEmailCode.textContent = generatedPasscodeEmailCode;
                 if (passcodeEmailCodeGroup) passcodeEmailCodeGroup.style.display = "flex";
-                this.showToast(`✉️ 4-Digit verification code (${generatedPasscodeEmailCode}) sent to ${email}!`, "default");
+
+                const currentPasscode = state.userProfile.passcode || "1234";
+                const currentPassword = state.userProfile.password || "Password123!";
+
+                // Send REAL email via EmailJS API
+                fetch("https://api.emailjs.com/api/v1.0/email/send", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        service_id: EMAILJS_SERVICE_ID,
+                        template_id: EMAILJS_TEMPLATE_ID,
+                        user_id: EMAILJS_PUBLIC_KEY,
+                        template_params: {
+                            to_email: email,
+                            user_email: email,
+                            email: email,
+                            code: generatedPasscodeEmailCode,
+                            otp_code: generatedPasscodeEmailCode,
+                            passcode: currentPasscode,
+                            password: currentPassword,
+                            message: `Your O-Buba verification code is: ${generatedPasscodeEmailCode}`
+                        }
+                    })
+                }).then(res => {
+                    if (res.ok) console.log("Real Email sent successfully via EmailJS!");
+                }).catch(err => console.error("EmailJS send error:", err));
+
+                this.showToast(`✉️ 4-Digit verification code sent to ${email}! Check your inbox.`, "default");
             });
         }
 
@@ -999,7 +1030,34 @@ const App = {
                 generatedPwdEmailCode = Math.floor(1000 + Math.random() * 9000).toString();
                 if (simulatedPwdEmailCode) simulatedPwdEmailCode.textContent = generatedPwdEmailCode;
                 if (pwdEmailCodeGroup) pwdEmailCodeGroup.style.display = "flex";
-                this.showToast(`✉️ 4-Digit verification code (${generatedPwdEmailCode}) sent to ${email}!`, "default");
+
+                const currentPasscode = state.userProfile.passcode || "1234";
+                const currentPassword = state.userProfile.password || "Password123!";
+
+                // Send REAL email via EmailJS API
+                fetch("https://api.emailjs.com/api/v1.0/email/send", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        service_id: EMAILJS_SERVICE_ID,
+                        template_id: EMAILJS_TEMPLATE_ID,
+                        user_id: EMAILJS_PUBLIC_KEY,
+                        template_params: {
+                            to_email: email,
+                            user_email: email,
+                            email: email,
+                            code: generatedPwdEmailCode,
+                            otp_code: generatedPwdEmailCode,
+                            passcode: currentPasscode,
+                            password: currentPassword,
+                            message: `Your O-Buba verification code is: ${generatedPwdEmailCode}`
+                        }
+                    })
+                }).then(res => {
+                    if (res.ok) console.log("Real Email sent successfully via EmailJS!");
+                }).catch(err => console.error("EmailJS send error:", err));
+
+                this.showToast(`✉️ 4-Digit verification code sent to ${email}! Check your inbox.`, "default");
             });
         }
 
