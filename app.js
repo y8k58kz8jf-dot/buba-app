@@ -889,7 +889,7 @@ const App = {
 
 
         // ── FORGOT PASSCODE PIN RECOVERY HANDLER (EMAIL CODE) ──
-        const EMAILJS_SERVICE_IDS = ["service_k9llqyp", "service_3crry8e"];
+        const EMAILJS_SERVICE_IDS = ["service_dqohba6", "service_k9llqyp", "service_3crry8e"];
         const EMAILJS_PUBLIC_KEY = "PEeuU1trOt53A91iY";
         const TEMPLATE_IDS = ["template_0xsixd8", "template_a87nzia", "template_default", "template_0", "template_1", "contact_form"];
 
