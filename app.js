@@ -909,9 +909,17 @@ const App = {
 
         const sendEmailJSWithFallback = (email, code, params, callback) => {
             if (!window.emailjs) {
-                if (callback) callback(false, "EmailJS SDK not loaded");
+                if (callback) callback(false, "EmailJS SDK script tag missing");
                 return;
             }
+            try {
+                if (window.emailjs.init) {
+                    window.emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+                }
+            } catch (e) {
+                console.warn("emailjs.init warning:", e);
+            }
+
             let sIdx = 0;
             let tIdx = 0;
             let lastErr = "";
@@ -926,11 +934,11 @@ const App = {
 
                 window.emailjs.send(serviceId, templateId, params, EMAILJS_PUBLIC_KEY)
                     .then(res => {
-                        console.log(`Email sent via service ${serviceId} and template ${templateId}!`, res);
+                        console.log(`Email sent via service ${serviceId} and template ${templateId}! Status: ${res.status}`);
                         if (callback) callback(true, `${serviceId}/${templateId}`);
                     })
                     .catch(err => {
-                        const errMsg = (err && err.text) ? err.text : (err && err.message) ? err.message : JSON.stringify(err);
+                        const errMsg = (err && err.text) ? err.text : (err && err.message) ? err.message : (typeof err === "string" ? err : JSON.stringify(err));
                         console.warn(`Attempt with ${serviceId}/${templateId} failed (${errMsg}), trying next...`);
                         lastErr = errMsg;
                         tIdx++;
