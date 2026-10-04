@@ -889,7 +889,7 @@ const App = {
 
 
         // ── FORGOT PASSCODE PIN RECOVERY HANDLER (EMAIL CODE) ──
-        const EMAILJS_SERVICE_ID = "service_3crry8e";
+        const EMAILJS_SERVICE_IDS = ["service_k9llqyp", "service_3crry8e"];
         const EMAILJS_PUBLIC_KEY = "PEeuU1trOt53A91iY";
         const TEMPLATE_IDS = ["template_0xsixd8", "template_a87nzia", "template_default", "template_0", "template_1", "contact_form"];
 
@@ -912,28 +912,36 @@ const App = {
                 if (callback) callback(false, "EmailJS SDK not loaded");
                 return;
             }
-            let idx = 0;
+            let sIdx = 0;
+            let tIdx = 0;
             let lastErr = "";
-            const tryNext = () => {
-                if (idx >= TEMPLATE_IDS.length) {
-                    if (callback) callback(false, lastErr || "All templates failed");
+
+            const trySend = () => {
+                if (sIdx >= EMAILJS_SERVICE_IDS.length) {
+                    if (callback) callback(false, lastErr || "All services/templates failed");
                     return;
                 }
-                const templateId = TEMPLATE_IDS[idx];
-                window.emailjs.send(EMAILJS_SERVICE_ID, templateId, params, EMAILJS_PUBLIC_KEY)
+                const serviceId = EMAILJS_SERVICE_IDS[sIdx];
+                const templateId = TEMPLATE_IDS[tIdx];
+
+                window.emailjs.send(serviceId, templateId, params, EMAILJS_PUBLIC_KEY)
                     .then(res => {
-                        console.log(`Email sent via template ${templateId}!`, res);
-                        if (callback) callback(true, templateId);
+                        console.log(`Email sent via service ${serviceId} and template ${templateId}!`, res);
+                        if (callback) callback(true, `${serviceId}/${templateId}`);
                     })
                     .catch(err => {
                         const errMsg = (err && err.text) ? err.text : (err && err.message) ? err.message : JSON.stringify(err);
-                        console.warn(`Template ${templateId} failed (${errMsg}), trying next...`);
+                        console.warn(`Attempt with ${serviceId}/${templateId} failed (${errMsg}), trying next...`);
                         lastErr = errMsg;
-                        idx++;
-                        tryNext();
+                        tIdx++;
+                        if (tIdx >= TEMPLATE_IDS.length) {
+                            tIdx = 0;
+                            sIdx++;
+                        }
+                        trySend();
                     });
             };
-            tryNext();
+            trySend();
         };
 
         if (sendPasscodeEmailCodeBtn) {
