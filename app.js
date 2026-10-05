@@ -525,6 +525,7 @@ const DOM = {
     settingsSavedPaymentSelect: document.getElementById("settings-saved-payment-select"),
     settingsPaymentPill: document.getElementById("settings-payment-pill"),
     savedPaymentMethodName: document.getElementById("saved-payment-method-name"),
+    savedPaymentMethodDesc: document.getElementById("saved-payment-method-desc"),
 
     // Avatar Shape & Photos Elements
     headerAvatarBox: document.getElementById("header-avatar-box"),
@@ -1752,11 +1753,17 @@ const App = {
                     const label = state.selectedPlanLabelToPay || "BUBA Plan";
                     
                     state.userSubscription = planName;
+                    if (state.selectedPaymentMethod) {
+                        state.userProfile.savedPaymentMethod = state.selectedPaymentMethod;
+                    }
                     Storage.save();
                     
                     closePaymentModalFunc();
                     state.activePaymentType = null;
                     state.selectedPlanToPay = null;
+
+                    this.updateOwnProfileDOM();
+                    this.syncSettingsFormWithState();
                     
                     this.showToast(`${label} Active! Payment via ${methodLabel} successful 💳✨`, "default");
                     return;
@@ -1787,20 +1794,28 @@ const App = {
         // Buba Subscription Plans Modal interactions
         const resetPlanCardsState = () => {
             if (DOM.plansModal) {
+                const currentPlan = state.userSubscription || "free";
                 DOM.plansModal.querySelectorAll(".plan-card").forEach(card => {
                     card.style.opacity = "1";
                     card.style.filter = "none";
                     card.style.pointerEvents = "auto";
                     const btn = card.querySelector(".plan-select-btn");
                     if (btn) {
-                        btn.disabled = false;
-                        btn.style.opacity = "1";
-                        btn.style.cursor = "pointer";
                         const plan = btn.getAttribute("data-plan");
-                        if (plan === "free") btn.textContent = "Current Plan";
-                        else if (plan === "silver") btn.textContent = "Select Silver";
-                        else if (plan === "bronze") btn.textContent = "Select Bronze";
-                        else if (plan === "gold") btn.textContent = "Select Gold 👑";
+                        if (plan === currentPlan) {
+                            btn.disabled = true;
+                            btn.textContent = "✓ Current Active Plan";
+                            btn.style.opacity = "0.75";
+                            btn.style.cursor = "default";
+                        } else {
+                            btn.disabled = false;
+                            btn.style.opacity = "1";
+                            btn.style.cursor = "pointer";
+                            if (plan === "free") btn.textContent = "Switch to Free";
+                            else if (plan === "silver") btn.textContent = "Select Silver ($0.99/wk)";
+                            else if (plan === "bronze") btn.textContent = "Select Bronze ($5.99/mo)";
+                            else if (plan === "gold") btn.textContent = "Select Gold 👑 ($11.99/mo)";
+                        }
                     }
                 });
             }
@@ -1856,6 +1871,8 @@ const App = {
                         state.userSubscription = "free";
                         Storage.save();
                         closePlansFunc();
+                        this.updateOwnProfileDOM();
+                        this.syncSettingsFormWithState();
                         this.showToast("Plan set to BUBA Free ✨", "default");
                     } else {
                         closePlansFunc();
@@ -1914,6 +1931,25 @@ const App = {
         DOM.headerUserName.textContent = state.userProfile.name;
         DOM.deckPulseAvatar.src = state.userProfile.avatar;
         DOM.settingsAvatarPreview.src = state.userProfile.avatar;
+
+        const planLabels = {
+            free: "BUBA Free",
+            silver: "BUBA Silver 🌟",
+            bronze: "BUBA Bronze 🥉",
+            gold: "BUBA Gold 👑"
+        };
+        const methodLabels = {
+            applepay: " Pay",
+            card: "💳 Card",
+            googlepay: "G Pay",
+            bank: "🏦 Bank"
+        };
+        const activePlanLabel = planLabels[state.userSubscription || "free"] || "BUBA Free";
+        const activeMethodLabel = methodLabels[state.userProfile.savedPaymentMethod || "applepay"] || " Pay";
+        const subtextEl = document.querySelector(".user-profile-subtext");
+        if (subtextEl) {
+            subtextEl.textContent = `${activePlanLabel} • ${activeMethodLabel}`;
+        }
 
         if (state.userProfile.isLicenseVerified) {
             if (DOM.headerVerifiedBadge) DOM.headerVerifiedBadge.style.display = "inline-block";
@@ -2162,11 +2198,22 @@ const App = {
                 googlepay: "G Pay Active",
                 bank: "🏦 Bank Active"
             };
+            const planLabels = {
+                free: "BUBA Free",
+                silver: "BUBA Silver 🌟",
+                bronze: "BUBA Bronze 🥉",
+                gold: "BUBA Gold 👑"
+            };
+            const activePlanLabel = planLabels[state.userSubscription || "free"] || "BUBA Free";
+
             if (DOM.savedPaymentMethodName) {
                 DOM.savedPaymentMethodName.textContent = labels[savedMethod] || "Apple Pay (Primary)";
             }
+            if (DOM.savedPaymentMethodDesc) {
+                DOM.savedPaymentMethodDesc.textContent = `Connected account payment method for ${activePlanLabel} & match connection fees`;
+            }
             if (DOM.settingsPaymentPill) {
-                DOM.settingsPaymentPill.textContent = pills[savedMethod] || " Pay Active";
+                DOM.settingsPaymentPill.textContent = `${activePlanLabel} • ${pills[savedMethod] || " Pay Active"}`;
             }
         }
     },
