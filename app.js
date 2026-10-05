@@ -805,6 +805,64 @@ const App = {
                     this.proceedToMainApp("Logged in with Passcode PIN! Welcome to O-Buba ✨");
                 }
             });
+
+            // ── INSTANT AUTOMATIC LOG IN WHEN NAME & PASSCODE/PASSWORD MATCH ──
+            let isAutoLoggingIn = false;
+            const checkAutoLogin = () => {
+                if (isAutoLoggingIn) return;
+                if (DOM.mainApp && DOM.mainApp.classList.contains("active")) return;
+
+                const usernameInput = document.getElementById("login-username");
+                const passwordInput = document.getElementById("login-password");
+                const passcodeInput = document.getElementById("login-passcode");
+
+                if (!usernameInput) return;
+
+                const nameOrEmail = usernameInput.value.trim();
+                if (!nameOrEmail) return;
+
+                const savedName = (state.userProfile.name || state.userProfile.firstName || "").toLowerCase();
+                const savedEmail = (state.userProfile.email || "").toLowerCase();
+                const savedPassword = state.userProfile.password;
+                const savedPasscode = state.userProfile.passcode || "1234";
+
+                const inputLower = nameOrEmail.toLowerCase();
+                const matchesIdentity = (!savedName && !savedEmail) ||
+                    inputLower === savedName || 
+                    inputLower === savedEmail ||
+                    (savedName && (savedName.includes(inputLower) || inputLower.includes(savedName))) ||
+                    (savedEmail && (savedEmail.includes(inputLower) || inputLower.includes(savedEmail)));
+
+                if (!matchesIdentity) return;
+
+                if (state.activeLoginMethod === "passcode") {
+                    const passcode = passcodeInput ? passcodeInput.value.trim() : "";
+                    if (!passcode) return;
+                    
+                    if (passcode === savedPasscode) {
+                        isAutoLoggingIn = true;
+                        setTimeout(() => { isAutoLoggingIn = false; }, 1500);
+                        loginForm.requestSubmit();
+                    }
+                } else if (state.activeLoginMethod === "password") {
+                    const password = passwordInput ? passwordInput.value : "";
+                    if (!password) return;
+                    
+                    if (password && (!savedPassword || password === savedPassword)) {
+                        isAutoLoggingIn = true;
+                        setTimeout(() => { isAutoLoggingIn = false; }, 1500);
+                        loginForm.requestSubmit();
+                    }
+                }
+            };
+
+            const usernameInput = document.getElementById("login-username");
+            const passwordInput = document.getElementById("login-password");
+            const passcodeInput = document.getElementById("login-passcode");
+
+            if (usernameInput) usernameInput.addEventListener("input", checkAutoLogin);
+            if (passcodeInput) passcodeInput.addEventListener("input", checkAutoLogin);
+            if (passwordInput) passwordInput.addEventListener("input", checkAutoLogin);
         }
 
         // ── CREATE / VERIFY PASSCODE PIN FORM HANDLER ──
