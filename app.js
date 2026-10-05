@@ -103,7 +103,7 @@ const CANDIDATE_PROFILES = [
         ]
     },
     {
-        id: "elena_mk",
+        id: "elena",
         name: "Elena",
         age: 26,
         gender: "woman",
@@ -129,8 +129,8 @@ const CANDIDATE_PROFILES = [
         ]
     },
     {
-        id: "chloe",
-        name: "Chloe",
+        id: "bisera",
+        name: "Bisera",
         age: 27,
         gender: "woman",
         country: "Canada",
@@ -155,8 +155,8 @@ const CANDIDATE_PROFILES = [
         ]
     },
     {
-        id: "sophie_ca",
-        name: "Sophie",
+        id: "katerina",
+        name: "Katerina",
         age: 25,
         gender: "woman",
         country: "Canada",
@@ -181,8 +181,8 @@ const CANDIDATE_PROFILES = [
         ]
     },
     {
-        id: "maya_usa",
-        name: "Maya",
+        id: "milica",
+        name: "Milica",
         age: 26,
         gender: "woman",
         country: "USA",
@@ -207,8 +207,8 @@ const CANDIDATE_PROFILES = [
         ]
     },
     {
-        id: "isabella_usa",
-        name: "Isabella",
+        id: "sofija",
+        name: "Sofija",
         age: 28,
         gender: "woman",
         country: "USA",
@@ -233,8 +233,8 @@ const CANDIDATE_PROFILES = [
         ]
     },
     {
-        id: "freja_se",
-        name: "Freja",
+        id: "jovana",
+        name: "Jovana",
         age: 24,
         gender: "woman",
         country: "Sweden",
@@ -259,8 +259,8 @@ const CANDIDATE_PROFILES = [
         ]
     },
     {
-        id: "astrid_se",
-        name: "Astrid",
+        id: "tamara",
+        name: "Tamara",
         age: 26,
         gender: "woman",
         country: "Sweden",
@@ -285,8 +285,8 @@ const CANDIDATE_PROFILES = [
         ]
     },
     {
-        id: "ebba_se",
-        name: "Ebba",
+        id: "simona",
+        name: "Simona",
         age: 25,
         gender: "woman",
         country: "Sweden",
