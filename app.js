@@ -451,6 +451,11 @@ const DOM = {
     btnSaveAvatarSelect: document.getElementById("btn-save-avatar-select"),
     settingsFirstNameVal: document.getElementById("settings-first-name-val"),
     settingsSurnameVal: document.getElementById("settings-surname-val"),
+    settingsAddressVal: document.getElementById("settings-address-val"),
+    settingsTownVal: document.getElementById("settings-town-val"),
+    settingsStateVal: document.getElementById("settings-state-val"),
+    settingsCountryVal: document.getElementById("settings-country-val"),
+    settingsPostcodeVal: document.getElementById("settings-postcode-val"),
     settingsEmailVal: document.getElementById("settings-email-val"),
     settingsAgeVal: document.getElementById("settings-age-val"),
     settingsGenderVal: document.getElementById("settings-gender-val"),
@@ -1995,6 +2000,11 @@ const App = {
         if (DOM.settingsSurnameVal) {
             DOM.settingsSurnameVal.value = state.userProfile.surname || "";
         }
+        if (DOM.settingsAddressVal) DOM.settingsAddressVal.value = state.userProfile.address || "";
+        if (DOM.settingsTownVal) DOM.settingsTownVal.value = state.userProfile.town || "";
+        if (DOM.settingsStateVal) DOM.settingsStateVal.value = state.userProfile.state || "";
+        if (DOM.settingsCountryVal) DOM.settingsCountryVal.value = state.userProfile.country || "";
+        if (DOM.settingsPostcodeVal) DOM.settingsPostcodeVal.value = state.userProfile.postcode || "";
         if (DOM.settingsEmailVal) {
             DOM.settingsEmailVal.value = currentEmail;
         }
@@ -2088,6 +2098,11 @@ const App = {
         state.userProfile.firstName = firstName;
         state.userProfile.surname = surname;
         state.userProfile.name = (firstName + (surname ? " " + surname : "")).trim();
+        if (DOM.settingsAddressVal) state.userProfile.address = DOM.settingsAddressVal.value.trim();
+        if (DOM.settingsTownVal) state.userProfile.town = DOM.settingsTownVal.value.trim();
+        if (DOM.settingsStateVal) state.userProfile.state = DOM.settingsStateVal.value.trim();
+        if (DOM.settingsCountryVal) state.userProfile.country = DOM.settingsCountryVal.value.trim();
+        if (DOM.settingsPostcodeVal) state.userProfile.postcode = DOM.settingsPostcodeVal.value.trim();
         state.userProfile.email = email;
         state.userProfile.age = parseInt(DOM.settingsAgeVal.value);
         state.userProfile.bio = DOM.settingsBioVal.value.trim();
