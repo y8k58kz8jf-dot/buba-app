@@ -1246,8 +1246,34 @@ const App = {
                 const age = parseInt(document.getElementById("user-age").value);
                 const gender = document.getElementById("user-gender").value;
                 const rootsEl = document.getElementById("user-roots");
-                const roots = rootsEl ? rootsEl.value : "🇲🇰 Macedonian";
+                const roots = rootsEl ? rootsEl.value : "";
                 const bio = document.getElementById("user-bio").value.trim();
+
+                // Validate mandatory fields
+                if (!firstName) {
+                    this.showToast("Please enter your Name", "error");
+                    return;
+                }
+                if (!surname) {
+                    this.showToast("Please enter your Second Name", "error");
+                    return;
+                }
+                if (!address) {
+                    this.showToast("Please enter your Address", "error");
+                    return;
+                }
+                if (isNaN(age) || age < 18) {
+                    this.showToast("Please enter a valid Age (18+)", "error");
+                    return;
+                }
+                if (!gender) {
+                    this.showToast("Please select your Gender", "error");
+                    return;
+                }
+                if (!roots) {
+                    this.showToast("Please select your Orthodox Roots", "error");
+                    return;
+                }
                 
                 const avatar = userUploadedAvatar || state.userProfile.avatar;
                 
