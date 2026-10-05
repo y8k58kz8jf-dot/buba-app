@@ -1106,15 +1106,21 @@ const App = {
         const settingsLoginPasswordVal = document.getElementById("settings-login-password-val");
         const settingsTogglePasswordBtn = document.getElementById("settings-toggle-password-btn");
 
-        // Helper for toggling password / passcode field visibility
-        const bindToggle = (btnId, inputId, showText = "👁️ Show", hideText = "🙈 Hide") => {
+        // Helper for revealing password / passcode field visibility for 1 second (no eye icon)
+        const bindToggle = (btnId, inputId) => {
             const btn = document.getElementById(btnId);
             const input = document.getElementById(inputId);
             if (btn && input) {
+                let timer = null;
                 btn.addEventListener("click", () => {
-                    const isPass = input.type === "password";
-                    input.type = isPass ? "text" : "password";
-                    btn.textContent = isPass ? hideText : showText;
+                    if (timer) clearTimeout(timer);
+                    input.type = "text";
+                    btn.textContent = "Showing...";
+                    timer = setTimeout(() => {
+                        input.type = "password";
+                        btn.textContent = "Show";
+                        timer = null;
+                    }, 1000);
                 });
             }
         };
