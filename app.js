@@ -2158,6 +2158,8 @@ const App = {
         const prefGender = state.userProfile.prefGender;
         const maxAge = state.userProfile.prefMaxAge;
         
+        const selectedCountries = state.userProfile.prefCountries || ["all"];
+
         let filtered = CANDIDATE_PROFILES.filter(candidate => {
             // Check gender preference
             if (prefGender !== "everyone") {
@@ -2168,8 +2170,7 @@ const App = {
             // Check age preference
             if (candidate.age > maxAge) return false;
 
-            // Check country preference
-            const selectedCountries = state.userProfile.prefCountries || ["all"];
+            // Check country / location preference
             if (!selectedCountries.includes("all") && selectedCountries.length > 0) {
                 if (!candidate.country || !selectedCountries.includes(candidate.country)) return false;
             }
@@ -2180,10 +2181,25 @@ const App = {
             return true;
         });
 
-        // Always show candidates to match with: if all were swiped or filtered out, refresh pool
+        // Always show candidates for chosen location: if all swiped in this location, refresh pool ONLY for chosen location
         if (filtered.length === 0) {
-            state.swipes = {};
-            filtered = [...CANDIDATE_PROFILES];
+            const locationPool = CANDIDATE_PROFILES.filter(candidate => {
+                if (prefGender !== "everyone") {
+                    const targetGender = prefGender === "women" ? "woman" : "man";
+                    if (candidate.gender !== targetGender) return false;
+                }
+                if (candidate.age > maxAge) return false;
+                if (!selectedCountries.includes("all") && selectedCountries.length > 0) {
+                    if (!candidate.country || !selectedCountries.includes(candidate.country)) return false;
+                }
+                return true;
+            });
+
+            if (locationPool.length > 0) {
+                // Clear swipe records only for this location's candidates so they cycle smoothly
+                locationPool.forEach(c => delete state.swipes[c.id]);
+                filtered = [...locationPool];
+            }
         }
 
         // Randomize order for a dynamic feel
