@@ -734,135 +734,114 @@ const App = {
 
         // Login Form Submission -> Validates credentials and advances to Passcode Creation/Verification
         const loginForm = document.getElementById("login-form");
+        const usernameInput = document.getElementById("login-username");
+        const passwordInput = document.getElementById("login-password");
+        const passcodeInput = document.getElementById("login-passcode");
+
+        let isAutoLoggingIn = false;
+
+        const performLogin = () => {
+            if (isAutoLoggingIn) return;
+            if (DOM.mainApp && DOM.mainApp.classList.contains("active")) return;
+            isAutoLoggingIn = true;
+
+            const nameOrEmail = usernameInput ? usernameInput.value.trim() : "";
+            const password = passwordInput ? passwordInput.value : "";
+            const passcode = passcodeInput ? passcodeInput.value.trim() : "";
+
+            const savedPassword = state.userProfile.password;
+            const savedPasscode = state.userProfile.passcode || "1234";
+
+            if (nameOrEmail) {
+                if (nameOrEmail.includes("@")) {
+                    state.userProfile.email = nameOrEmail;
+                    if (!state.userProfile.name) state.userProfile.name = nameOrEmail.split("@")[0];
+                    if (!state.userProfile.firstName) state.userProfile.firstName = nameOrEmail.split("@")[0];
+                } else {
+                    state.userProfile.firstName = nameOrEmail;
+                    state.userProfile.name = nameOrEmail;
+                }
+                this.updateOwnProfileDOM();
+            }
+
+            if (state.activeLoginMethod === "password") {
+                if (savedPassword && password && password !== savedPassword) {
+                    isAutoLoggingIn = false;
+                    this.showToast("Invalid Password. Please check your password.", "default");
+                    return;
+                }
+
+                if (!state.userProfile.hasVerifiedPasscode) {
+                    document.querySelectorAll(".onboarding-card").forEach(c => c.classList.remove("active"));
+                    const stepCreatePasscode = document.getElementById("step-create-passcode");
+                    if (stepCreatePasscode) stepCreatePasscode.classList.add("active");
+                    this.showToast("Password verified! Next, create & verify your passcode PIN.", "default");
+                    setTimeout(() => { isAutoLoggingIn = false; }, 1000);
+                    return;
+                }
+
+                this.proceedToMainApp("Logged in via Password! Welcome to O-Buba ✨");
+            } else {
+                const matchesPasscode = !savedPasscode ? true : (passcode === savedPasscode);
+                if (savedPasscode && passcode && !matchesPasscode) {
+                    isAutoLoggingIn = false;
+                    this.showToast("Invalid Passcode PIN. Default PIN is 1234.", "default");
+                    return;
+                }
+
+                this.proceedToMainApp("Logged in with Passcode PIN! Welcome to O-Buba ✨");
+            }
+        };
+
         if (loginForm) {
             loginForm.addEventListener("submit", (e) => {
                 e.preventDefault();
-                const usernameInput = document.getElementById("login-username");
-                const passwordInput = document.getElementById("login-password");
-                const passcodeInput = document.getElementById("login-passcode");
-                
-                const nameOrEmail = usernameInput ? usernameInput.value.trim() : "";
-                const password = passwordInput ? passwordInput.value : "";
-                const passcode = passcodeInput ? passcodeInput.value.trim() : "";
-
-                const savedName = (state.userProfile.name || state.userProfile.firstName || "").toLowerCase();
-                const savedEmail = (state.userProfile.email || "").toLowerCase();
-                const savedPassword = state.userProfile.password;
-                const savedPasscode = state.userProfile.passcode || "1234";
-
-                const inputLower = nameOrEmail.toLowerCase();
-                const matchesIdentity = !savedName && !savedEmail ? true : (inputLower === savedName || inputLower === savedEmail || (savedEmail && inputLower.includes(savedEmail)) || (savedName && inputLower.includes(savedName)) || (savedEmail && savedEmail.includes(inputLower)));
-
-                if (state.activeLoginMethod === "password") {
-                    const matchesPassword = !savedPassword ? true : (password === savedPassword);
-                    if (savedPassword && (savedName || savedEmail) && nameOrEmail && password && (!matchesIdentity || !matchesPassword)) {
-                        this.showToast("Invalid Name/Email or Password. Please check credentials or click Forgot.", "default");
-                        return;
-                    }
-                    
-                    if (nameOrEmail) {
-                        if (nameOrEmail.includes("@")) {
-                            state.userProfile.email = nameOrEmail;
-                            if (!state.userProfile.name) state.userProfile.name = nameOrEmail.split("@")[0];
-                            if (!state.userProfile.firstName) state.userProfile.firstName = nameOrEmail.split("@")[0];
-                        } else {
-                            state.userProfile.firstName = nameOrEmail;
-                            state.userProfile.name = nameOrEmail;
-                        }
-                        this.updateOwnProfileDOM();
-                    }
-
-                    // If user has not created/verified passcode yet, open Create Passcode PIN page next
-                    if (!state.userProfile.hasVerifiedPasscode) {
-                        document.querySelectorAll(".onboarding-card").forEach(c => c.classList.remove("active"));
-                        const stepCreatePasscode = document.getElementById("step-create-passcode");
-                        if (stepCreatePasscode) stepCreatePasscode.classList.add("active");
-                        this.showToast("Password verified! Next, create & verify your passcode PIN.", "default");
-                        return;
-                    }
-
-                    // If passcode is already verified, open main app directly
-                    this.proceedToMainApp("Logged in via Password! Passcode is active as default. ✨");
-                    return;
-                } else {
-                    const matchesPasscode = !savedPasscode ? true : (passcode === savedPasscode);
-                    if ((savedName || savedEmail) && nameOrEmail && passcode && (!matchesIdentity || !matchesPasscode)) {
-                        this.showToast("Invalid Name/Email or Passcode PIN. Default PIN is 1234.", "default");
-                        return;
-                    }
-                    
-                    if (nameOrEmail) {
-                        if (nameOrEmail.includes("@")) {
-                            state.userProfile.email = nameOrEmail;
-                            if (!state.userProfile.name) state.userProfile.name = nameOrEmail.split("@")[0];
-                        } else {
-                            state.userProfile.firstName = nameOrEmail;
-                            state.userProfile.name = nameOrEmail;
-                        }
-                        this.updateOwnProfileDOM();
-                    }
-
-                    this.proceedToMainApp("Logged in with Passcode PIN! Welcome to O-Buba ✨");
-                }
+                performLogin();
             });
 
             // ── INSTANT AUTOMATIC LOG IN WHEN NAME & PASSCODE/PASSWORD MATCH ──
-            let isAutoLoggingIn = false;
             const checkAutoLogin = () => {
                 if (isAutoLoggingIn) return;
                 if (DOM.mainApp && DOM.mainApp.classList.contains("active")) return;
 
-                const usernameInput = document.getElementById("login-username");
-                const passwordInput = document.getElementById("login-password");
-                const passcodeInput = document.getElementById("login-passcode");
-
-                if (!usernameInput) return;
-
-                const nameOrEmail = usernameInput.value.trim();
+                const nameOrEmail = usernameInput ? usernameInput.value.trim() : "";
                 if (!nameOrEmail) return;
 
-                const savedName = (state.userProfile.name || state.userProfile.firstName || "").toLowerCase();
-                const savedEmail = (state.userProfile.email || "").toLowerCase();
                 const savedPassword = state.userProfile.password;
                 const savedPasscode = state.userProfile.passcode || "1234";
-
-                const inputLower = nameOrEmail.toLowerCase();
-                const matchesIdentity = (!savedName && !savedEmail) ||
-                    inputLower === savedName || 
-                    inputLower === savedEmail ||
-                    (savedName && (savedName.includes(inputLower) || inputLower.includes(savedName))) ||
-                    (savedEmail && (savedEmail.includes(inputLower) || inputLower.includes(savedEmail)));
-
-                if (!matchesIdentity) return;
 
                 if (state.activeLoginMethod === "passcode") {
                     const passcode = passcodeInput ? passcodeInput.value.trim() : "";
                     if (!passcode) return;
-                    
-                    if (passcode === savedPasscode) {
-                        isAutoLoggingIn = true;
-                        setTimeout(() => { isAutoLoggingIn = false; }, 1500);
-                        loginForm.requestSubmit();
+
+                    // Match passcode (either matches saved passcode or default 1234)
+                    if (passcode === savedPasscode || (passcode.length >= 4 && passcode === "1234")) {
+                        performLogin();
                     }
                 } else if (state.activeLoginMethod === "password") {
                     const password = passwordInput ? passwordInput.value : "";
                     if (!password) return;
-                    
-                    if (password && (!savedPassword || password === savedPassword)) {
-                        isAutoLoggingIn = true;
-                        setTimeout(() => { isAutoLoggingIn = false; }, 1500);
-                        loginForm.requestSubmit();
+
+                    if (!savedPassword || password === savedPassword) {
+                        performLogin();
                     }
                 }
             };
 
-            const usernameInput = document.getElementById("login-username");
-            const passwordInput = document.getElementById("login-password");
-            const passcodeInput = document.getElementById("login-passcode");
+            // Attach listeners to input, change, keyup & paste for instant auto login
+            ["input", "change", "keyup", "paste"].forEach(evtName => {
+                if (usernameInput) usernameInput.addEventListener(evtName, checkAutoLogin);
+                if (passcodeInput) passcodeInput.addEventListener(evtName, checkAutoLogin);
+                if (passwordInput) passwordInput.addEventListener(evtName, checkAutoLogin);
+            });
 
-            if (usernameInput) usernameInput.addEventListener("input", checkAutoLogin);
-            if (passcodeInput) passcodeInput.addEventListener("input", checkAutoLogin);
-            if (passwordInput) passwordInput.addEventListener("input", checkAutoLogin);
+            // Periodic fallback check for browser autofill every 400ms when welcome screen is visible
+            setInterval(() => {
+                const stepWelcome = document.getElementById("step-welcome");
+                if (stepWelcome && stepWelcome.classList.contains("active") && !isAutoLoggingIn) {
+                    checkAutoLogin();
+                }
+            }, 400);
         }
 
         // ── CREATE / VERIFY PASSCODE PIN FORM HANDLER ──
