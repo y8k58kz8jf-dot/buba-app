@@ -1106,32 +1106,29 @@ const App = {
         const settingsLoginPasswordVal = document.getElementById("settings-login-password-val");
         const settingsTogglePasswordBtn = document.getElementById("settings-toggle-password-btn");
 
-        // Toggle Password Visibility in Details Page
-        if (toggleDetailsPasswordBtn && detailsPasswordInput) {
-            toggleDetailsPasswordBtn.addEventListener("click", () => {
-                const isPassword = detailsPasswordInput.type === "password";
-                detailsPasswordInput.type = isPassword ? "text" : "password";
-                toggleDetailsPasswordBtn.textContent = isPassword ? "🙈 Hide" : "👁️ Show";
-            });
-        }
+        // Helper for toggling password / passcode field visibility
+        const bindToggle = (btnId, inputId, showText = "👁️ Show", hideText = "🙈 Hide") => {
+            const btn = document.getElementById(btnId);
+            const input = document.getElementById(inputId);
+            if (btn && input) {
+                btn.addEventListener("click", () => {
+                    const isPass = input.type === "password";
+                    input.type = isPass ? "text" : "password";
+                    btn.textContent = isPass ? hideText : showText;
+                });
+            }
+        };
 
-        // Toggle Passcode Visibility in Details Page
-        if (toggleDetailsPasscodeBtn && detailsPasscodeInput) {
-            toggleDetailsPasscodeBtn.addEventListener("click", () => {
-                const isPassword = detailsPasscodeInput.type === "password";
-                detailsPasscodeInput.type = isPassword ? "text" : "password";
-                toggleDetailsPasscodeBtn.textContent = isPassword ? "🙈 Hide" : "👁️ Show";
-            });
-        }
-
-        // Toggle Password Visibility in Settings Card
-        if (settingsTogglePasswordBtn && settingsLoginPasswordVal) {
-            settingsTogglePasswordBtn.addEventListener("click", () => {
-                const isPassword = settingsLoginPasswordVal.type === "password";
-                settingsLoginPasswordVal.type = isPassword ? "text" : "password";
-                settingsTogglePasswordBtn.textContent = isPassword ? "🙈 Hide Password" : "👁️ Show Password";
-            });
-        }
+        // Wire up all password and passcode show/hide toggle buttons
+        bindToggle("toggle-login-passcode-btn", "login-passcode");
+        bindToggle("toggle-login-password-btn", "login-password");
+        bindToggle("toggle-new-passcode-btn", "new-passcode-input");
+        bindToggle("toggle-confirm-passcode-btn", "confirm-passcode-input");
+        bindToggle("toggle-create-password-btn", "create-password");
+        bindToggle("toggle-details-password-btn", "details-password-input");
+        bindToggle("toggle-details-passcode-btn", "details-passcode-input");
+        bindToggle("settings-toggle-password-btn", "settings-login-password-val");
+        bindToggle("settings-toggle-passcode-btn", "settings-login-passcode-val");
 
         // Handle Save Log In Details Form Submission
         if (loginDetailsForm) {
@@ -2005,6 +2002,8 @@ const App = {
         const settingsLoginEmailVal = document.getElementById("settings-login-email-val");
         const settingsLoginPasswordVal = document.getElementById("settings-login-password-val");
 
+        const settingsLoginPasscodeVal = document.getElementById("settings-login-passcode-val");
+
         if (detailsNameInput) detailsNameInput.value = currentName;
         if (detailsEmailInput) detailsEmailInput.value = currentEmail;
         if (detailsPasswordInput) detailsPasswordInput.value = currentPassword;
@@ -2013,6 +2012,7 @@ const App = {
         if (settingsLoginNameVal) settingsLoginNameVal.value = currentName;
         if (settingsLoginEmailVal) settingsLoginEmailVal.value = currentEmail;
         if (settingsLoginPasswordVal) settingsLoginPasswordVal.value = currentPassword;
+        if (settingsLoginPasscodeVal) settingsLoginPasscodeVal.value = currentPasscode;
 
         DOM.settingsAgeVal.value = state.userProfile.age;
         DOM.settingsBioVal.value = state.userProfile.bio;

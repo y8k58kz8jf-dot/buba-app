@@ -69,11 +69,19 @@
 
                                 <!-- Passcode PIN Input Field (DEFAULT ACTIVE) -->
                                 <div id="login-passcode-group">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                        <label for="login-passcode" style="margin-bottom: 0; font-size: 13px; opacity: 0.9;">Passcode PIN</label>
+                                        <button type="button" id="toggle-login-passcode-btn" style="background: none; border: none; color: #ff33bb; font-size: 12px; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0;">👁️ Show</button>
+                                    </div>
                                     <input type="password" id="login-passcode" inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="Enter passcode PIN (e.g. 1234)" autocomplete="one-time-code" style="width: 100%; letter-spacing: 3px; font-size: 15px; font-weight: 700;">
                                 </div>
 
                                 <!-- Password Input Field -->
                                 <div id="login-password-group" style="display: none;">
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                        <label for="login-password" style="margin-bottom: 0; font-size: 13px; opacity: 0.9;">Password</label>
+                                        <button type="button" id="toggle-login-password-btn" style="background: none; border: none; color: #ff33bb; font-size: 12px; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0;">👁️ Show</button>
+                                    </div>
                                     <input type="password" id="login-password" placeholder="Enter your password (••••••••)" autocomplete="current-password" style="width: 100%;">
                                 </div>
                             </div>
@@ -249,11 +257,17 @@
 
                         <form id="create-passcode-form" onsubmit="event.preventDefault();" style="text-align: left; display: flex; flex-direction: column; gap: 14px;">
                             <div class="input-group">
-                                <label for="new-passcode-input">Enter 4-Digit Passcode PIN</label>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                    <label for="new-passcode-input" style="margin-bottom: 0;">Enter 4-Digit Passcode PIN</label>
+                                    <button type="button" id="toggle-new-passcode-btn" style="background: none; border: none; color: #ff33bb; font-size: 12px; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0;">👁️ Show</button>
+                                </div>
                                 <input type="password" id="new-passcode-input" required inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="e.g. 1234" autocomplete="one-time-code" style="width: 100%; letter-spacing: 4px; font-size: 16px; font-weight: 700; text-align: center;">
                             </div>
                             <div class="input-group">
-                                <label for="confirm-passcode-input">Confirm 4-Digit Passcode PIN</label>
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                    <label for="confirm-passcode-input" style="margin-bottom: 0;">Confirm 4-Digit Passcode PIN</label>
+                                    <button type="button" id="toggle-confirm-passcode-btn" style="background: none; border: none; color: #ff33bb; font-size: 12px; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0;">👁️ Show</button>
+                                </div>
                                 <input type="password" id="confirm-passcode-input" required inputmode="numeric" pattern="[0-9]*" maxlength="6" placeholder="e.g. 1234" autocomplete="one-time-code" style="width: 100%; letter-spacing: 4px; font-size: 16px; font-weight: 700; text-align: center;">
                             </div>
 
@@ -293,7 +307,10 @@
 
                             <div class="row">
                                 <div class="input-group half">
-                                    <label for="create-password">Password</label>
+                                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                        <label for="create-password" style="margin-bottom: 0;">Password</label>
+                                        <button type="button" id="toggle-create-password-btn" style="background: none; border: none; color: #ff33bb; font-size: 11.5px; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0;">👁️ Show</button>
+                                    </div>
                                     <input type="password" id="create-password" required placeholder="••••••••" autocomplete="new-password" style="width: 100%;">
                                 </div>
                                 <div class="input-group half">
@@ -861,6 +878,14 @@
                                     <button type="button" id="settings-toggle-password-btn" style="background: none; border: none; color: #ff33bb; font-size: 11.5px; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0;">👁️ Show</button>
                                 </div>
                                 <input type="password" id="settings-login-password-val" placeholder="••••••••">
+                            </div>
+
+                            <div class="input-group" style="margin-bottom: 12px;">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                                    <label for="settings-login-passcode-val" style="margin-bottom: 0;">Passcode PIN (4–6 Digits)</label>
+                                    <button type="button" id="settings-toggle-passcode-btn" style="background: none; border: none; color: #ff33bb; font-size: 11.5px; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0;">👁️ Show</button>
+                                </div>
+                                <input type="password" id="settings-login-passcode-val" placeholder="1234" inputmode="numeric" pattern="[0-9]*" maxlength="6" style="letter-spacing: 3px; font-weight: 700;">
                             </div>
 
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px; font-size: 12px; opacity: 0.85;">
