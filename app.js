@@ -699,7 +699,7 @@ const App = {
                 if (forgotPasswordBtn) forgotPasswordBtn.style.display = "inline-block";
                 if (forgotPasscodeBtn) forgotPasscodeBtn.style.display = "none";
                 if (loginSubmitBtn) loginSubmitBtn.textContent = "Log In with Password";
-                if (loginSubtitle) loginSubtitle.textContent = "Enter your name or email and password to access your profile.";
+                if (loginSubtitle) loginSubtitle.textContent = "Enter your name and password to access your profile.";
             } else {
                 if (btnOptPasscode) {
                     btnOptPasscode.classList.add("active");
@@ -718,7 +718,7 @@ const App = {
                 if (forgotPasswordBtn) forgotPasswordBtn.style.display = "none";
                 if (forgotPasscodeBtn) forgotPasscodeBtn.style.display = "inline-block";
                 if (loginSubmitBtn) loginSubmitBtn.textContent = "Log In with Passcode (PIN)";
-                if (loginSubtitle) loginSubtitle.textContent = "Enter your name or email and your 4-digit passcode PIN.";
+                if (loginSubtitle) loginSubtitle.textContent = "Enter your name and your 4-digit passcode PIN.";
             }
         };
 
