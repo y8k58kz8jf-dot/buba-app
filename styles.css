@@ -1742,10 +1742,14 @@ h1, h2, h3, h4, h5, h6 {
 #saved-payments-section,
 #saved-payments-section h3,
 #saved-payments-section strong,
-#saved-payments-section span:not(#settings-payment-pill):not([style*="33cc99"]),
-#saved-payments-section label,
-#saved-payments-section select {
+#saved-payments-section span:not(#settings-payment-pill):not([style*="33cc99"]) {
     color: #8b0000 !important;
+}
+
+#saved-payments-section label,
+#saved-payments-section select,
+#saved-payments-section select option {
+    color: #ffffff !important;
 }
 
 .identity-verification-section #settings-verified-pill {
