@@ -51,162 +51,6 @@ function getFormattedFee(currencyKey) {
 // 1. MOCK PROFILES DATABASE
 const CANDIDATE_PROFILES = [
     {
-        id: "sophia",
-        name: "Sophia",
-        age: 24,
-        gender: "woman",
-        country: "Australia",
-        countryFlag: "🇦🇺",
-        location: "Sydney, Australia",
-        distance: "5 kilometres away",
-        bio: "Art curator & amateur ceramicist. Let's get coffee and talk about design, vinyl records, or the best pasta place in the city. ☕️🎨",
-        passions: ["Art", "Ceramics", "Coffee", "Museums", "Vinyl"],
-        photos: [
-            "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&q=80&w=600"
-        ],
-        song: "Midnight City",
-        artist: "M83",
-        matchChance: 0.7, // High chance for testing matches
-        chatReplies: [
-            "Hey there! Love your profile. What kind of coffee are you into? ☕️",
-            "That's awesome! I'm currently setting up a new modern art exhibition downtown. Have you been to the gallery lately?",
-            "Oh, we absolutely have to go! There is this amazing vinyl cafe nearby that plays jazz on Friday nights. Would you want to check it out sometime? ✨",
-            "Let's do it! How does Friday at 7 PM sound for a coffee/drink date?"
-        ]
-    },
-    {
-        id: "marcus",
-        name: "Marcus",
-        age: 27,
-        gender: "man",
-        country: "Australia",
-        countryFlag: "🇦🇺",
-        location: "Melbourne, Australia",
-        distance: "8 kilometres away",
-        bio: "Software developer, coffee nerd, and hiking enthusiast. Let's debug life together, share Spotify playlists, and find the best mountain trails. 🥾💻",
-        passions: ["Coding", "Coffee", "Hiking", "Outdoors", "Tech"],
-        photos: [
-            "https://images.unsplash.com/photo-1465101162946-4377e57745c3?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1444703686981-a3abbc4d4fe3?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1502134249126-9f3755a50d78?auto=format&fit=crop&q=80&w=600"
-        ],
-        song: "Intro",
-        artist: "The xx",
-        matchChance: 0.6,
-        chatReplies: [
-            "Hey! Thanks for swiping right. Do you code too, or did my outdoorsy photos win you over? 😉",
-            "Haha, classic! Coffee is definitely the fuel of life. What's your go-to brewing method? I'm currently obsessed with V64 pour-overs.",
-            "Ah, a connoisseur! We should definitely swap notes. I know a cozy little coffee shop that does amazing single-origin roasts. Let's go there sometime?",
-            "Awesome, I'll text you the place and we can figure out a day! Speak soon!"
-        ]
-    },
-    {
-        id: "elena",
-        name: "Elena",
-        age: 26,
-        gender: "woman",
-        country: "USA",
-        countryFlag: "🇺🇸",
-        location: "Miami, USA",
-        distance: "19 kilometres away",
-        bio: "Travel blogger, foodie, and scuba diver. Always looking for the next adventure. Let's explore the world or just find the best street tacos! ✈️🌮",
-        passions: ["Travel", "Foodie", "Diving", "Photography", "Adventures"],
-        photos: [
-            "https://images.unsplash.com/photo-1520034475321-cbe63696469a?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?auto=format&fit=crop&q=80&w=600"
-        ],
-        song: "Levitating",
-        artist: "Dua Lipa",
-        matchChance: 0.8,
-        chatReplies: [
-            "Hey adventure buddy! Where is the next stamp on your passport going to be? 🗺️",
-            "Oh, that sounds amazing! I just got back from a diving trip in Bali. The underwater life there is unreal! 🐠",
-            "We definitely should! But first, we need to test our compatibility: pineapples on pizza, yes or no? 🍍🍕",
-            "Yes! You passed the test. Let's celebrate with tacos and margaritas. Are you free this Thursday?"
-        ]
-    },
-    {
-        id: "liam",
-        name: "Liam",
-        age: 25,
-        gender: "man",
-        country: "UK",
-        countryFlag: "🇬🇧",
-        location: "London, UK",
-        distance: "13 kilometres away",
-        bio: "Architect, bookworm, and dog lover. Let's explore the city's hidden alleys, sketch in the park, or read in a quiet library. 🐕📐📚",
-        passions: ["Architecture", "Reading", "Dogs", "Design", "Quiet Cafes"],
-        photos: [
-            "https://images.unsplash.com/photo-1543722530-d2c3201371e7?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1475274047050-1d0c0975de51?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1518066000714-58c45f1a2c0a?auto=format&fit=crop&q=80&w=600"
-        ],
-        song: "Tadow",
-        artist: "Masego & FKJ",
-        matchChance: 0.5,
-        chatReplies: [
-            "Hello! How's your week going? Hope you like dogs, because my golden retriever Charlie is part of the package! 🐾",
-            "Charlie says hi! 🐶 He's a professional cuddler. What about you? Do you have any pets?",
-            "That's lovely. I'm reading this fascinating book about brutalist architecture. I'd love to tell you about it over tea/coffee if you're open to it?",
-            "Perfect. I know a quiet greenhouse cafe that's perfect for a chat. Let's aim for Saturday afternoon!"
-        ]
-    },
-    {
-        id: "chloe",
-        name: "Chloe",
-        age: 28,
-        gender: "woman",
-        country: "Canada",
-        countryFlag: "🇨🇦",
-        location: "Toronto, Canada",
-        distance: "3 kilometres away",
-        bio: "Musician, vinyl collector, and plant mom. Tell me your favorite album and let's go record shopping. My apartment is slowly becoming a jungle. 🌿🎸",
-        passions: ["Music", "Vinyl", "Plants", "Concerts", "Indie"],
-        photos: [
-            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?auto=format&fit=crop&q=80&w=600"
-        ],
-        song: "Dreams",
-        artist: "Fleetwood Mac",
-        matchChance: 0.7,
-        chatReplies: [
-            "Hey! What's the last song you listened to? Don't lie! 🎵",
-            "Solid choice! Fleetwood Mac is legendary. Do you collect vinyls or stick to streaming?",
-            "Ah, a fellow analog soul! We definitely need to raid the local record stores. There's a crate digging session in our future.",
-            "Let's do this weekend! Sunday afternoon crate digging. I'll send you my favorite shop address."
-        ]
-    },
-    {
-        id: "kai",
-        name: "Kai",
-        age: 23,
-        gender: "man",
-        country: "Australia",
-        countryFlag: "🇦🇺",
-        location: "Gold Coast, Australia",
-        distance: "24 kilometres away",
-        bio: "Surf instructor, yoga teacher, and positive vibes. Live in the sunshine, swim in the sea. Let's hit the beach for sunset and volleyball! ☀️🌊🧘‍♂️",
-        passions: ["Surfing", "Yoga", "Fitness", "Beach", "Nature"],
-        photos: [
-            "https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1502481851512-e9e2529bfbf9?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1464802686167-b939a6910659?auto=format&fit=crop&q=80&w=600"
-        ],
-        song: "Slide",
-        artist: "Calvin Harris",
-        matchChance: 0.6,
-        chatReplies: [
-            "Aloha! 🤙 How are you doing? Ready to catch some waves or just chill on the beach?",
-            "Sweet! Sunset yoga sessions are my absolute favorite. It's the best way to reset the mind. Ever tried yoga?",
-            "No worries, I'll teach you! It's super relaxing. We could do a quick beach session then grab smoothies. Down?",
-            "Awesome! Let's watch the weather forecast and lock in a sunny afternoon this week."
-        ]
-    },
-    {
         id: "ana",
         name: "Ana",
         age: 25,
@@ -215,99 +59,21 @@ const CANDIDATE_PROFILES = [
         countryFlag: "🇲🇰",
         location: "Skopje, Macedonia",
         distance: "6 kilometres away",
-        bio: "Icon painter & theology student. I find beauty in the sacred and the everyday. Let's share a cup of herbal tea and talk about faith, art, and life. 🕯️🎨",
-        passions: ["Icon Painting", "Theology", "Tea", "History", "Faith"],
+        bio: "Icon painter & architecture enthusiast. I find beauty in traditional sacred art and vintage cafes. Let's share a cup of Turkish coffee! 🕯️☕",
+        passions: ["Icon Painting", "Architecture", "Coffee", "History", "Faith"],
         photos: [
             "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=600",
             "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?auto=format&fit=crop&q=80&w=600",
             "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&q=80&w=600"
         ],
-        song: "Ave Maria",
-        artist: "Schubert",
+        song: "Zajdi Zajdi",
+        artist: "Traditional",
         matchChance: 0.75,
         chatReplies: [
             "Hi! I love your profile. Are you into Byzantine art at all? 🕯️",
             "That's wonderful! I've been working on an icon of St. George lately. It's meditative work.",
             "Exactly, it's like prayer in colour. I'd love to show you my studio sometime — tea included 🍵",
             "Let's do Sunday after liturgy! I know a little place with the best baklava in town."
-        ]
-    },
-    {
-        id: "nikolaj",
-        name: "Nikolaj",
-        age: 29,
-        gender: "man",
-        country: "Serbia",
-        countryFlag: "🇷🇸",
-        location: "Belgrade, Serbia",
-        distance: "11 kilometres away",
-        bio: "Chef with a passion for traditional Balkan recipes. My grandma taught me everything in the kitchen. Let's cook together and share stories over a good meal. 🍽️🇷🇸",
-        passions: ["Cooking", "Food", "Family", "Culture", "Wine"],
-        photos: [
-            "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=600"
-        ],
-        song: "Ederlezi",
-        artist: "Goran Bregović",
-        matchChance: 0.65,
-        chatReplies: [
-            "Hey! Do you appreciate home-cooked meals or are you more of a restaurant person? 😄",
-            "I knew it! There's nothing like a proper sarma slow-cooked for hours. My grandma's recipe is legendary.",
-            "I'll tell you what — come over Saturday, I'll make a proper feast. Bring your appetite! 🍷",
-            "It's a date then. I'll send you the address. Fair warning: you might never want to leave. 😄"
-        ]
-    },
-    {
-        id: "katerina",
-        name: "Katerina",
-        age: 27,
-        gender: "woman",
-        country: "Greece",
-        countryFlag: "🇬🇷",
-        location: "Thessaloniki, Greece",
-        distance: "9 kilometres away",
-        bio: "Nurse by day, folk dancer by night. I love keeping traditions alive — music, embroidery, and Sunday lunches with family. Looking for someone genuine. 💃🌺",
-        passions: ["Folk Dance", "Embroidery", "Family", "Traditions", "Nature"],
-        photos: [
-            "https://images.unsplash.com/photo-1488716820095-cbe80883c496?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1524503033411-c9566986fc8f?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600"
-        ],
-        song: "Kaval Sviri",
-        artist: "Traditional",
-        matchChance: 0.7,
-        chatReplies: [
-            "Hello! Do you have any connection to folk traditions or is this a new world for you? 🌺",
-            "That's so sweet! My dance group performs at festivals all summer. It's the most joyful thing.",
-            "You'd love it! The music, the costumes, the energy — it's pure soul. Come watch us perform? 💃",
-            "Our next show is in two weeks. I'll save you a front row spot!"
-        ]
-    },
-    {
-        id: "dmitri",
-        name: "Dmitri",
-        age: 31,
-        gender: "man",
-        country: "Serbia",
-        countryFlag: "🇷🇸",
-        location: "Novi Sad, Serbia",
-        distance: "16 kilometres away",
-        bio: "History teacher & choir singer. I spend my weekends at monasteries, bookshops, and farmers' markets. Let's have deep conversations over good coffee. ☕📖",
-        passions: ["History", "Choir", "Reading", "Monasteries", "Coffee"],
-        photos: [
-            "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1463453091185-61582044d556?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1504257432389-52343af06ae3?auto=format&fit=crop&q=80&w=600"
-        ],
-        song: "Bozhe Pravde",
-        artist: "Traditional",
-        matchChance: 0.6,
-        chatReplies: [
-            "Good day! What period of history do you find most fascinating? I could talk about this for hours 📖",
-            "Exactly! The Byzantine era is endlessly rich. Most people don't realise how much it shaped the modern world.",
-            "We should visit the manuscript collection at the city library — it's extraordinary. Interested?",
-            "Wonderful. Saturday morning, library, then coffee and debate. That's my kind of date. ☕"
         ]
     },
     {
@@ -319,7 +85,7 @@ const CANDIDATE_PROFILES = [
         countryFlag: "🇲🇰",
         location: "Bitola, Macedonia",
         distance: "4 kilometres away",
-        bio: "Graphic designer & amateur photographer. I shoot film, drink too much coffee, and love rooftop sunsets. Always looking for the next beautiful moment. 📷✨",
+        bio: "Graphic designer & amateur photographer. I shoot 35mm film, drink too much coffee, and love rooftop sunsets. 📷✨",
         passions: ["Photography", "Design", "Coffee", "Sunsets", "Film"],
         photos: [
             "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80&w=600",
@@ -331,35 +97,217 @@ const CANDIDATE_PROFILES = [
         matchChance: 0.8,
         chatReplies: [
             "Hey! Film or digital? It says a lot about a person 📷",
-            "Film all the way! The anticipation of developing a roll is unmatched. I shoot on a Pentax K1000.",
-            "We have to shoot together sometime! I know the most photogenic rooftop in the city. Golden hour is magic there.",
+            "Film all the way! The anticipation of developing a roll is unmatched.",
+            "We have to shoot together sometime! I know the most photogenic rooftop in Bitola.",
             "This weekend if the sky cooperates? I'll bring the camera, you bring the coffee ☕✨"
         ]
     },
     {
-        id: "stefan",
-        name: "Stefan",
+        id: "elena_mk",
+        name: "Elena",
         age: 26,
-        gender: "man",
+        gender: "woman",
         country: "Macedonia",
         countryFlag: "🇲🇰",
         location: "Ohrid, Macedonia",
-        distance: "20 kilometres away",
-        bio: "Candle maker, beekeeper & outdoor enthusiast. I live simply and love deeply. Raised in the mountains, now in the city — still miss the stars. 🌲🕯️🐝",
-        passions: ["Beekeeping", "Candles", "Hiking", "Mountains", "Stars"],
+        distance: "12 kilometres away",
+        bio: "Lakeside living, folk dance lover & pastry chef. Nothing beats fresh Ohrid trout, lake walks at sunset, and family gatherings. 🌊🧁",
+        passions: ["Baking", "Folk Dance", "Nature", "Lakes", "Cooking"],
         photos: [
-            "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1500336624523-d727130c3328?auto=format&fit=crop&q=80&w=600",
-            "https://images.unsplash.com/photo-1511367461989-f85a21fda167?auto=format&fit=crop&q=80&w=600"
+            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1524503033411-c9566986fc8f?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1488716820095-cbe80883c496?auto=format&fit=crop&q=80&w=600"
         ],
-        song: "Mountains",
-        artist: "Biffy Clyro",
-        matchChance: 0.65,
+        song: "Macedonian Girl",
+        artist: "Traditional",
+        matchChance: 0.7,
         chatReplies: [
-            "Hey! City person or mountain soul? 🌲",
-            "Mountains every time. The city is convenient but the mountains are alive. I try to go back every month.",
-            "We could do a day hike — I know trails most people have never heard of. Pack lunch, I'll bring honey from my hives. 🐝",
-            "Next clear weekend then! Early start, big skies, good company. Deal? 🤝"
+            "Zdravo! Ever visited Lake Ohrid in the summer? 🌊",
+            "It's absolute magic! Sunset at Kaneo church is my favorite spot on earth.",
+            "We should grab coffee by the lake and walk through the Old Town cobblestone streets.",
+            "Sounds like a plan! Let me know when you're in Ohrid next! ✨"
+        ]
+    },
+    {
+        id: "chloe",
+        name: "Chloe",
+        age: 27,
+        gender: "woman",
+        country: "Canada",
+        countryFlag: "🇨🇦",
+        location: "Toronto, Canada",
+        distance: "3 kilometres away",
+        bio: "Musician, vinyl collector, and plant mom. Tell me your favorite album and let's go record shopping in Kensington Market. 🌿🎸",
+        passions: ["Music", "Vinyl", "Plants", "Concerts", "Indie"],
+        photos: [
+            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?auto=format&fit=crop&q=80&w=600"
+        ],
+        song: "Dreams",
+        artist: "Fleetwood Mac",
+        matchChance: 0.7,
+        chatReplies: [
+            "Hey! What's the last album you listened to front to back? 🎵",
+            "Fleetwood Mac is legendary! Do you collect vinyls or stream?",
+            "Ah, an analog lover! We definitely need to hit up local record shops together.",
+            "Let's do Sunday afternoon crate digging! I'll send you my favorite record store address."
+        ]
+    },
+    {
+        id: "sophie_ca",
+        name: "Sophie",
+        age: 25,
+        gender: "woman",
+        country: "Canada",
+        countryFlag: "🇨🇦",
+        location: "Vancouver, Canada",
+        distance: "8 kilometres away",
+        bio: "Landscape photographer & trail runner. Always happiest surrounded by Pacific ocean air, giant cedars, and mountain views. 🏔️🌲",
+        passions: ["Photography", "Hiking", "Outdoors", "Coffee", "Fitness"],
+        photos: [
+            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1524503033411-c9566986fc8f?auto=format&fit=crop&q=80&w=600"
+        ],
+        song: "Ophelia",
+        artist: "The Lumineers",
+        matchChance: 0.8,
+        chatReplies: [
+            "Hey there! Ocean views or snow-capped mountains? 🏔️",
+            "Same here! Why choose when Vancouver gives us both! Have you hiked Lynn Canyon?",
+            "It's breathtaking! We should hike it together and pack a picnic.",
+            "Awesome! Let me check the weather forecast for this Saturday."
+        ]
+    },
+    {
+        id: "maya_usa",
+        name: "Maya",
+        age: 26,
+        gender: "woman",
+        country: "USA",
+        countryFlag: "🇺🇸",
+        location: "Miami, USA",
+        distance: "15 kilometres away",
+        bio: "Travel blogger, foodie, and scuba diver. Always looking for the next adventure. Let me show you the best street tacos in town! 🌴🌮",
+        passions: ["Travel", "Foodie", "Diving", "Photography", "Beach"],
+        photos: [
+            "https://images.unsplash.com/photo-1520034475321-cbe63696469a?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1531306728370-e2ebd9d7bb99?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1506318137071-a8e063b4bec0?auto=format&fit=crop&q=80&w=600"
+        ],
+        song: "Levitating",
+        artist: "Dua Lipa",
+        matchChance: 0.8,
+        chatReplies: [
+            "Hey adventure buddy! Where is the next stamp on your passport going to be? 🗺️",
+            "That sounds amazing! I just got back from diving in Key Largo.",
+            "First compatibility test: pineapples on pizza, yes or no? 🍕",
+            "Yes! You passed! Let's celebrate with tacos and margaritas. Free Thursday?"
+        ]
+    },
+    {
+        id: "isabella_usa",
+        name: "Isabella",
+        age: 28,
+        gender: "woman",
+        country: "USA",
+        countryFlag: "🇺🇸",
+        location: "New York, USA",
+        distance: "10 kilometres away",
+        bio: "Fashion journalist & art history buff. Exploring quiet Greenwich Village cafes, Metropolitan Museum exhibits, and Central Park walks. 🏙️🎨",
+        passions: ["Fashion", "Art", "Museums", "Coffee", "Writing"],
+        photos: [
+            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?auto=format&fit=crop&q=80&w=600"
+        ],
+        song: "Empire State of Mind",
+        artist: "Alicia Keys",
+        matchChance: 0.75,
+        chatReplies: [
+            "Hello! Favorite museum in the city: Met or MoMA? 🏛️",
+            "The Met wings are endless! I could get lost in the European paintings gallery forever.",
+            "We should wander through the exhibits then grab espresso at a cozy cafe nearby.",
+            "Let's target Sunday afternoon! I'll reserve our entry tickets."
+        ]
+    },
+    {
+        id: "freja_se",
+        name: "Freja",
+        age: 24,
+        gender: "woman",
+        country: "Sweden",
+        countryFlag: "🇸🇪",
+        location: "Stockholm, Sweden",
+        distance: "7 kilometres away",
+        bio: "Architecture student & fika lover. Obsessed with Nordic minimalism, fresh cinnamon buns, and cozy autumn evenings in Gamla Stan. 🇸🇪☕🧁",
+        passions: ["Architecture", "Design", "Coffee", "Fika", "Art"],
+        photos: [
+            "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&q=80&w=600"
+        ],
+        song: "Dancing Queen",
+        artist: "ABBA",
+        matchChance: 0.8,
+        chatReplies: [
+            "Hej! Ready for a proper Swedish fika with fresh kanelbullar? ☕🧁",
+            "It's a daily ritual! Nothing beats good coffee and genuine conversation.",
+            "I know a secret little cafe tucked away in Gamla Stan. Shall we go?",
+            "Sublim! How about Friday afternoon around 3 PM?"
+        ]
+    },
+    {
+        id: "astrid_se",
+        name: "Astrid",
+        age: 26,
+        gender: "woman",
+        country: "Sweden",
+        countryFlag: "🇸🇪",
+        location: "Gothenburg, Sweden",
+        distance: "14 kilometres away",
+        bio: "Environmental researcher & ocean swimmer. Exploring the West Coast archipelagos, island hopping, and campfire acoustic music. 🛶🌲",
+        passions: ["Kayaking", "Outdoors", "Nature", "Music", "Fitness"],
+        photos: [
+            "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1488716820095-cbe80883c496?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=600"
+        ],
+        song: "Symphony",
+        artist: "Zara Larsson",
+        matchChance: 0.7,
+        chatReplies: [
+            "Hej! Ever tried sea kayaking around the rocky Swedish islands? 🛶",
+            "It's pure serenity! The coast near Gothenburg is unbeatable in summer.",
+            "We could rent a double kayak and explore the archipelago together!",
+            "Deal! I'll pack the Swedish fika basket for our island stopover."
+        ]
+    },
+    {
+        id: "ebba_se",
+        name: "Ebba",
+        age: 25,
+        gender: "woman",
+        country: "Sweden",
+        countryFlag: "🇸🇪",
+        location: "Malmö, Sweden",
+        distance: "11 kilometres away",
+        bio: "Ceramics artist & vintage clothing collector. Passionate about sustainable living, craft markets, and warm cups of oat matcha latte. 🍵🎨",
+        passions: ["Ceramics", "Art", "Vintage", "Tea", "Design"],
+        photos: [
+            "https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&q=80&w=600",
+            "https://images.unsplash.com/photo-1502685104226-ee32379fefbe?auto=format&fit=crop&q=80&w=600"
+        ],
+        song: "Young Folks",
+        artist: "Peter Bjorn and John",
+        matchChance: 0.75,
+        chatReplies: [
+            "Hej! Do you like pottery or handmade crafts? 🎨",
+            "That's so nice! I spend half my week with clay in my studio throwing pots.",
+            "Come by my studio in Malmö! I can show you how to throw your first clay vase.",
+            "Sounds like fun! Let's schedule a pottery studio session this Sunday!"
         ]
     }
 ];
