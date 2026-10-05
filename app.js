@@ -2208,14 +2208,14 @@ const App = {
         loader.innerHTML = `
             <div class="pulse-ring"></div>
             <img src="${state.userProfile.avatar}" class="loader-avatar" alt="Avatar">
-            <span class="loading-text">${state.boostActive ? "Boost mode active! Sparks flying..." : "Finding matches nearby..."}</span>
+            <span class="loading-text">${state.boostActive ? "Boost mode active! Sparks flying..." : "Finding perfect matches..."}</span>
         `;
         DOM.cardStackDeck.appendChild(loader);
 
-        // Filter profiles
+        // Filter profiles based on kilometres distance, age range, and location
         const prefGender = state.userProfile.prefGender;
-        const maxAge = state.userProfile.prefMaxAge;
-        
+        const maxAge = state.userProfile.prefMaxAge || 100;
+        const maxDistanceKm = state.userProfile.prefDistance || 100;
         const selectedCountries = state.userProfile.prefCountries || ["all"];
 
         let filtered = CANDIDATE_PROFILES.filter(candidate => {
@@ -2225,8 +2225,12 @@ const App = {
                 if (candidate.gender !== targetGender) return false;
             }
             
-            // Check age preference
+            // Check age range preference
             if (candidate.age > maxAge) return false;
+
+            // Check kilometres / distance preference
+            const candidateDist = parseInt(candidate.distance) || 0;
+            if (candidateDist > maxDistanceKm) return false;
 
             // Check country / location preference
             if (!selectedCountries.includes("all") && selectedCountries.length > 0) {
@@ -2239,7 +2243,7 @@ const App = {
             return true;
         });
 
-        // Always show candidates for chosen location: if all swiped in this location, refresh pool ONLY for chosen location
+        // Fallback: if distance filter is strict and no candidates remain, find closest candidates in chosen location & age range
         if (filtered.length === 0) {
             const locationPool = CANDIDATE_PROFILES.filter(candidate => {
                 if (prefGender !== "everyone") {
@@ -2254,14 +2258,24 @@ const App = {
             });
 
             if (locationPool.length > 0) {
-                // Clear swipe records only for this location's candidates so they cycle smoothly
+                // Clear swipe records for these candidates so they cycle smoothly
                 locationPool.forEach(c => delete state.swipes[c.id]);
                 filtered = [...locationPool];
             }
         }
 
-        // Randomize order for a dynamic feel
-        state.deck = filtered.sort(() => Math.random() - 0.5);
+        // Sort by Perfect Match criteria: closest kilometres distance first, then closest age match
+        filtered.sort((a, b) => {
+            const distA = parseInt(a.distance) || 0;
+            const distB = parseInt(b.distance) || 0;
+            const ageA = Math.abs(a.age - (state.userProfile.age || 25));
+            const ageB = Math.abs(b.age - (state.userProfile.age || 25));
+
+            if (distA !== distB) return distA - distB;
+            return ageA - ageB;
+        });
+
+        state.deck = filtered;
 
         // Append card elements
         if (state.deck.length > 0) {
@@ -2278,7 +2292,7 @@ const App = {
             textNode.className = "loading-text";
             textNode.style.zIndex = "1";
             textNode.style.marginTop = "130px";
-            textNode.textContent = "There's no one new in your area.";
+            textNode.textContent = "No new profiles found in your chosen location, distance & age range.";
             DOM.cardStackDeck.appendChild(textNode);
         }
     },
@@ -2307,11 +2321,22 @@ const App = {
             tagsHtml += `<span class="card-tag-badge">${tag}</span>`;
         });
 
+        const candidateDist = parseInt(profile.distance) || 0;
+        const maxDist = state.userProfile.prefDistance || 100;
+        const maxAge = state.userProfile.prefMaxAge || 100;
+        const isPerfectMatch = candidateDist <= maxDist && profile.age <= maxAge;
+
+        const perfectMatchBadge = isPerfectMatch 
+            ? `<div class="perfect-match-badge" style="position: absolute; top: 16px; left: 16px; background: linear-gradient(135deg, #ff33bb, #8b0000); color: #ffffff; font-size: 11px; font-weight: 800; padding: 4px 10px; border-radius: 20px; z-index: 10; border: 1px solid rgba(255,255,255,0.4); box-shadow: 0 4px 12px rgba(255, 51, 187, 0.5); display: flex; align-items: center; gap: 4px;">✨ Perfect Match • ${profile.distance}</div>` 
+            : '';
+
         card.innerHTML = `
             <!-- Touch Nav overlay for photo tapping -->
             <div class="card-touch-nav touch-left"></div>
             <div class="card-touch-nav touch-right"></div>
             
+            ${perfectMatchBadge}
+
             <!-- Segment photo indicators -->
             <div class="card-image-trackers">
                 ${trackerBarsHtml}
@@ -2338,7 +2363,7 @@ const App = {
                 <div class="card-subtitle-meta">
                     <span class="card-meta-item">
                         <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                        <span>${profile.location ? profile.location + (profile.countryFlag ? ' ' + profile.countryFlag : '') : profile.distance}</span>
+                        <span>${profile.location ? profile.location + ' (' + profile.distance + ')' + (profile.countryFlag ? ' ' + profile.countryFlag : '') : profile.distance}</span>
                     </span>
                 </div>
                 <p class="card-bio-teaser">${profile.bio}</p>
