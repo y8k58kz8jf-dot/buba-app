@@ -1757,6 +1757,10 @@ h1, h2, h3, h4, h5, h6 {
     color: #33cc99 !important;
 }
 
+#save-settings-btn {
+    color: #8b0000 !important;
+}
+
 .profile-preview-box {
     display: flex;
     flex-direction: column;
