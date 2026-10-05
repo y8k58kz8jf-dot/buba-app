@@ -1226,6 +1226,18 @@ const App = {
                 const firstName = firstNameEl ? firstNameEl.value.trim() : (document.getElementById("user-name") ? document.getElementById("user-name").value.trim() : "");
                 const surname = surnameEl ? surnameEl.value.trim() : "";
 
+                const addressEl = document.getElementById("user-address");
+                const townEl = document.getElementById("user-town");
+                const stateEl = document.getElementById("user-state");
+                const countryEl = document.getElementById("user-country");
+                const postcodeEl = document.getElementById("user-postcode");
+
+                const address = addressEl ? addressEl.value.trim() : "";
+                const town = townEl ? townEl.value.trim() : "";
+                const userState = stateEl ? stateEl.value.trim() : "";
+                const country = countryEl ? countryEl.value.trim() : "";
+                const postcode = postcodeEl ? postcodeEl.value.trim() : "";
+
                 const createPassEl = document.getElementById("create-password");
                 const emailEl = document.getElementById("user-email");
                 const password = createPassEl ? createPassEl.value : "";
@@ -1242,6 +1254,11 @@ const App = {
                 state.userProfile.firstName = firstName;
                 state.userProfile.surname = surname;
                 state.userProfile.name = (firstName + (surname ? " " + surname : "")).trim();
+                state.userProfile.address = address;
+                state.userProfile.town = town;
+                state.userProfile.state = userState;
+                state.userProfile.country = country;
+                state.userProfile.postcode = postcode;
                 state.userProfile.email = email;
                 state.userProfile.age = age;
                 state.userProfile.gender = gender;
