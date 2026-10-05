@@ -1733,22 +1733,22 @@ h1, h2, h3, h4, h5, h6 {
     color: #ffffff !important;
 }
 
-/* Identity & Anti-Fraud Security and Saved Payments dark red text styling */
+/* Identity & Anti-Fraud Security and Saved Payments text styling */
 .identity-verification-section,
 .identity-verification-section h3,
 .identity-verification-section strong,
 .identity-verification-section span:not(#settings-verified-pill),
 .identity-verification-section button,
-#saved-payments-section,
-#saved-payments-section h3,
-#saved-payments-section strong,
-#saved-payments-section span:not(#settings-payment-pill):not([style*="33cc99"]) {
+#saved-payments-section h3 {
     color: #8b0000 !important;
 }
 
+#saved-payments-section strong,
+#saved-payments-section span:not(#settings-payment-pill):not([style*="33cc99"]),
 #saved-payments-section label,
 #saved-payments-section select,
-#saved-payments-section select option {
+#saved-payments-section select option,
+#saved-payments-section div {
     color: #ffffff !important;
 }
 
