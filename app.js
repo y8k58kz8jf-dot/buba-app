@@ -703,7 +703,7 @@ const App = {
                 if (loginPasscodeGroup) loginPasscodeGroup.style.display = "none";
                 if (forgotPasswordBtn) forgotPasswordBtn.style.display = "inline-block";
                 if (forgotPasscodeBtn) forgotPasscodeBtn.style.display = "none";
-                if (loginSubmitBtn) loginSubmitBtn.textContent = "Log In with Password";
+                if (loginSubmitBtn) loginSubmitBtn.textContent = "Log In";
                 if (loginSubtitle) loginSubtitle.textContent = "Enter your name and password to access your profile.";
             } else {
                 if (btnOptPasscode) {
@@ -722,7 +722,7 @@ const App = {
                 if (loginPasscodeGroup) loginPasscodeGroup.style.display = "block";
                 if (forgotPasswordBtn) forgotPasswordBtn.style.display = "none";
                 if (forgotPasscodeBtn) forgotPasscodeBtn.style.display = "inline-block";
-                if (loginSubmitBtn) loginSubmitBtn.textContent = "Log In with Passcode (PIN)";
+                if (loginSubmitBtn) loginSubmitBtn.textContent = "Log In";
                 if (loginSubtitle) loginSubtitle.textContent = "Enter your name and your 4-digit passcode PIN.";
             }
         };
