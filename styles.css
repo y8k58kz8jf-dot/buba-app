@@ -1715,6 +1715,24 @@ h1, h2, h3, h4, h5, h6 {
     padding-bottom: 8px;
 }
 
+/* Edit Profile Card Section dark red text styling */
+#edit-profile-card-section,
+#edit-profile-card-section h3,
+#edit-profile-card-section label,
+#edit-profile-card-section p,
+#edit-profile-card-section span:not(#photos-count-badge),
+#edit-profile-card-section strong,
+#edit-profile-card-section .avatar-shape-btn,
+#edit-profile-card-section .photo-slot-badge,
+#edit-profile-card-section .drop-label,
+#edit-profile-card-section .drop-sub {
+    color: #8b0000 !important;
+}
+
+#edit-profile-card-section .photo-slot-change-btn {
+    color: #ffffff !important;
+}
+
 .profile-preview-box {
     display: flex;
     flex-direction: column;
