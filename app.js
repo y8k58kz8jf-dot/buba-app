@@ -355,6 +355,7 @@ const state = {
     boostTimer: null,
     selectedPaymentMethod: "applepay",
     userSubscription: "free",
+    stripePublishableKey: "",
     passCountToday: 0,
     lastPassResetDate: null,
     likeCountToday: 0,
@@ -526,6 +527,8 @@ const DOM = {
     settingsPaymentPill: document.getElementById("settings-payment-pill"),
     savedPaymentMethodName: document.getElementById("saved-payment-method-name"),
     savedPaymentMethodDesc: document.getElementById("saved-payment-method-desc"),
+    settingsStripeKeyInput: document.getElementById("settings-stripe-key-input"),
+    stripeSdkStatusPill: document.getElementById("stripe-sdk-status-pill"),
 
     // Avatar Shape & Photos Elements
     headerAvatarBox: document.getElementById("header-avatar-box"),
@@ -589,6 +592,7 @@ const Storage = {
                 state.chats = parsed.chats || state.chats;
                 state.selectedCurrency = parsed.selectedCurrency || state.selectedCurrency;
                 state.userSubscription = parsed.userSubscription || state.userSubscription;
+                state.stripePublishableKey = parsed.stripePublishableKey || state.stripePublishableKey || "";
                 state.passCountToday = parsed.passCountToday || 0;
                 state.lastPassResetDate = parsed.lastPassResetDate || "";
                 state.likeCountToday = parsed.likeCountToday || 0;
@@ -1765,7 +1769,9 @@ const App = {
                     this.updateOwnProfileDOM();
                     this.syncSettingsFormWithState();
                     
-                    this.showToast(`${label} Active! Payment via ${methodLabel} successful 💳✨`, "default");
+                    const isStripeActive = window.stripeInstance && state.stripePublishableKey && state.stripePublishableKey.startsWith("pk_");
+                    const stripeNotice = isStripeActive ? " (Depositing via Stripe Merchant Payout)" : "";
+                    this.showToast(`${label} Active! Payment via ${methodLabel} successful 💳✨${stripeNotice}`, "default");
                     return;
                 }
 
@@ -2216,6 +2222,37 @@ const App = {
                 DOM.settingsPaymentPill.textContent = `${activePlanLabel} • ${pills[savedMethod] || " Pay Active"}`;
             }
         }
+
+        if (DOM.settingsStripeKeyInput) {
+            DOM.settingsStripeKeyInput.value = state.stripePublishableKey || "";
+        }
+        this.initStripeSDK();
+    },
+
+    initStripeSDK() {
+        const key = state.stripePublishableKey || (DOM.settingsStripeKeyInput ? DOM.settingsStripeKeyInput.value.trim() : "");
+        if (typeof Stripe !== "undefined") {
+            if (key && key.startsWith("pk_")) {
+                try {
+                    window.stripeInstance = Stripe(key);
+                    if (DOM.stripeSdkStatusPill) {
+                        DOM.stripeSdkStatusPill.textContent = "Stripe Live Active ✓";
+                        DOM.stripeSdkStatusPill.style.background = "rgba(16, 211, 131, 0.2)";
+                        DOM.stripeSdkStatusPill.style.color = "#10d383";
+                        DOM.stripeSdkStatusPill.style.borderColor = "rgba(16, 211, 131, 0.4)";
+                    }
+                } catch (err) {
+                    console.warn("Stripe key init warning:", err);
+                }
+            } else {
+                if (DOM.stripeSdkStatusPill) {
+                    DOM.stripeSdkStatusPill.textContent = "Stripe JS Ready";
+                    DOM.stripeSdkStatusPill.style.background = "rgba(99, 91, 255, 0.2)";
+                    DOM.stripeSdkStatusPill.style.color = "#635bff";
+                    DOM.stripeSdkStatusPill.style.borderColor = "rgba(99, 91, 255, 0.4)";
+                }
+            }
+        }
     },
 
     saveSettings() {
@@ -2272,6 +2309,11 @@ const App = {
                 DOM.settingsPaymentPill.textContent = pills[savedMethod] || " Pay Active";
             }
         }
+
+        if (DOM.settingsStripeKeyInput) {
+            state.stripePublishableKey = DOM.settingsStripeKeyInput.value.trim();
+        }
+        this.initStripeSDK();
         
         Storage.save();
         this.updateOwnProfileDOM();
