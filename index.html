@@ -968,12 +968,24 @@
                                     <strong style="font-size: 13px; color: #635bff; display: flex; align-items: center; gap: 6px;">
                                         <span>💳</span> Stripe Merchant Bank Payout SDK
                                     </strong>
-                                    <span id="stripe-sdk-status-pill" style="font-size: 10px; font-weight: 800; background: rgba(99, 91, 255, 0.2); color: #635bff; border: 1px solid rgba(99, 91, 255, 0.4); padding: 2px 8px; border-radius: 10px;">Stripe JS Active</span>
+                                    <span id="stripe-sdk-status-pill" style="font-size: 10px; font-weight: 800; background: rgba(16, 211, 131, 0.2); color: #10d383; border: 1px solid rgba(16, 211, 131, 0.4); padding: 2px 8px; border-radius: 10px;">Stripe Live Active ✓</span>
                                 </div>
-                                <p style="font-size: 11.5px; color: #8b0000; margin: 0 0 8px 0; line-height: 1.4;">Enter your Stripe Publishable API Key below to direct subscription payments to your Stripe Merchant Account &amp; linked bank account.</p>
-                                <div class="input-group" style="margin-bottom: 0;">
+                                <p style="font-size: 11.5px; color: #8b0000; margin: 0 0 8px 0; line-height: 1.4;">Connected to Stripe Account <strong>acct_1UNWStLls49bwhzx</strong> with Live Publishable Key. Add your Stripe Payment Links (<code>https://buy.stripe.com/...</code>) or Price IDs (<code>price_...</code>) for each product below.</p>
+                                <div class="input-group" style="margin-bottom: 8px;">
                                     <label for="settings-stripe-key-input" style="font-size: 11px; color: #8b0000;">Stripe Publishable Key (pk_live_... / pk_test_...)</label>
-                                    <input type="text" id="settings-stripe-key-input" placeholder="pk_live_51..." style="font-size: 12px; font-family: monospace; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(99, 91, 255, 0.4); color: #fff;">
+                                    <input type="text" id="settings-stripe-key-input" value="pk_live_51UNWStLls49bwhzxg19Q0XQfJE40ZUQAonEq4Izrhj5hM5ccxF1Q3Ipn8FxSQkTHxdEVwsb6GQmg2weQ6errUCoP008UH14iA1" placeholder="pk_live_51UNWStLls49bwhzx..." style="font-size: 12px; font-family: monospace; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(99, 91, 255, 0.4); color: #fff;">
+                                </div>
+                                <div class="input-group" style="margin-bottom: 8px;">
+                                    <label for="settings-stripe-link-silver" style="font-size: 11px; color: #8b0000;">BUBA Silver ($0.99/wk • <code>prod_VWv7S400Od4cgx</code>) Payment Link or Price ID</label>
+                                    <input type="text" id="settings-stripe-link-silver" value="price_1UVrHWLls49bwhzxpjCjICpl" placeholder="https://buy.stripe.com/... or price_..." style="font-size: 12px; font-family: monospace; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(99, 91, 255, 0.4); color: #fff;">
+                                </div>
+                                <div class="input-group" style="margin-bottom: 8px;">
+                                    <label for="settings-stripe-link-bronze" style="font-size: 11px; color: #8b0000;">BUBA Bronze ($5.99/mo • <code>prod_VWv8l55wqB66Zh</code>) Payment Link or Price ID</label>
+                                    <input type="text" id="settings-stripe-link-bronze" value="price_1UVrIQLls49bwhzxnrE5DEp7" placeholder="https://buy.stripe.com/... or price_..." style="font-size: 12px; font-family: monospace; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(99, 91, 255, 0.4); color: #fff;">
+                                </div>
+                                <div class="input-group" style="margin-bottom: 0;">
+                                    <label for="settings-stripe-link-gold" style="font-size: 11px; color: #8b0000;">BUBA Gold 👑 ($11.99/mo • <code>prod_VWv9MAFgHrRaHd</code>) Payment Link or Price ID</label>
+                                    <input type="text" id="settings-stripe-link-gold" value="price_1UVrJXLls49bwhzxRzsNliQJ" placeholder="https://buy.stripe.com/... or price_..." style="font-size: 12px; font-family: monospace; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(99, 91, 255, 0.4); color: #fff;">
                                 </div>
                             </div>
                         </div>
@@ -1377,6 +1389,6 @@
         }
     </script>
     <!-- Application Script -->
-    <script src="app.js?v=10"></script>
+    <script src="app.js?v=11"></script>
 </body>
 </html>

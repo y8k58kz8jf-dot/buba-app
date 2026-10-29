@@ -355,7 +355,18 @@ const state = {
     boostTimer: null,
     selectedPaymentMethod: "applepay",
     userSubscription: "free",
-    stripePublishableKey: "",
+    stripeAccountId: "acct_1UNWStLls49bwhzx",
+    stripePublishableKey: "pk_live_51UNWStLls49bwhzxg19Q0XQfJE40ZUQAonEq4Izrhj5hM5ccxF1Q3Ipn8FxSQkTHxdEVwsb6GQmg2weQ6errUCoP008UH14iA1",
+    stripeProducts: {
+        silver: "prod_VWv7S400Od4cgx",
+        bronze: "prod_VWv8l55wqB66Zh",
+        gold: "prod_VWv9MAFgHrRaHd"
+    },
+    stripePlanLinks: {
+        silver: "price_1UVrHWLls49bwhzxpjCjICpl",
+        bronze: "price_1UVrIQLls49bwhzxnrE5DEp7",
+        gold: "price_1UVrJXLls49bwhzxRzsNliQJ"
+    },
     passCountToday: 0,
     lastPassResetDate: null,
     likeCountToday: 0,
@@ -528,6 +539,9 @@ const DOM = {
     savedPaymentMethodName: document.getElementById("saved-payment-method-name"),
     savedPaymentMethodDesc: document.getElementById("saved-payment-method-desc"),
     settingsStripeKeyInput: document.getElementById("settings-stripe-key-input"),
+    settingsStripeLinkSilver: document.getElementById("settings-stripe-link-silver"),
+    settingsStripeLinkBronze: document.getElementById("settings-stripe-link-bronze"),
+    settingsStripeLinkGold: document.getElementById("settings-stripe-link-gold"),
     stripeSdkStatusPill: document.getElementById("stripe-sdk-status-pill"),
 
     // Avatar Shape & Photos Elements
@@ -552,6 +566,10 @@ const Storage = {
             chats: state.chats,
             selectedCurrency: state.selectedCurrency,
             userSubscription: state.userSubscription,
+            stripeAccountId: state.stripeAccountId,
+            stripePublishableKey: state.stripePublishableKey,
+            stripeProducts: state.stripeProducts,
+            stripePlanLinks: state.stripePlanLinks,
             passCountToday: state.passCountToday,
             lastPassResetDate: state.lastPassResetDate,
             likeCountToday: state.likeCountToday,
@@ -592,7 +610,22 @@ const Storage = {
                 state.chats = parsed.chats || state.chats;
                 state.selectedCurrency = parsed.selectedCurrency || state.selectedCurrency;
                 state.userSubscription = parsed.userSubscription || state.userSubscription;
-                state.stripePublishableKey = parsed.stripePublishableKey || state.stripePublishableKey || "";
+                state.stripeAccountId = parsed.stripeAccountId || state.stripeAccountId || "acct_1UNWStLls49bwhzx";
+                if (parsed.stripePublishableKey && parsed.stripePublishableKey.length > 20) {
+                    state.stripePublishableKey = parsed.stripePublishableKey;
+                } else {
+                    state.stripePublishableKey = "pk_live_51UNWStLls49bwhzxg19Q0XQfJE40ZUQAonEq4Izrhj5hM5ccxF1Q3Ipn8FxSQkTHxdEVwsb6GQmg2weQ6errUCoP008UH14iA1";
+                }
+                if (parsed.stripeProducts) {
+                    state.stripeProducts = Object.assign({}, state.stripeProducts, parsed.stripeProducts);
+                }
+                if (parsed.stripePlanLinks) {
+                    state.stripePlanLinks = {
+                        silver: parsed.stripePlanLinks.silver || "price_1UVrHWLls49bwhzxpjCjICpl",
+                        bronze: parsed.stripePlanLinks.bronze || "price_1UVrIQLls49bwhzxnrE5DEp7",
+                        gold: parsed.stripePlanLinks.gold || "price_1UVrJXLls49bwhzxRzsNliQJ"
+                    };
+                }
                 state.passCountToday = parsed.passCountToday || 0;
                 state.lastPassResetDate = parsed.lastPassResetDate || "";
                 state.likeCountToday = parsed.likeCountToday || 0;
@@ -654,6 +687,23 @@ const App = {
         this.renderProfilePhotosGrid();
         this.updateOwnProfileDOM();
         this.populateCurrencySelectors();
+
+        // Check if returning from a Stripe Checkout redirect (?stripe_success=1&plan=silver|bronze|gold)
+        const urlParams = new URLSearchParams(window.location.search);
+        const stripeSuccess = urlParams.get("stripe_success");
+        const purchasedPlan = urlParams.get("plan");
+        if (stripeSuccess === "1" && purchasedPlan && ["silver", "bronze", "gold"].includes(purchasedPlan.toLowerCase())) {
+            const normalizedPlan = purchasedPlan.toLowerCase();
+            state.userSubscription = normalizedPlan;
+            Storage.save();
+            this.updateOwnProfileDOM();
+            this.syncSettingsFormWithState();
+            const cleanUrl = window.location.origin + window.location.pathname;
+            window.history.replaceState({}, document.title, cleanUrl);
+            const planTitles = { silver: "BUBA Silver", bronze: "BUBA Bronze", gold: "BUBA Gold 👑" };
+            this.proceedToMainApp(`${planTitles[normalizedPlan]} Subscription Activated via Stripe! 💳✨`);
+            return;
+        }
         
         // Show Log In to O-Buba page
         this.showLoginPage();
@@ -1755,6 +1805,42 @@ const App = {
                 if (state.activePaymentType === "plan" && state.selectedPlanToPay) {
                     const planName = state.selectedPlanToPay;
                     const label = state.selectedPlanLabelToPay || "BUBA Plan";
+                    const configuredLinkOrPrice = (state.stripePlanLinks && state.stripePlanLinks[planName]) ? state.stripePlanLinks[planName].trim() : "";
+
+                    // 1. Direct Stripe Payment Link redirect (https://buy.stripe.com/...)
+                    if (configuredLinkOrPrice.startsWith("https://buy.stripe.com/") || configuredLinkOrPrice.startsWith("https://checkout.stripe.com/")) {
+                        const checkoutUrl = new URL(configuredLinkOrPrice);
+                        if (state.userProfile && state.userProfile.email) {
+                            checkoutUrl.searchParams.set("prefilled_email", state.userProfile.email);
+                        }
+                        checkoutUrl.searchParams.set("client_reference_id", `${state.stripeAccountId}_${planName}`);
+                        this.showToast(`Redirecting to Stripe Checkout for ${label}... 💳`, "default");
+                        window.location.href = checkoutUrl.toString();
+                        return;
+                    }
+
+                    // 2. Client-only Stripe Checkout via Publishable Key + Price ID (price_...)
+                    if (configuredLinkOrPrice.startsWith("price_")) {
+                        if (!window.stripeInstance) {
+                            this.initStripeSDK();
+                        }
+                        if (window.stripeInstance) {
+                            const isHttp = window.location.protocol === "http:" || window.location.protocol === "https:";
+                            const returnBase = isHttp ? (window.location.origin + window.location.pathname) : "https://buba.love/";
+                            this.showToast(`Opening Stripe Checkout for ${label}... 💳`, "default");
+                            window.stripeInstance.redirectToCheckout({
+                                lineItems: [{ price: configuredLinkOrPrice, quantity: 1 }],
+                                mode: "subscription",
+                                successUrl: `${returnBase}?stripe_success=1&plan=${encodeURIComponent(planName)}`,
+                                cancelUrl: `${returnBase}?stripe_canceled=1`
+                            }).then((result) => {
+                                if (result && result.error) {
+                                    this.showToast(result.error.message || "Stripe Checkout error", "default");
+                                }
+                            });
+                            return;
+                        }
+                    }
                     
                     state.userSubscription = planName;
                     if (state.selectedPaymentMethod) {
@@ -1770,7 +1856,7 @@ const App = {
                     this.syncSettingsFormWithState();
                     
                     const isStripeActive = window.stripeInstance && state.stripePublishableKey && state.stripePublishableKey.startsWith("pk_");
-                    const stripeNotice = isStripeActive ? " (Depositing via Stripe Merchant Payout)" : "";
+                    const stripeNotice = isStripeActive ? ` (Stripe Account ${state.stripeAccountId})` : "";
                     this.showToast(`${label} Active! Payment via ${methodLabel} successful 💳✨${stripeNotice}`, "default");
                     return;
                 }
@@ -2226,13 +2312,23 @@ const App = {
         if (DOM.settingsStripeKeyInput) {
             DOM.settingsStripeKeyInput.value = state.stripePublishableKey || "";
         }
+        if (DOM.settingsStripeLinkSilver) {
+            DOM.settingsStripeLinkSilver.value = (state.stripePlanLinks && state.stripePlanLinks.silver) || "";
+        }
+        if (DOM.settingsStripeLinkBronze) {
+            DOM.settingsStripeLinkBronze.value = (state.stripePlanLinks && state.stripePlanLinks.bronze) || "";
+        }
+        if (DOM.settingsStripeLinkGold) {
+            DOM.settingsStripeLinkGold.value = (state.stripePlanLinks && state.stripePlanLinks.gold) || "";
+        }
         this.initStripeSDK();
     },
 
     initStripeSDK() {
         const key = state.stripePublishableKey || (DOM.settingsStripeKeyInput ? DOM.settingsStripeKeyInput.value.trim() : "");
+        const hasLinks = state.stripePlanLinks && (state.stripePlanLinks.silver || state.stripePlanLinks.bronze || state.stripePlanLinks.gold);
         if (typeof Stripe !== "undefined") {
-            if (key && key.startsWith("pk_")) {
+            if (key && key.startsWith("pk_") && key.length > 10) {
                 try {
                     window.stripeInstance = Stripe(key);
                     if (DOM.stripeSdkStatusPill) {
@@ -2244,9 +2340,16 @@ const App = {
                 } catch (err) {
                     console.warn("Stripe key init warning:", err);
                 }
+            } else if (hasLinks) {
+                if (DOM.stripeSdkStatusPill) {
+                    DOM.stripeSdkStatusPill.textContent = "Stripe Links Active ✓";
+                    DOM.stripeSdkStatusPill.style.background = "rgba(16, 211, 131, 0.2)";
+                    DOM.stripeSdkStatusPill.style.color = "#10d383";
+                    DOM.stripeSdkStatusPill.style.borderColor = "rgba(16, 211, 131, 0.4)";
+                }
             } else {
                 if (DOM.stripeSdkStatusPill) {
-                    DOM.stripeSdkStatusPill.textContent = "Stripe JS Ready";
+                    DOM.stripeSdkStatusPill.textContent = `Connected: ${state.stripeAccountId}`;
                     DOM.stripeSdkStatusPill.style.background = "rgba(99, 91, 255, 0.2)";
                     DOM.stripeSdkStatusPill.style.color = "#635bff";
                     DOM.stripeSdkStatusPill.style.borderColor = "rgba(99, 91, 255, 0.4)";
@@ -2312,6 +2415,16 @@ const App = {
 
         if (DOM.settingsStripeKeyInput) {
             state.stripePublishableKey = DOM.settingsStripeKeyInput.value.trim();
+        }
+        if (!state.stripePlanLinks) state.stripePlanLinks = { silver: "", bronze: "", gold: "" };
+        if (DOM.settingsStripeLinkSilver) {
+            state.stripePlanLinks.silver = DOM.settingsStripeLinkSilver.value.trim();
+        }
+        if (DOM.settingsStripeLinkBronze) {
+            state.stripePlanLinks.bronze = DOM.settingsStripeLinkBronze.value.trim();
+        }
+        if (DOM.settingsStripeLinkGold) {
+            state.stripePlanLinks.gold = DOM.settingsStripeLinkGold.value.trim();
         }
         this.initStripeSDK();
         
